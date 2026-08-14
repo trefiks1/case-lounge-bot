@@ -4,7 +4,7 @@ import uvicorn
 import os
 
 async def main():
-    # Запускаем бота как подпроцесс
+    # Вот эта строка как раз и запускает вашего бота
     bot_process = subprocess.Popen(["python", "bot.py"])
     
     # Запускаем веб-сервер на динамическом порту Railway
