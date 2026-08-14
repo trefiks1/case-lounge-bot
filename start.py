@@ -1,23 +1,18 @@
+import asyncio
 import subprocess
-import sys
-import time
+import uvicorn
+import os
 
-def main():
-    print("Starting bot...")
-    bot_process = subprocess.Popen([sys.executable, "bot.py"])
+async def main():
+    # Запускаем бота как подпроцесс
+    bot_process = subprocess.Popen(["python", "bot.py"])
     
-    # Небольшая пауза для инициализации бота
-    time.sleep(2)
+    # Запускаем веб-сервер на динамическом порту Railway
+    port = int(os.environ.get("PORT", 8080))
+    config = uvicorn.Config("web_server:app", host="0.0.0.0", port=port, log_level="info")
+    server = uvicorn.Server(config)
     
-    print("Starting web server...")
-    web_process = subprocess.Popen([sys.executable, "web_server.py"])
-    
-    try:
-        bot_process.wait()
-        web_process.wait()
-    except KeyboardInterrupt:
-        bot_process.terminate()
-        web_process.terminate()
+    await server.serve()
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
