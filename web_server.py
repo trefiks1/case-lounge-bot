@@ -19,7 +19,7 @@ app.add_middleware(
 
 BASE_DIR = Path(__file__).parent
 
-# Словарь для хранения промокодов (рекомендуется перенести в БД для сохранения данных при перезапуске)
+# Словарь для хранения промокодов
 PROMO_CODES = {
     "START": {"reward": 1000, "max_uses": 1000, "used_by": []}
 }
@@ -118,6 +118,5 @@ async def activate_promo_route(request: Request):
         return {"success": False, "error": str(e)}
 
 if __name__ == "__main__":
-    # Использование порта из переменной окружения Railway
     port = int(os.environ.get("PORT", 8000))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    uvicorn.run("web_server:app", host="0.0.0.0", port=port)
