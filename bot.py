@@ -1,28 +1,12 @@
 import os
-import asyncio
-import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from pathlib import Path
-from contextlib import asynccontextmanager
 
 from database import get_balance, update_balance, create_user, get_user
 
-# Функция запуска бота в фоне как подпроцесса
-async def run_bot():
-    process = await asyncio.create_subprocess_exec("python", "bot.py")
-    await process.wait()
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Запускаем бота при старте FastAPI
-    bot_task = asyncio.create_task(run_bot())
-    yield
-    # Отменяем бота при остановке
-    bot_task.cancel()
-
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
@@ -129,7 +113,3 @@ async def activate_promo_route(request: Request):
         return {"success": True, "balance": new_balance, "reward": promo["reward"]}
     except Exception as e:
         return {"success": False, "error": str(e)}
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8080))
-    uvicorn.run("web_server:app", host="0.0.0.0", port=port)
