@@ -1,3 +1,5 @@
+import os
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
@@ -17,12 +19,12 @@ app.add_middleware(
 
 BASE_DIR = Path(__file__).parent
 
-# Словарь для хранения промокодов (по умолчанию уже есть START)
+# Словарь для хранения промокодов (рекомендуется перенести в БД для сохранения данных при перезапуске)
 PROMO_CODES = {
     "START": {"reward": 1000, "max_uses": 1000, "used_by": []}
 }
 
-# Список ID администраторов (должен совпадать с фронтендом)
+# Список ID администраторов
 ADMIN_IDS = [1612193166]
 
 @app.get("/", response_class=HTMLResponse)
@@ -58,7 +60,6 @@ async def update_user_balance_route(request: Request):
     except Exception as e:
         return {"success": False, "error": str(e)}
 
-# --- ДОБАВЛЕННЫЙ МАРШРУТ ДЛЯ СОЗДАНИЯ ПРОМОКОДОВ (/createpromo) ---
 @app.post("/api/admin/create_promo")
 async def create_promo_route(request: Request):
     try:
@@ -77,7 +78,7 @@ async def create_promo_route(request: Request):
                 reward = int(parts[2])
                 max_uses = int(parts[3])
             except ValueError:
-                return {"success": False, "error": "Неверный формат чисел в команде"}
+                return {"success": False, "error": "Неверный формат чисел"}
         else:
             code = data.get("code", "").strip().upper()
             reward = int(data.get("reward", 0))
@@ -86,17 +87,11 @@ async def create_promo_route(request: Request):
         if not code or reward <= 0:
             return {"success": False, "error": "Заполните корректно код и сумму"}
             
-        PROMO_CODES[code] = {
-            "reward": reward,
-            "max_uses": max_uses,
-            "used_by": []
-        }
-        
+        PROMO_CODES[code] = {"reward": reward, "max_uses": max_uses, "used_by": []}
         return {"success": True}
     except Exception as e:
         return {"success": False, "error": str(e)}
 
-# --- МАРШРУТ АКТИВАЦИИ ПРОМОКОДОВ ИГРОКАМИ ---
 @app.post("/api/promo/activate")
 async def activate_promo_route(request: Request):
     try:
@@ -109,19 +104,12 @@ async def activate_promo_route(request: Request):
 
         promo = PROMO_CODES[code]
         if user_id in promo["used_by"]:
-            return {"success": False, "error": "Вы уже активировали этот промокод"}
+            return {"success": False, "error": "Вы уже использовали этот код"}
 
         if len(promo["used_by"]) >= promo["max_uses"]:
-            return {"success": False, "error": "Лимит активаций исчерпан"}
+            return {"success": False, "error": "Лимит исчерпан"}
 
-        # Фиксируем активацию
         promo["used_by"].append(user_id)
-
-        # Начисляем бонус баланса пользователю
-        user = await get_user(user_id)
-        if not user:
-            await create_user(user_id=user_id, username="", full_name="", start_balance=0)
-
         await update_balance(user_id, promo["reward"])
         new_balance = await get_balance(user_id)
 
@@ -130,5 +118,6 @@ async def activate_promo_route(request: Request):
         return {"success": False, "error": str(e)}
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    # Использование порта из переменной окружения Railway
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
