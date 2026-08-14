@@ -112,9 +112,8 @@ async def activate_promo_route(request: Request):
         user_id = int(data.get("user_id"))
         code = data.get("code", "").strip().upper()
 
-        if code not in PROMO_NAMES := PROMO_CODES: # type: ignore
-            if code not in PROMO_CODES:
-                return {"success": False, "error": "Промокод не найден"}
+        if code not in PROMO_CODES:
+            return {"success": False, "error": "Промокод не найден"}
 
         promo = PROMO_CODES[code]
         if user_id in promo["used_by"]:
