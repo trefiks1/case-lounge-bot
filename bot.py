@@ -12,13 +12,13 @@ import database as db
 
 # ==================== KEYBOARDS (ВСТРОЕННЫЕ) ====================
 def main_menu():
-    """Главное меню с кнопкой WebApp на локальный сервер"""
+    """Главное меню с кнопкой WebApp на постоянный адрес Railway"""
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
                     text="🎰 Открыть Case Lounge",
-                    web_app={"url": "https://superman-proximity-swung.ngrok-free.dev"}
+                    web_app={"url": "https://case-lounge-bot-production.up.railway.app"}
                 )
             ]
         ]
