@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 TOKEN = os.getenv("BOT_TOKEN")
-# Установили ваш реальный домен Railway
 WEBAPP_URL = os.getenv("WEBAPP_URL", "https://case-lounge-bot-production.up.railway.app/") 
 
 bot = Bot(token=TOKEN)
