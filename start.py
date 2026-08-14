@@ -1,18 +1,19 @@
-import asyncio
 import subprocess
-import uvicorn
 import os
+import sys
 
-async def main():
-    # Вот эта строка как раз и запускает вашего бота
-    bot_process = subprocess.Popen(["python", "bot.py"])
+def main():
+    port = int(os.getenv("PORT", 8080))
     
-    # Запускаем веб-сервер на динамическом порту Railway
-    port = int(os.environ.get("PORT", 8080))
-    config = uvicorn.Config("web_server:app", host="0.0.0.0", port=port, log_level="info")
-    server = uvicorn.Server(config)
+    # Запускаем бота в отдельном процессе
+    bot_process = subprocess.Popen([sys.executable, "bot.py"])
     
-    await server.serve()
+    # Запускаем FastAPI-сервер через uvicorn на порту Railway
+    import uvicorn
+    try:
+        uvicorn.run("web_server:app", host="0.0.0.0", port=port)
+    finally:
+        bot_process.terminate()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
