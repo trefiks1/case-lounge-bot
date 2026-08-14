@@ -1,13 +1,28 @@
 import os
+import asyncio
 import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from pathlib import Path
+from contextlib import asynccontextmanager
 
 from database import get_balance, update_balance, create_user, get_user
 
-app = FastAPI()
+# Функция запуска бота в фоне
+async def run_bot():
+    process = await asyncio.create_subprocess_exec("python", "bot.py")
+    await process.wait()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Запускаем бота при старте FastAPI
+    bot_task = asyncio.create_task(run_bot())
+    yield
+    # Отменяем бота при остановке
+    bot_task.cancel()
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,12 +34,10 @@ app.add_middleware(
 
 BASE_DIR = Path(__file__).parent
 
-# Словарь для хранения промокодов
 PROMO_CODES = {
     "START": {"reward": 1000, "max_uses": 1000, "used_by": []}
 }
 
-# Список ID администраторов
 ADMIN_IDS = [1612193166]
 
 @app.get("/", response_class=HTMLResponse)
@@ -99,8 +112,9 @@ async def activate_promo_route(request: Request):
         user_id = int(data.get("user_id"))
         code = data.get("code", "").strip().upper()
 
-        if code not in PROMO_CODES:
-            return {"success": False, "error": "Промокод не найден"}
+        if code not in PROMO_NAMES := PROMO_CODES: # type: ignore
+            if code not in PROMO_CODES:
+                return {"success": False, "error": "Промокод не найден"}
 
         promo = PROMO_CODES[code]
         if user_id in promo["used_by"]:
