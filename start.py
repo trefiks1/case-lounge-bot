@@ -1,13 +1,23 @@
 import subprocess
 import sys
+import time
 
-def run_script(script_name):
-    return subprocess.Popen([sys.executable, script_name])
+def main():
+    print("Starting bot...")
+    bot_process = subprocess.Popen([sys.executable, "bot.py"])
+    
+    # Небольшая пауза для инициализации бота
+    time.sleep(2)
+    
+    print("Starting web server...")
+    web_process = subprocess.Popen([sys.executable, "web_server.py"])
+    
+    try:
+        bot_process.wait()
+        web_process.wait()
+    except KeyboardInterrupt:
+        bot_process.terminate()
+        web_process.terminate()
 
 if __name__ == "__main__":
-    print("Starting bot and web server simultaneously...")
-    bot_process = run_script("bot.py")
-    web_process = run_script("web_server.py")
-
-    bot_process.wait()
-    web_process.wait()
+    main()
