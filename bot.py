@@ -8,7 +8,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 TOKEN = os.getenv("BOT_TOKEN")
-WEBAPP_URL = os.getenv("WEBAPP_URL", "https://your-railway-url.up.railway.app/") # Ссылка на ваш сайт
+# Установили ваш реальный домен Railway
+WEBAPP_URL = os.getenv("WEBAPP_URL", "https://case-lounge-bot-production.up.railway.app/") 
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
@@ -32,7 +33,6 @@ async def cmd_start(message: types.Message):
 async def main():
     logging.basicConfig(level=logging.INFO)
     print("Бот запущен...")
-    # Очищаем старые апдейты при запуске, чтобы бот не спамил на старые сообщения
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
