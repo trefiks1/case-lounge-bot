@@ -113,3 +113,8 @@ async def activate_promo_route(request: Request):
         return {"success": True, "balance": new_balance, "reward": promo["reward"]}
     except Exception as e:
         return {"success": False, "error": str(e)}
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.getenv("PORT", 8080))
+    uvicorn.run("web_server:app", host="0.0.0.0", port=port)
