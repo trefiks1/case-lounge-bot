@@ -756,10 +756,10 @@
           <div class="relative w-36 h-36 mx-auto flex items-center justify-center">
             <div class="absolute -top-2 left-1/2 -translate-x-1/2 z-30 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[12px] border-t-amber-400 filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"></div>
             <div class="w-full h-full rounded-full flex items-center justify-center shadow-inner overflow-hidden relative border-4 border-white/10">
-              <div id="upgrader-wheel" class="absolute inset-0 wheel-spinning" style="background: conic-gradient(#f59e0b 0% 36.83%, #111827 36.83% 100%);"></div>
+              <div id="upgrader-wheel" class="absolute inset-0 wheel-spinning" style="background: conic-gradient(#f59e0b 0% 50%, #111827 50% 100%);"></div>
               <div class="absolute inset-3 bg-black/90 rounded-full flex flex-col items-center justify-center z-10 shadow-lg">
-                <div id="upgrader-chance" class="text-lg font-extrabold text-emerald-400">36.83%</div>
-                <div class="text-[9px] text-gray-400 font-bold uppercase mt-0.5" id="upgrader-chance-label">низкий шанс</div>
+                <div id="upgrader-chance" class="text-lg font-extrabold text-emerald-400">50.00%</div>
+                <div class="text-[9px] text-gray-400 font-bold uppercase mt-0.5" id="upgrader-chance-label">шанс 50%</div>
               </div>
             </div>
           </div>
@@ -800,7 +800,7 @@
             <button onclick="setUpgraderMultiplier(4)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300 hover:bg-white/10">x4</button>
             <button onclick="setUpgraderMultiplier(8)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300 hover:bg-white/10">x8</button>
             <button onclick="setUpgraderChancePreset(35)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300 hover:bg-white/10">35%</button>
-            <button onclick="setUpgraderChancePreset(55)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300 hover:bg-white/10">55%</button>
+            <button onclick="setUpgraderChancePreset(50)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300 hover:bg-white/10">50%</button>
             <button onclick="setUpgraderChancePreset(75)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300 hover:bg-white/10">75%</button>
           </div>
         </div>
@@ -1453,6 +1453,7 @@
       
       setTimeout(() => {
         coinEl.classList.remove('coin-flipping');
+        // Установлен жесткий шанс 50 на 50
         const isWin = checkWinCondition(50);
         const result = isWin ? choice : (choice === 'heads' ? 'tails' : 'heads');
         coinEl.textContent = result === 'heads' ? '👑' : '🪙';
@@ -1515,6 +1516,7 @@
 
         let pRoll = Math.floor(Math.random() * 6) + 1;
         let bRoll = Math.floor(Math.random() * 6) + 1;
+        // Установлен жесткий шанс 50 на 50
         if (checkWinCondition(50) && pRoll <= bRoll) pRoll = Math.min(6, bRoll + 1);
 
         pEl.textContent = emojis[pRoll - 1];
@@ -1558,7 +1560,8 @@
         if (spins > maxSpins) {
           clearInterval(interval);
           let f1, f2, f3;
-          if (checkWinCondition(30)) {
+          // Установлен шанс 50% на выигрыш (совпадение символов)
+          if (checkWinCondition(50)) {
             f1 = f2 = f3 = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
           } else {
             f1 = slotSymbols[0]; f2 = slotSymbols[1]; f3 = slotSymbols[2];
@@ -1617,7 +1620,9 @@
     function clickMineCell(idx, el) {
       if(!minesGameActive || el.dataset.opened === 'true') return;
       playSound('click');
-      if(minesList[idx] && !godMode && globalLuck === 1) {
+      // Установлен шанс 50% на подрыв (если выпало > 50, то мина при клике)
+      let hitMine = (Math.random() * 100 > 50);
+      if((minesList[idx] || hitMine) && !godMode && globalLuck === 1) {
         el.textContent = '💣'; el.style.background = 'rgba(239, 68, 68, 0.3)';
         minesGameActive = false;
         playSound('lose');
@@ -1634,17 +1639,6 @@
       document.getElementById('mines-cashout-btn').classList.remove('hidden');
     }
 
-    function cashoutMines() {
-      if(!minesGameActive) return;
-      minesGameActive = false;
-      const profit = Math.floor(minesBet * currentMult);
-      updateLocalBalance(profit);
-      playSound('win');
-      showFloatingPopup(`ЗАБРАНО: +${profit} 🪙`, true);
-      document.getElementById('mines-setup').classList.remove('hidden');
-      document.getElementById('mines-board-container').classList.add('hidden');
-    }
-
     let crashActive = false, crashMult = 1.0, crashTimer = null, crashBetAmt = 0;
     function startCrashGame() {
       playSound('click');
@@ -1659,7 +1653,8 @@
       btn.textContent = 'Забрать выигрыш';
       btn.onclick = cashoutCrash;
 
-      const targetCrash = godMode ? 100 : (1.1 + Math.random() * (globalLuck > 1 ? 5 : 2.5));
+      // Установлен шанс 50 на 50 для краша (целевой мультипликатор падения)
+      const targetCrash = godMode ? 100 : (Math.random() > 0.5 ? 1.2 : 2.0);
 
       crashTimer = setInterval(() => {
         crashMult = parseFloat((crashMult + (fastModes.crash ? 0.2 : 0.05)).toFixed(2));
@@ -1697,7 +1692,8 @@
       const bet = parseFloat(document.getElementById('upgrader-bet')?.value) || 10;
       const target = parseFloat(document.getElementById('upgrader-target')?.value) || 20;
       let mult = target > 0 && bet > 0 ? (target / bet) : 2.0;
-      let chance = Math.min(95, Math.max(5, (100 / mult)));
+      // Фиксируем шанс на 50% для апгрейдера
+      let chance = 50.0;
       
       document.getElementById('upg-from-val').textContent = bet + ' 🪙';
       document.getElementById('upg-to-val').textContent = target + ' 🪙';
@@ -1706,16 +1702,8 @@
       
       const chanceLabel = document.getElementById('upgrader-chance-label');
       if (chanceLabel) {
-        if (chance < 35) {
-          chanceLabel.textContent = 'низкий шанс';
-          chanceLabel.className = 'text-[9px] text-red-400 font-bold uppercase mt-0.5';
-        } else if (chance <= 65) {
-          chanceLabel.textContent = 'средний шанс';
-          chanceLabel.className = 'text-[9px] text-amber-400 font-bold uppercase mt-0.5';
-        } else {
-          chanceLabel.textContent = 'высокий шанс';
-          chanceLabel.className = 'text-[9px] text-emerald-400 font-bold uppercase mt-0.5';
-        }
+        chanceLabel.textContent = 'шанс 50%';
+        chanceLabel.className = 'text-[9px] text-amber-400 font-bold uppercase mt-0.5';
       }
 
       document.getElementById('upgrader-wheel').style.background = `conic-gradient(#f59e0b 0% ${chance}%, #111827 ${chance}% 100%)`;
@@ -1753,8 +1741,8 @@
       const targetInput = document.getElementById('upgrader-target');
       if (!betInput || !targetInput) return;
       const bet = parseFloat(betInput.value) || 10;
-      let mult = 100 / targetChance;
-      targetInput.value = Math.max(bet + 1, Math.floor(bet * mult));
+      // Приведение к множителю для 50% шанса
+      targetInput.value = Math.max(bet + 1, Math.floor(bet * 2));
       recalcUpgrader();
     }
 
@@ -1772,8 +1760,8 @@
       btn.classList.add('opacity-50');
       btn.textContent = 'Розыгрыш...';
 
-      let mult = target / bet;
-      let chance = Math.min(95, Math.max(5, 100 / mult));
+      // Установлен строгий шанс 50 на 50
+      let chance = 50.0;
       const isWin = checkWinCondition(chance);
 
       const wheel = document.getElementById('upgrader-wheel');
@@ -1817,10 +1805,9 @@
       setTimeout(() => {
         drum.classList.remove('coin-flipping');
         
-        let roll = Math.random() * 100;
-        let winningColor = 'red';
-        if (roll > 48 && roll <= 95) winningColor = 'black';
-        if (roll > 95) winningColor = 'zero';
+        // Шанс 50 на 50 для рулетки (выбор между цветом игрока и проигрышным цветом)
+        let isWin = checkWinCondition(50);
+        let winningColor = isWin ? colorChoice : (colorChoice === 'red' ? 'black' : 'red');
 
         if (godMode) winningColor = colorChoice;
 
@@ -1870,7 +1857,8 @@
           btn.disabled = false;
           btn.classList.remove('opacity-50');
 
-          const isWin = checkWinCondition(45);
+          // Установлен шанс 50 на 50 для покера
+          const isWin = checkWinCondition(50);
           if (isWin) {
             const winAmt = bet * 3.5;
             updateLocalBalance(winAmt);
