@@ -733,37 +733,79 @@
       </div>
     </div>
 
-    <!-- ИГРА: АПГРЕЙДЕР -->
+    <!-- ИГРА: АПГРЕЙДЕР (НОВЫЙ ДИЗАЙН) -->
     <div id="screen-upgrader" class="screen space-y-4">
       <div class="flex justify-between items-center mb-2">
         <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад к играм</span></button>
         <button onclick="toggleFastMode('upgrader')" id="fast-btn-upgrader" class="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-[10px] font-extrabold text-gray-300">⚡ Быстро: ВЫКЛ</button>
       </div>
-      <div id="upgrader-card-box" class="glass-card p-6 text-center space-y-5 shadow-2xl">
-        <h2 class="font-extrabold text-lg text-white">Апгрейдер баланса</h2>
+      <div id="upgrader-card-box" class="glass-card p-5 text-center space-y-5 shadow-2xl">
+        <h2 class="font-extrabold text-lg text-white">Апгрейдер скинов</h2>
         
-        <div class="relative w-40 h-40 mx-auto">
-          <div class="absolute -top-3 left-1/2 -translate-x-1/2 z-30 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[14px] border-t-amber-400 filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"></div>
-          <div class="w-full h-full rounded-full flex items-center justify-center shadow-inner overflow-hidden relative border-4 border-white/10">
-            <div id="upgrader-wheel" class="absolute inset-0 wheel-spinning" style="background: conic-gradient(var(--accent) 0% 50%, #111827 50% 100%);"></div>
-            <div class="absolute inset-3 bg-black/85 rounded-full flex flex-col items-center justify-center z-10 shadow-lg">
-              <div id="upgrader-chance" class="text-xl font-extrabold text-amber-400">50%</div>
-              <div id="upgrader-mult" class="text-[11px] text-gray-400 font-bold">x2.0</div>
+        <!-- Верхняя зона выбора предметов/сумм -->
+        <div class="grid grid-cols-2 gap-3">
+          <!-- Карточка отправляемой суммы/предмета -->
+          <div class="bg-black/40 border border-white/10 rounded-2xl p-3 flex flex-col items-center justify-center space-y-1">
+            <div class="text-[10px] text-gray-400 font-bold uppercase">Сумма баланса</div>
+            <div class="text-2xl">🪙</div>
+            <div id="upg-from-val" class="font-extrabold text-sm text-white">10 🪙</div>
+            <div class="text-[9px] text-gray-500">(макс <span id="upg-max-limit">5000</span>)</div>
+          </div>
+
+          <!-- Круговой элемент прогресса / шанс -->
+          <div class="relative w-36 h-36 mx-auto flex items-center justify-center">
+            <div class="absolute -top-2 left-1/2 -translate-x-1/2 z-30 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[12px] border-t-amber-400 filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"></div>
+            <div class="w-full h-full rounded-full flex items-center justify-center shadow-inner overflow-hidden relative border-4 border-white/10">
+              <div id="upgrader-wheel" class="absolute inset-0 wheel-spinning" style="background: conic-gradient(#f59e0b 0% 36.83%, #111827 36.83% 100%);"></div>
+              <div class="absolute inset-3 bg-black/90 rounded-full flex flex-col items-center justify-center z-10 shadow-lg">
+                <div id="upgrader-chance" class="text-lg font-extrabold text-emerald-400">36.83%</div>
+                <div class="text-[9px] text-gray-400 font-bold uppercase mt-0.5" id="upgrader-chance-label">низкий шанс</div>
+              </div>
             </div>
+          </div>
+
+          <!-- Карточка целевой суммы -->
+          <div class="bg-black/40 border border-white/10 rounded-2xl p-3 flex flex-col items-center justify-center space-y-1 col-span-2">
+            <div class="text-[10px] text-gray-400 font-bold uppercase">Целевая сумма выигрыша</div>
+            <div id="upg-to-val" class="font-extrabold text-lg text-amber-400">20 🪙</div>
+            <div class="text-[10px] text-gray-500">Множитель: <span id="upgrader-mult" class="text-white font-bold">x2.00</span></div>
           </div>
         </div>
 
-        <div class="flex justify-between text-xs px-2 text-gray-400 font-medium">
-          <span>Ставка: <b id="upg-from-val" class="text-white">10 🪙</b></span>
-          <span>Цель: <b id="upg-to-val" class="text-white">20 🪙</b></span>
-        </div>
-        <div class="space-y-3">
-          <div class="flex space-x-2">
-            <input id="upgrader-bet" type="number" value="10" oninput="recalcUpgrader()" class="w-full bg-black/40 border border-white/10 rounded-2xl p-3.5 text-center font-extrabold text-sm outline-none text-white">
-            <input id="upgrader-target" type="number" value="20" oninput="recalcUpgrader()" class="w-full bg-black/40 border border-white/10 rounded-2xl p-3.5 text-center font-extrabold text-sm outline-none text-white">
+        <!-- Слайдер баланса -->
+        <div class="space-y-1.5 px-1">
+          <div class="flex justify-between text-[11px] text-gray-400 font-medium">
+            <span>Выбор ставки:</span>
+            <span id="upgrader-slider-val" class="text-white font-bold">10 🪙</span>
           </div>
-          <button id="upgrader-btn" onclick="startUpgrader()" class="btn-primary w-full py-3.5 text-xs font-extrabold">Улучшить баланс</button>
+          <input id="upgrader-range" type="range" min="1" max="5000" value="10" oninput="onUpgraderRangeInput()" class="w-full accent-amber-500 bg-black/50 rounded-lg cursor-pointer h-2">
         </div>
+
+        <!-- Поле ввода цели -->
+        <div class="space-y-2">
+          <div class="flex space-x-2">
+            <div class="w-full">
+              <div class="text-[10px] text-gray-400 text-left mb-1 font-semibold">Ваша ставка (🪙)</div>
+              <input id="upgrader-bet" type="number" value="10" oninput="recalcUpgrader()" class="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-center font-extrabold text-sm outline-none text-white">
+            </div>
+            <div class="w-full">
+              <div class="text-[10px] text-gray-400 text-left mb-1 font-semibold">Желаемая цель (🪙)</div>
+              <input id="upgrader-target" type="number" value="20" oninput="recalcUpgrader()" class="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-center font-extrabold text-sm outline-none text-white">
+            </div>
+          </div>
+
+          <!-- Быстрые множители / проценты подражая скриншоту -->
+          <div class="grid grid-cols-6 gap-1.5 pt-1">
+            <button onclick="setUpgraderMultiplier(2)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300 hover:bg-white/10">x2</button>
+            <button onclick="setUpgraderMultiplier(4)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300 hover:bg-white/10">x4</button>
+            <button onclick="setUpgraderMultiplier(8)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300 hover:bg-white/10">x8</button>
+            <button onclick="setUpgraderChancePreset(35)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300 hover:bg-white/10">35%</button>
+            <button onclick="setUpgraderChancePreset(55)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300 hover:bg-white/10">55%</button>
+            <button onclick="setUpgraderChancePreset(75)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300 hover:bg-white/10">75%</button>
+          </div>
+        </div>
+
+        <button id="upgrader-btn" onclick="startUpgrader()" class="btn-primary w-full py-3.5 text-xs font-extrabold shadow-lg">Загрузка...</button>
       </div>
     </div>
 
@@ -1123,6 +1165,13 @@
       if (elGames) elGames.textContent = gamesPlayed;
       if (elSpent) elSpent.textContent = totalSpent.toLocaleString('ru') + ' 🪙';
       if (elWon) elWon.textContent = totalWon.toLocaleString('ru') + ' 🪙';
+
+      const maxLimitEl = document.getElementById('upg-max-limit');
+      if (maxLimitEl) maxLimitEl.textContent = balance;
+      const rangeEl = document.getElementById('upgrader-range');
+      if (rangeEl) {
+        rangeEl.max = Math.max(10, balance);
+      }
     }
 
     function showScreen(name) {
@@ -1647,14 +1696,66 @@
     function recalcUpgrader() {
       const bet = parseFloat(document.getElementById('upgrader-bet')?.value) || 10;
       const target = parseFloat(document.getElementById('upgrader-target')?.value) || 20;
-      let mult = (target / bet).toFixed(2);
-      let chance = Math.min(95, Math.max(5, (100 / mult).toFixed(1)));
+      let mult = target > 0 && bet > 0 ? (target / bet) : 2.0;
+      let chance = Math.min(95, Math.max(5, (100 / mult)));
       
       document.getElementById('upg-from-val').textContent = bet + ' 🪙';
       document.getElementById('upg-to-val').textContent = target + ' 🪙';
-      document.getElementById('upgrader-chance').textContent = chance + '%';
-      document.getElementById('upgrader-mult').textContent = 'x' + mult;
-      document.getElementById('upgrader-wheel').style.background = `conic-gradient(var(--accent) 0% ${chance}%, #111827 ${chance}% 100%)`;
+      document.getElementById('upgrader-chance').textContent = chance.toFixed(2) + '%';
+      document.getElementById('upgrader-mult').textContent = 'x' + mult.toFixed(2);
+      
+      const chanceLabel = document.getElementById('upgrader-chance-label');
+      if (chanceLabel) {
+        if (chance < 35) {
+          chanceLabel.textContent = 'низкий шанс';
+          chanceLabel.className = 'text-[9px] text-red-400 font-bold uppercase mt-0.5';
+        } else if (chance <= 65) {
+          chanceLabel.textContent = 'средний шанс';
+          chanceLabel.className = 'text-[9px] text-amber-400 font-bold uppercase mt-0.5';
+        } else {
+          chanceLabel.textContent = 'высокий шанс';
+          chanceLabel.className = 'text-[9px] text-emerald-400 font-bold uppercase mt-0.5';
+        }
+      }
+
+      document.getElementById('upgrader-wheel').style.background = `conic-gradient(#f59e0b 0% ${chance}%, #111827 ${chance}% 100%)`;
+      
+      const rangeEl = document.getElementById('upgrader-range');
+      if (rangeEl && Math.abs(parseFloat(rangeEl.value) - bet) > 0.1) {
+        rangeEl.value = Math.min(parseFloat(rangeEl.max), bet);
+      }
+      const sliderValEl = document.getElementById('upgrader-slider-val');
+      if (sliderValEl) sliderValEl.textContent = bet + ' 🪙';
+    }
+
+    function onUpgraderRangeInput() {
+      const rangeEl = document.getElementById('upgrader-range');
+      if (!rangeEl) return;
+      const val = parseFloat(rangeEl.value);
+      const betInput = document.getElementById('upgrader-bet');
+      if (betInput) betInput.value = val;
+      recalcUpgrader();
+    }
+
+    function setUpgraderMultiplier(mult) {
+      playSound('click');
+      const betInput = document.getElementById('upgrader-bet');
+      const targetInput = document.getElementById('upgrader-target');
+      if (!betInput || !targetInput) return;
+      const bet = parseFloat(betInput.value) || 10;
+      targetInput.value = Math.floor(bet * mult);
+      recalcUpgrader();
+    }
+
+    function setUpgraderChancePreset(targetChance) {
+      playSound('click');
+      const betInput = document.getElementById('upgrader-bet');
+      const targetInput = document.getElementById('upgrader-target');
+      if (!betInput || !targetInput) return;
+      const bet = parseFloat(betInput.value) || 10;
+      let mult = 100 / targetChance;
+      targetInput.value = Math.max(bet + 1, Math.floor(bet * mult));
+      recalcUpgrader();
     }
 
     let currentWheelRotation = 0;
@@ -1669,6 +1770,7 @@
       const btn = document.getElementById('upgrader-btn');
       btn.disabled = true;
       btn.classList.add('opacity-50');
+      btn.textContent = 'Розыгрыш...';
 
       let mult = target / bet;
       let chance = Math.min(95, Math.max(5, 100 / mult));
@@ -1685,6 +1787,7 @@
       setTimeout(() => {
         btn.disabled = false;
         btn.classList.remove('opacity-50');
+        btn.textContent = 'Улучшить баланс';
 
         if (isWin) {
           updateLocalBalance(target);
