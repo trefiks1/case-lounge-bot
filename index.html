@@ -363,7 +363,7 @@
           </div>
           <div class="p-3">
             <div class="font-bold text-sm text-white">Апгрейдер</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Выберите цель и крутите колесо</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Крути колесо и умножай ставку</div>
           </div>
         </div>
         <div onclick="openGameScreen('cups')" class="game-banner-card">
@@ -856,7 +856,7 @@
       </div>
     </div>
 
-    <!-- ИГРА: АПГРЕЙДЕР (НОВЫЙ ДИЗАЙН) -->
+    <!-- ИГРА: АПГРЕЙДЕР (НОВЫЙ ДИЗАЙН С ПРАВИЛЬНЫМ КОЛЕСОМ) -->
     <div id="screen-upgrader" class="screen space-y-4">
       <div class="flex justify-between items-center mb-2">
         <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад к играм</span></button>
@@ -1795,7 +1795,6 @@
       
       setTimeout(() => {
         coinEl.classList.remove('coin-flipping');
-        // Установлен жесткий шанс 50 на 50
         const isWin = checkWinCondition(50);
         const result = isWin ? choice : (choice === 'heads' ? 'tails' : 'heads');
         coinEl.textContent = result === 'heads' ? '👑' : '🪙';
@@ -1882,7 +1881,6 @@
 
         let pRoll = Math.floor(Math.random() * 6) + 1;
         let bRoll = Math.floor(Math.random() * 6) + 1;
-        // Установлен жесткий шанс 50 на 50
         if (checkWinCondition(50) && pRoll <= bRoll) pRoll = Math.min(6, bRoll + 1);
 
         pEl.textContent = emojis[pRoll - 1];
@@ -1936,7 +1934,6 @@
           }
           cells.forEach((c,i) => { if(c) c.textContent = finalSyms[i]; });
 
-          // Check middle row
           let win = 0;
           if (finalSyms[3] === finalSyms[4] && finalSyms[4] === finalSyms[5]) {
             if (finalSyms[3] === '💎') win = bet * 50;
@@ -2013,7 +2010,6 @@
     function clickMineCell(idx, el) {
       if(!minesGameActive || el.dataset.opened === 'true') return;
       playSound('click');
-      // Установлен шанс 50% на подрыв (если выпало > 50, то мина при клике)
       let hitMine = (Math.random() * 100 > 50);
       if((minesList[idx] || hitMine) && !godMode && globalLuck === 1) {
         el.textContent = '💣'; el.style.background = 'rgba(239, 68, 68, 0.3)';
@@ -2046,7 +2042,6 @@
       btn.textContent = 'Забрать выигрыш';
       btn.onclick = cashoutCrash;
 
-      // Установлен шанс 50 на 50 для краша (целевой мультипликатор падения)
       const targetCrash = godMode ? 100 : (Math.random() > 0.5 ? 1.2 : 2.0);
 
       crashTimer = setInterval(() => {
@@ -2081,8 +2076,10 @@
       btn.onclick = startCrashGame;
     }
 
+    // ============= АПГРЕЙДЕР — ПРАВИЛЬНАЯ МЕХАНИКА С КОЛЕСОМ =============
     let selectedUpgraderMult = 2;
     const upgraderChances = { 2: 50, 10: 25, 25: 15, 50: 5 };
+    let currentWheelRotation = 0;
 
     function selectUpgraderMult(mult) {
       playSound('click');
@@ -2116,6 +2113,7 @@
         chanceLabel.className = 'text-[9px] text-amber-400 font-bold uppercase mt-0.5';
       }
 
+      // Колесо: золотая часть = шанс выигрыша, темная = проигрыш
       document.getElementById('upgrader-wheel').style.background = `conic-gradient(#f59e0b 0% ${chance}%, #111827 ${chance}% 100%)`;
       
       const rangeEl = document.getElementById('upgrader-range');
@@ -2135,7 +2133,6 @@
       recalcUpgrader();
     }
 
-    let currentWheelRotation = 0;
     function startUpgrader() {
       playSound('click');
       const bet = parseFloat(document.getElementById('upgrader-bet')?.value) || 0;
@@ -2151,14 +2148,25 @@
       btn.classList.add('opacity-50');
       btn.textContent = 'Розыгрыш...';
 
+      // Определяем результат: выигрыш или проигрыш
       const isWin = checkWinCondition(chance);
 
       const wheel = document.getElementById('upgrader-wheel');
       const wheelSpeed = fastModes.upgrader ? '0.8s' : '2.5s';
       wheel.style.setProperty('--wheel-speed', wheelSpeed);
 
-      let targetDegree = isWin ? (Math.random() * (chance * 3.6)) : (chance * 3.6 + Math.random() * ((100 - chance) * 3.6));
-      currentWheelRotation += 1440 + (targetDegree - (currentWheelRotation % 360));
+      // Рассчитываем угол остановки:
+      // - Если выигрыш: останавливаемся в пределах золотой зоны (0° - chance*3.6°)
+      // - Если проигрыш: останавливаемся в темной зоне (chance*3.6° - 360°)
+      let targetDegree;
+      if (isWin) {
+        targetDegree = Math.random() * (chance * 3.6);
+      } else {
+        targetDegree = chance * 3.6 + Math.random() * ((100 - chance) * 3.6);
+      }
+      
+      // Добавляем несколько полных оборотов для красоты
+      currentWheelRotation += 720 + (targetDegree - (currentWheelRotation % 360));
       wheel.style.transform = `rotate(${currentWheelRotation}deg)`;
 
       setTimeout(() => {
@@ -2194,7 +2202,6 @@
       setTimeout(() => {
         drum.classList.remove('coin-flipping');
         
-        // Шанс 50 на 50 для рулетки (выбор между цветом игрока и проигрышным цветом)
         let isWin = checkWinCondition(50);
         let winningColor = isWin ? colorChoice : (colorChoice === 'red' ? 'black' : 'red');
 
@@ -2246,7 +2253,6 @@
           btn.disabled = false;
           btn.classList.remove('opacity-50');
 
-          // Установлен шанс 50 на 50 для покера
           const isWin = checkWinCondition(50);
           if (isWin) {
             const winAmt = bet * 3.5;
