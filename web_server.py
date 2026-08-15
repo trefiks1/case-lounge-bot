@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
@@ -120,3 +121,8 @@ async def activate_promo_route(request: Request):
         return {"success": True, "balance": new_balance, "reward": promo["reward"]}
     except Exception as e:
         return {"success": False, "error": str(e)}
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    uvicorn.run("web_server:app", host="0.0.0.0", port=port)
