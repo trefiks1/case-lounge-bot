@@ -257,12 +257,24 @@
       </div>
     </div>
     
-    <div class="glass-card px-3.5 py-2 flex items-center space-x-2.5 shadow-lg" onclick="openScreen('wallet')" style="cursor: pointer;">
-      <span class="text-amber-400 text-base">🪙</span>
-      <span id="balance" class="font-extrabold text-sm tracking-wide text-white">5000</span>
-      <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold text-gray-200">+</span>
+    <div class="flex items-center space-x-2">
+      <button onclick="toggleSoundMenu()" class="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-lg" id="sound-menu-btn">🔊</button>
+      <div class="glass-card px-3.5 py-2 flex items-center space-x-2.5 shadow-lg" onclick="openScreen('wallet')" style="cursor: pointer;">
+        <span class="text-amber-400 text-base">🪙</span>
+        <span id="balance" class="font-extrabold text-sm tracking-wide text-white">5000</span>
+        <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold text-gray-200">+</span>
+      </div>
     </div>
   </header>
+
+  <!-- Меню звуков -->
+  <div id="sound-menu" class="fixed top-16 right-4 z-50 hidden glass-card p-4 w-64 space-y-3 shadow-2xl border border-amber-500/20">
+    <div class="text-xs font-extrabold text-amber-400 uppercase tracking-wide">🔊 Звуки</div>
+    <label class="flex items-center justify-between text-xs text-white"><span>Звук выигрыша</span><input type="checkbox" id="sfx-win" checked onchange="sfxSettings.win=this.checked" class="accent-amber-500"></label>
+    <label class="flex items-center justify-between text-xs text-white"><span>Звук проигрыша</span><input type="checkbox" id="sfx-lose" checked onchange="sfxSettings.lose=this.checked" class="accent-amber-500"></label>
+    <label class="flex items-center justify-between text-xs text-white"><span>Звук клика</span><input type="checkbox" id="sfx-click" checked onchange="sfxSettings.click=this.checked" class="accent-amber-500"></label>
+    <label class="flex items-center justify-between text-xs text-white"><span>Все звуки</span><input type="checkbox" id="sfx-all" checked onchange="toggleAllSfx(this.checked)" class="accent-amber-500"></label>
+  </div>
 
   <!-- Основной контент -->
   <main class="px-4 pt-4 max-w-md mx-auto">
@@ -279,7 +291,6 @@
       </div>
 
       <div class="grid grid-cols-2 gap-3">
-        <!-- Рулетка -->
         <div onclick="openGameScreen('roulette')" class="game-banner-card">
           <div class="relative">
             <img src="https://images.unsplash.com/photo-1596838132731-3301c3fd4317?q=80&w=600&auto=format&fit=crop" alt="Рулетка" class="game-banner-img">
@@ -287,11 +298,9 @@
           </div>
           <div class="p-3">
             <div class="font-bold text-sm text-white">Рулетка</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Красное, чёрное или зеро х36</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Красное, чёрное или zero x36</div>
           </div>
         </div>
-
-        <!-- Арена (Монетка) -->
         <div onclick="openGameScreen('coinflip')" class="game-banner-card">
           <div class="relative">
             <img src="https://images.unsplash.com/photo-1622630998477-20aa696ecb05?q=80&w=600&auto=format&fit=crop" alt="Арена" class="game-banner-img">
@@ -299,12 +308,11 @@
           </div>
           <div class="p-3">
             <div class="font-bold text-sm text-white">Арена</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Монетка: Орел или Решка</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Одно колесо, победитель забирает банк</div>
           </div>
         </div>
       </div>
 
-      <!-- Секция БСТРЫЕ ИГРЫ -->
       <div class="flex items-center justify-between pt-4 mb-2">
         <div class="flex items-center space-x-1.5">
           <span class="text-amber-400 text-xs">◆</span>
@@ -312,70 +320,77 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-3 pb-4">
-        <!-- Краш-Башня -->
+      <div class="grid grid-cols-2 gap-3 pb-2">
         <div onclick="openGameScreen('crash')" class="game-banner-card">
           <div class="relative">
-            <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=600&auto=format&fit=crop" alt="Краш-Башня" class="game-banner-img">
+            <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=600&auto=format&fit=crop" alt="Плинко" class="game-banner-img">
           </div>
           <div class="p-3">
-            <div class="font-bold text-sm text-white">Краш-Башня</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Умножение до x100+</div>
+            <div class="font-bold text-sm text-white">Краш / Плинко</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">До 100x · умножение</div>
           </div>
         </div>
-
-        <!-- Мины -->
         <div onclick="openGameScreen('mines')" class="game-banner-card">
           <div class="relative">
             <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=600&auto=format&fit=crop" alt="Мины" class="game-banner-img">
           </div>
           <div class="p-3">
             <div class="font-bold text-sm text-white">Мины</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Обойдите мины и куш</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Обойдите мины и заберите куш</div>
           </div>
         </div>
-
-        <!-- Слоты -->
         <div onclick="openGameScreen('slots')" class="game-banner-card">
           <div class="relative">
             <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?q=80&w=600&auto=format&fit=crop" alt="Слоты" class="game-banner-img">
           </div>
           <div class="p-3">
             <div class="font-bold text-sm text-white">Слоты</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Джекпот 777 х10</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">До 2500x за линию</div>
           </div>
         </div>
-
-        <!-- Кейсы / Апгрейдер -->
+        <div onclick="openGameScreen('cases')" class="game-banner-card">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=600&auto=format&fit=crop" alt="Кейсы" class="game-banner-img">
+          </div>
+          <div class="p-3">
+            <div class="font-bold text-sm text-white">Кейсы</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Открой кейс, поймай легендарку</div>
+          </div>
+        </div>
         <div onclick="openGameScreen('upgrader')" class="game-banner-card">
           <div class="relative">
-            <img src="https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=600&auto=format&fit=crop" alt="Апгрейдер" class="game-banner-img">
+            <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=600&auto=format&fit=crop" alt="Апгрейдер" class="game-banner-img">
           </div>
           <div class="p-3">
             <div class="font-bold text-sm text-white">Апгрейдер</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Шанс умножения баланса</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Выберите цель и крутите колесо</div>
           </div>
         </div>
-
-        <!-- Кости -->
+        <div onclick="openGameScreen('cups')" class="game-banner-card">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1511193311914-0346f16efe90?q=80&w=600&auto=format&fit=crop" alt="Стаканчики" class="game-banner-img">
+          </div>
+          <div class="p-3">
+            <div class="font-bold text-sm text-white">Стаканчики</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Найдите шарик · до 4.75x</div>
+          </div>
+        </div>
         <div onclick="openGameScreen('dice')" class="game-banner-card">
           <div class="relative">
             <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?q=80&w=600&auto=format&fit=crop" alt="Кости" class="game-banner-img">
           </div>
           <div class="p-3">
             <div class="font-bold text-sm text-white">Кости</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Дуэль с дилером</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Выбросьте больше дилера</div>
           </div>
         </div>
-
-        <!-- Покер Х -->
         <div onclick="openGameScreen('poker')" class="game-banner-card">
           <div class="relative">
-            <img src="https://images.unsplash.com/photo-1511193311914-0346f16efe90?q=80&w=600&auto=format&fit=crop" alt="Покер Х" class="game-banner-img">
+            <img src="https://images.unsplash.com/photo-1606167668584-78701c57f13d?q=80&w=600&auto=format&fit=crop" alt="Блэкджек" class="game-banner-img">
           </div>
           <div class="p-3">
-            <div class="font-bold text-sm text-white">Покер Х</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Карточный стол</div>
+            <div class="font-bold text-sm text-white">Блэкджек / Покер</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Обыграйте дилера</div>
           </div>
         </div>
       </div>
@@ -432,6 +447,30 @@
           </div>
           <button id="quest-games-btn" onclick="claimGamesQuest()" class="btn-primary px-4 py-2 text-xs opacity-50 cursor-not-allowed" disabled>Ожидание</button>
         </div>
+        <div class="glass-card p-4 flex items-center justify-between">
+          <div class="space-y-1">
+            <div class="font-bold text-sm text-white">Выиграть 3 раза подряд</div>
+            <div class="text-[11px] text-gray-400" id="quest-streak-status">Прогресс: 0 / 3</div>
+            <div class="text-xs font-extrabold text-amber-400">+3 000 🪙</div>
+          </div>
+          <button id="quest-streak-btn" onclick="claimStreakQuest()" class="btn-primary px-4 py-2 text-xs opacity-50 cursor-not-allowed" disabled>Ожидание</button>
+        </div>
+        <div class="glass-card p-4 flex items-center justify-between">
+          <div class="space-y-1">
+            <div class="font-bold text-sm text-white">Потратить 10 000 фишек</div>
+            <div class="text-[11px] text-gray-400" id="quest-spend-status">Прогресс: 0 / 10000</div>
+            <div class="text-xs font-extrabold text-amber-400">+2 000 🪙</div>
+          </div>
+          <button id="quest-spend-btn" onclick="claimSpendQuest()" class="btn-primary px-4 py-2 text-xs opacity-50 cursor-not-allowed" disabled>Ожидание</button>
+        </div>
+        <div class="glass-card p-4 flex items-center justify-between">
+          <div class="space-y-1">
+            <div class="font-bold text-sm text-white">Достичь 5 уровня</div>
+            <div class="text-[11px] text-gray-400" id="quest-lvl-status">Текущий LVL: 1</div>
+            <div class="text-xs font-extrabold text-amber-400">+5 000 🪙</div>
+          </div>
+          <button id="quest-lvl-btn" onclick="claimLvlQuest()" class="btn-primary px-4 py-2 text-xs opacity-50 cursor-not-allowed" disabled>Ожидание</button>
+        </div>
       </div>
     </div>
 
@@ -485,6 +524,12 @@
             <button onclick="adminToggleAdminRole()" class="btn-primary px-4 py-2 text-xs bg-red-600 shadow-red-900/30 whitespace-nowrap">Добавить/Снять</button>
           </div>
           <div class="text-[10px] text-gray-400" id="admin-list-label">Текущие админы: загрузка...</div>
+          <div class="text-xs font-bold text-red-300 pt-2">💸 Выдать баланс по username</div>
+          <div class="flex space-x-2">
+            <input id="admin-give-user" type="text" placeholder="@username" class="bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs w-full outline-none text-white font-bold">
+            <input id="admin-give-amt" type="number" value="5000" class="bg-black/40 border border-white/10 rounded-xl px-2 py-2 text-xs w-20 outline-none text-white font-bold">
+            <button onclick="adminGiveByUsername()" class="btn-primary px-3 py-2 text-xs bg-red-600 whitespace-nowrap">Выдать</button>
+          </div>
         </div>
 
         <!-- РАССЫЛКА ОБЪЯВЛЕНИЙ В БОТЕ -->
@@ -692,40 +737,94 @@
       </div>
     </div>
 
-    <!-- ИГРА: СЛОТЫ -->
-    <div id="screen-slots" class="screen space-y-4">
-      <div class="flex justify-between items-center mb-2">
-        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад к играм</span></button>
-        <button onclick="toggleFastMode('slots')" id="fast-btn-slots" class="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-[10px] font-extrabold text-gray-300">⚡ Быстро: ВЫКЛ</button>
+    <!-- ИГРА: СЛОТЫ — ПРЕМИУМ -->
+    <div id="screen-slots" class="screen space-y-3">
+      <div class="flex justify-between items-center mb-1">
+        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад</span></button>
+        <button onclick="toggleFastMode('slots')" id="fast-btn-slots" class="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-[10px] font-extrabold text-gray-300">⚡ Быстро</button>
       </div>
-      <div id="slots-card-box" class="glass-card p-6 text-center space-y-6 shadow-2xl">
-        <h2 class="font-extrabold text-lg text-white">Слоты 777</h2>
-        <div class="flex justify-center space-x-3 py-4">
-          <div id="slot-1" class="w-20 h-24 bg-black/60 border border-white/15 rounded-2xl flex items-center justify-center text-4xl shadow-inner">🍒</div>
-          <div id="slot-2" class="w-20 h-24 bg-black/60 border border-white/15 rounded-2xl flex items-center justify-center text-4xl shadow-inner">🍋</div>
-          <div id="slot-3" class="w-20 h-24 bg-black/60 border border-white/15 rounded-2xl flex items-center justify-center text-4xl shadow-inner">🔔</div>
+      <div id="slots-card-box" class="glass-card p-4 space-y-4 shadow-2xl">
+        <!-- Paytable -->
+        <div class="flex justify-center space-x-4 text-[11px] font-bold">
+          <div class="flex items-center space-x-1 bg-black/40 px-3 py-1.5 rounded-full border border-white/10"><span>💎</span><span class="text-sky-300">x2500</span></div>
+          <div class="flex items-center space-x-1 bg-black/40 px-3 py-1.5 rounded-full border border-white/10"><span>7️⃣</span><span class="text-amber-300">x150</span></div>
+          <div class="flex items-center space-x-1 bg-black/40 px-3 py-1.5 rounded-full border border-white/10"><span>⭐</span><span class="text-yellow-300">x3+</span></div>
         </div>
-        <div class="space-y-3">
-          <input id="slots-bet" type="number" value="100" class="w-full bg-black/40 border border-white/10 rounded-2xl p-3.5 text-center font-extrabold text-sm outline-none text-white">
-          <button onclick="playSlots()" class="btn-primary w-full py-3.5 text-xs font-extrabold">Крутить слоты</button>
+        <!-- 3x3 Grid -->
+        <div class="bg-black/50 rounded-2xl p-3 border border-amber-500/20">
+          <div class="grid grid-cols-3 gap-2" id="slots-grid">
+            <div id="s11" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">7️⃣</div>
+            <div id="s12" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">⭐</div>
+            <div id="s13" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">🔔</div>
+            <div id="s21" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">🍒</div>
+            <div id="s22" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">💎</div>
+            <div id="s23" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">🍋</div>
+            <div id="s31" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">🍇</div>
+            <div id="s32" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">🍒</div>
+            <div id="s33" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">⭐</div>
+          </div>
         </div>
+        <!-- Bet controls -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] text-gray-400 font-bold">СТАВКА</span>
+            <div class="flex space-x-1.5">
+              <button onclick="setSlotsBetHalf()" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">1/2</button>
+              <button onclick="setSlotsBetDouble()" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">2x</button>
+              <button onclick="setSlotsBetMax()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-500/30 text-[10px] font-bold text-amber-300">MAX</button>
+            </div>
+          </div>
+          <input id="slots-bet" type="number" value="50" class="w-full bg-black/50 border border-white/10 rounded-2xl p-3 text-center font-extrabold text-base outline-none text-white">
+          <div class="grid grid-cols-4 gap-2">
+            <button onclick="setSlotsBet(50)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">50</button>
+            <button onclick="setSlotsBet(100)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">100</button>
+            <button onclick="setSlotsBet(500)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">500</button>
+            <button onclick="setSlotsBet(1000)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">1K</button>
+          </div>
+        </div>
+        <button onclick="playSlots()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-600 text-black font-extrabold text-sm shadow-lg shadow-amber-900/40 active:scale-95 transition-transform">
+          ⚡ Крутить · <span id="slots-spin-label">50</span>
+        </button>
       </div>
     </div>
 
-    <!-- ИГРА: МИНЫ -->
-    <div id="screen-mines" class="screen space-y-4">
-      <div class="flex justify-between items-center mb-2">
-        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад к играм</span></button>
-        <button onclick="toggleFastMode('mines')" id="fast-btn-mines" class="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-[10px] font-extrabold text-gray-300">⚡ Быстро: ВЫКЛ</button>
+    <!-- ИГРА: МИНЫ — ПРЕМИУМ -->
+    <div id="screen-mines" class="screen space-y-3">
+      <div class="flex justify-between items-center mb-1">
+        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад</span></button>
+        <button onclick="toggleFastMode('mines')" id="fast-btn-mines" class="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-[10px] font-extrabold text-gray-300">⚡ Быстро</button>
       </div>
-      <div class="glass-card p-6 text-center space-y-4 shadow-2xl">
-        <h2 class="font-extrabold text-lg text-white">Мины</h2>
+      <div class="glass-card p-4 space-y-4 shadow-2xl">
+        <div class="flex justify-between text-[11px] font-bold text-gray-400">
+          <span id="mines-safe-label">20 безопасных клеток</span>
+          <span id="mines-diff-label">Классика · 5</span>
+        </div>
         <div id="mines-setup" class="space-y-3">
-          <input id="mines-bet" type="number" value="100" class="w-full bg-black/40 border border-white/10 rounded-2xl p-3.5 text-center font-extrabold text-sm outline-none text-white">
-          <select id="mines-count" class="w-full bg-black/60 border border-white/10 rounded-2xl p-3.5 text-center font-extrabold text-sm outline-none text-white">
-            <option value="3">3 мины</option><option value="5">5 мин</option><option value="10">10 мин</option>
-          </select>
-          <button onclick="startMinesGame()" class="btn-primary w-full py-3.5 text-xs font-extrabold">Начать игру</button>
+          <div class="grid grid-cols-5 gap-1.5" id="mines-preview-grid">
+            <!-- filled by JS or static placeholders -->
+          </div>
+          <div class="grid grid-cols-4 gap-1.5">
+            <button onclick="setMinesDiff(3)" id="mines-diff-3" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">Лайт · 3</button>
+            <button onclick="setMinesDiff(5)" id="mines-diff-5" class="py-2 rounded-xl bg-amber-500/20 border-2 border-amber-500 text-[10px] font-bold text-amber-300">Классика · 5</button>
+            <button onclick="setMinesDiff(10)" id="mines-diff-10" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">Риск · 10</button>
+            <button onclick="setMinesDiff(24)" id="mines-diff-24" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">Безумие · 24</button>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] text-gray-400 font-bold">СТАВКА</span>
+            <div class="flex space-x-1.5">
+              <button onclick="document.getElementById('mines-bet').value=Math.max(10,Math.floor((+document.getElementById('mines-bet').value||50)/2))" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">1/2</button>
+              <button onclick="document.getElementById('mines-bet').value=Math.min(balance,(+document.getElementById('mines-bet').value||50)*2)" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">2x</button>
+              <button onclick="document.getElementById('mines-bet').value=Math.max(10,balance)" class="px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-500/30 text-[10px] font-bold text-amber-300">MAX</button>
+            </div>
+          </div>
+          <input id="mines-bet" type="number" value="50" class="w-full bg-black/50 border border-white/10 rounded-2xl p-3 text-center font-extrabold text-base outline-none text-white">
+          <div class="grid grid-cols-4 gap-2">
+            <button onclick="document.getElementById('mines-bet').value=50" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">50</button>
+            <button onclick="document.getElementById('mines-bet').value=100" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">100</button>
+            <button onclick="document.getElementById('mines-bet').value=500" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">500</button>
+            <button onclick="document.getElementById('mines-bet').value=1000" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">1K</button>
+          </div>
+          <button onclick="startMinesGame()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-600 text-black font-extrabold text-sm shadow-lg shadow-amber-900/40">Играть · <span id="mines-play-label">50</span></button>
         </div>
         <div id="mines-board-container" class="hidden space-y-4">
           <div class="flex justify-between text-xs font-extrabold text-gray-300">
@@ -903,6 +1002,43 @@
       </div>
     </div>
 
+    <!-- КЕЙСЫ -->
+    <div id="screen-cases" class="screen space-y-4">
+      <div class="flex justify-between items-center mb-2">
+        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold"><span>←</span> Назад</button>
+      </div>
+      <div class="glass-card p-5 text-center space-y-5 shadow-2xl">
+        <h2 class="font-extrabold text-lg text-white">🎁 Кейсы</h2>
+        <div class="w-28 h-28 mx-auto rounded-3xl bg-gradient-to-br from-amber-600/30 to-yellow-900/20 border-2 border-amber-500/40 flex items-center justify-center text-5xl shadow-2xl" id="case-display">📦</div>
+        <div class="text-xs text-gray-400" id="case-status">Открой кейс и поймай легендарный дроп</div>
+        <input id="case-bet" type="number" value="200" class="w-full bg-black/40 border border-white/10 rounded-2xl p-3.5 text-center font-extrabold text-sm outline-none text-white">
+        <div class="grid grid-cols-3 gap-2 text-[10px] font-bold text-gray-400">
+          <div class="bg-black/30 rounded-xl p-2">Обычный<br><span class="text-white">x1.5</span></div>
+          <div class="bg-black/30 rounded-xl p-2">Редкий<br><span class="text-sky-300">x5</span></div>
+          <div class="bg-black/30 rounded-xl p-2">Легенда<br><span class="text-amber-300">x25</span></div>
+        </div>
+        <button onclick="openCase()" class="btn-primary w-full py-3.5 text-xs font-extrabold">Открыть кейс</button>
+      </div>
+    </div>
+
+    <!-- СТАКАНЧИКИ -->
+    <div id="screen-cups" class="screen space-y-4">
+      <div class="flex justify-between items-center mb-2">
+        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold"><span>←</span> Назад</button>
+      </div>
+      <div class="glass-card p-5 text-center space-y-5 shadow-2xl">
+        <h2 class="font-extrabold text-lg text-white">🥛 Стаканчики</h2>
+        <div class="text-xs text-gray-400">Найди шарик — выиграй до x4.75</div>
+        <div class="flex justify-center space-x-4 py-4" id="cups-row">
+          <button onclick="pickCup(0)" class="w-20 h-24 rounded-2xl bg-gradient-to-b from-amber-700/40 to-black border-2 border-amber-500/40 text-4xl flex items-center justify-center shadow-lg">🥛</button>
+          <button onclick="pickCup(1)" class="w-20 h-24 rounded-2xl bg-gradient-to-b from-amber-700/40 to-black border-2 border-amber-500/40 text-4xl flex items-center justify-center shadow-lg">🥛</button>
+          <button onclick="pickCup(2)" class="w-20 h-24 rounded-2xl bg-gradient-to-b from-amber-700/40 to-black border-2 border-amber-500/40 text-4xl flex items-center justify-center shadow-lg">🥛</button>
+        </div>
+        <input id="cups-bet" type="number" value="100" class="w-full bg-black/40 border border-white/10 rounded-2xl p-3.5 text-center font-extrabold text-sm outline-none text-white">
+        <div class="text-xs text-amber-400 font-bold" id="cups-status">Выберите стаканчик</div>
+      </div>
+    </div>
+
     <!-- РЕЖИМ: ПОКЕР -->
     <div id="screen-poker" class="screen space-y-4">
       <div class="flex justify-between items-center mb-2">
@@ -992,6 +1128,10 @@
     let tgSubClaimed = typeof savedData.tgSubClaimed === 'boolean' ? savedData.tgSubClaimed : false;
     let timeQuestClaimed = typeof savedData.timeQuestClaimed === 'boolean' ? savedData.timeQuestClaimed : false;
     let gamesQuestClaimed = typeof savedData.gamesQuestClaimed === 'boolean' ? savedData.gamesQuestClaimed : false;
+    let streakQuestClaimed = typeof savedData.streakQuestClaimed === 'boolean' ? savedData.streakQuestClaimed : false;
+    let spendQuestClaimed = typeof savedData.spendQuestClaimed === 'boolean' ? savedData.spendQuestClaimed : false;
+    let lvlQuestClaimed = typeof savedData.lvlQuestClaimed === 'boolean' ? savedData.lvlQuestClaimed : false;
+    let winStreak = typeof savedData.winStreak === 'number' ? savedData.winStreak : 0;
     let playSeconds = typeof savedData.playSeconds === 'number' ? savedData.playSeconds : 0;
     let matchSecondsLeft = 180; 
     let customPromos = savedData.customPromos || { "VIP2026": 2000, "START": 1000 };
@@ -1039,7 +1179,7 @@
       try {
         const dataToSave = { 
           balance, gamesPlayed, totalSpent, totalWon, userXp, userLevel,
-          tgSubClaimed, timeQuestClaimed, gamesQuestClaimed, playSeconds, 
+          tgSubClaimed, timeQuestClaimed, gamesQuestClaimed, streakQuestClaimed, spendQuestClaimed, lvlQuestClaimed, winStreak, playSeconds, 
           customPromos, globalLuck, luckExpiresAt, godMode, godExpiresAt, adminLogs
         };
         localStorage.setItem(storageKey, JSON.stringify(dataToSave));
@@ -1118,15 +1258,25 @@
     }, 1000);
 
     let audioCtx = null;
+    let sfxSettings = { win: true, lose: true, click: true, all: true };
     function initAudio() {
       try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         if (audioCtx.state === 'suspended') audioCtx.resume();
       } catch (e) {}
     }
+    function toggleSoundMenu() {
+      const m = document.getElementById('sound-menu');
+      if (m) m.classList.toggle('hidden');
+    }
+    function toggleAllSfx(on) {
+      sfxSettings.all = on; sfxSettings.win = on; sfxSettings.lose = on; sfxSettings.click = on;
+      ['sfx-win','sfx-lose','sfx-click'].forEach(id => { const el=document.getElementById(id); if(el) el.checked=on; });
+    }
     
     function playSound(type) {
       try {
+        if (!sfxSettings.all || !sfxSettings[type]) return;
         initAudio();
         if (!audioCtx) return;
         const osc = audioCtx.createOscillator();
@@ -1386,6 +1536,19 @@
       showFloatingPopup(`Админ-выдача: +${amt} 🪙`, true);
     }
 
+    function adminGiveByUsername() {
+      playSound('click');
+      const user = (document.getElementById('admin-give-user')?.value || '').trim();
+      const amt = parseInt(document.getElementById('admin-give-amt')?.value) || 0;
+      if (!user || amt <= 0) return;
+      // Локально выдаём себе (в реальном боте — по username)
+      updateLocalBalance(amt);
+      logAdminAction(`Выдача ${amt} фишек пользователю ${user}`);
+      playSound('win');
+      showFloatingPopup(`Выдано ${user}: +${amt} 🪙`, true);
+      document.getElementById('admin-give-user').value = '';
+    }
+
     function adminClearBalance() {
       playSound('click');
       if (!confirm('Точно обнулить баланс?')) return;
@@ -1528,6 +1691,30 @@
           gamesStatus.textContent = `Прогресс: ${gamesPlayed} / 10`;
         }
       }
+      // streak
+      const stStat = document.getElementById('quest-streak-status');
+      const stBtn = document.getElementById('quest-streak-btn');
+      if (stStat && stBtn) {
+        if (streakQuestClaimed) { stStat.textContent='Награда получена'; stBtn.textContent='Готово ✅'; stBtn.disabled=true; stBtn.classList.add('opacity-50'); }
+        else if (winStreak >= 3) { stStat.textContent='Задание выполнено!'; stBtn.textContent='Забрать'; stBtn.disabled=false; stBtn.classList.remove('opacity-50'); }
+        else stStat.textContent = `Прогресс: ${winStreak} / 3`;
+      }
+      // spend
+      const spStat = document.getElementById('quest-spend-status');
+      const spBtn = document.getElementById('quest-spend-btn');
+      if (spStat && spBtn) {
+        if (spendQuestClaimed) { spStat.textContent='Награда получена'; spBtn.textContent='Готово ✅'; spBtn.disabled=true; spBtn.classList.add('opacity-50'); }
+        else if (totalSpent >= 10000) { spStat.textContent='Задание выполнено!'; spBtn.textContent='Забрать'; spBtn.disabled=false; spBtn.classList.remove('opacity-50'); }
+        else spStat.textContent = `Прогресс: ${totalSpent} / 10000`;
+      }
+      // lvl
+      const lvStat = document.getElementById('quest-lvl-status');
+      const lvBtn = document.getElementById('quest-lvl-btn');
+      if (lvStat && lvBtn) {
+        lvStat.textContent = `Текущий LVL: ${userLevel}`;
+        if (lvlQuestClaimed) { lvBtn.textContent='Готово ✅'; lvBtn.disabled=true; lvBtn.classList.add('opacity-50'); }
+        else if (userLevel >= 5) { lvBtn.textContent='Забрать'; lvBtn.disabled=false; lvBtn.classList.remove('opacity-50'); }
+      }
       updateAdminPanelUI();
     }
 
@@ -1566,6 +1753,18 @@
       updateQuestsUI();
       playSound('win');
       showFloatingPopup('+1 500 🪙 за игры!', true);
+    }
+    function claimStreakQuest() {
+      if (streakQuestClaimed || winStreak < 3) return;
+      streakQuestClaimed = true; updateLocalBalance(3000); addXp(400); saveGameData(); updateQuestsUI(); playSound('win'); showFloatingPopup('+3 000 🪙 серия!', true);
+    }
+    function claimSpendQuest() {
+      if (spendQuestClaimed || totalSpent < 10000) return;
+      spendQuestClaimed = true; updateLocalBalance(2000); addXp(300); saveGameData(); updateQuestsUI(); playSound('win'); showFloatingPopup('+2 000 🪙 траты!', true);
+    }
+    function claimLvlQuest() {
+      if (lvlQuestClaimed || userLevel < 5) return;
+      lvlQuestClaimed = true; updateLocalBalance(5000); addXp(500); saveGameData(); updateQuestsUI(); playSound('win'); showFloatingPopup('+5 000 🪙 уровень!', true);
     }
 
     function recordGamePlay() {
@@ -1705,37 +1904,45 @@
       }, duration);
     }
 
-    const slotSymbols = ['🍒', '🍋', '🔔', '⭐', '💎', '7️⃣'];
+    const slotSymbols = ['🍒', '🍋', '🔔', '⭐', '💎', '7️⃣', '🍇'];
+    function setSlotsBet(v) { playSound('click'); const el=document.getElementById('slots-bet'); if(el){ el.value=Math.min(balance||v,v); document.getElementById('slots-spin-label').textContent=el.value; } }
+    function setSlotsBetHalf() { const el=document.getElementById('slots-bet'); if(el){ el.value=Math.max(10,Math.floor((+el.value||50)/2)); document.getElementById('slots-spin-label').textContent=el.value; } }
+    function setSlotsBetDouble() { const el=document.getElementById('slots-bet'); if(el){ el.value=Math.min(balance,(+el.value||50)*2); document.getElementById('slots-spin-label').textContent=el.value; } }
+    function setSlotsBetMax() { const el=document.getElementById('slots-bet'); if(el){ el.value=Math.max(10,balance); document.getElementById('slots-spin-label').textContent=el.value; } }
+
     function playSlots() {
       playSound('click');
       const bet = parseFloat(document.getElementById('slots-bet')?.value) || 0;
       if (bet <= 0 || bet > balance) return;
       updateLocalBalance(-bet);
       recordGamePlay();
+      document.getElementById('slots-spin-label').textContent = bet;
 
-      const s1 = document.getElementById('slot-1');
-      const s2 = document.getElementById('slot-2');
-      const s3 = document.getElementById('slot-3');
-      
+      const cells = ['s11','s12','s13','s21','s22','s23','s31','s32','s33'].map(id => document.getElementById(id));
       let spins = 0;
-      const maxSpins = fastModes.slots ? 4 : 12;
+      const maxSpins = fastModes.slots ? 5 : 14;
       const interval = setInterval(() => {
-        s1.textContent = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
-        s2.textContent = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
-        s3.textContent = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+        cells.forEach(c => { if(c) c.textContent = slotSymbols[Math.floor(Math.random()*slotSymbols.length)]; });
         spins++;
         if (spins > maxSpins) {
           clearInterval(interval);
-          let f1, f2, f3;
-          // Установлен шанс 50% на выигрыш (совпадение символов)
-          if (checkWinCondition(50)) {
-            f1 = f2 = f3 = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+          const isWin = checkWinCondition(35);
+          let finalSyms;
+          if (isWin) {
+            const sym = slotSymbols[Math.floor(Math.random()*slotSymbols.length)];
+            finalSyms = Array(9).fill(sym);
           } else {
-            f1 = slotSymbols[0]; f2 = slotSymbols[1]; f3 = slotSymbols[2];
+            finalSyms = Array.from({length:9}, () => slotSymbols[Math.floor(Math.random()*slotSymbols.length)]);
           }
-          s1.textContent = f1; s2.textContent = f2; s3.textContent = f3;
+          cells.forEach((c,i) => { if(c) c.textContent = finalSyms[i]; });
 
-          let win = (f1 === f2 && f2 === f3) ? bet * 10 : 0;
+          // Check middle row
+          let win = 0;
+          if (finalSyms[3] === finalSyms[4] && finalSyms[4] === finalSyms[5]) {
+            if (finalSyms[3] === '💎') win = bet * 50;
+            else if (finalSyms[3] === '7️⃣') win = bet * 15;
+            else win = bet * 5;
+          }
           if (win > 0) {
             updateLocalBalance(win);
             playSound('win');
@@ -1747,14 +1954,31 @@
             showFloatingPopup(`ПРОИГРЫШ`, false);
           }
         }
-      }, fastModes.slots ? 30 : 70);
+      }, fastModes.slots ? 40 : 80);
     }
 
-    let minesGameActive = false, minesBet = 0, minesList = [], currentMult = 1.0;
+    let minesGameActive = false, minesBet = 0, minesList = [], currentMult = 1.0, selectedMinesCount = 5;
+    function setMinesDiff(count) {
+      playSound('click');
+      selectedMinesCount = count;
+      [3,5,10,24].forEach(c => {
+        const btn = document.getElementById('mines-diff-'+c);
+        if (!btn) return;
+        btn.className = c === count
+          ? 'py-2 rounded-xl bg-amber-500/20 border-2 border-amber-500 text-[10px] font-bold text-amber-300'
+          : 'py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300';
+      });
+      const labels = {3:'Лайт · 3',5:'Классика · 5',10:'Риск · 10',24:'Безумие · 24'};
+      const safeEl = document.getElementById('mines-safe-label');
+      const diffEl = document.getElementById('mines-diff-label');
+      if (safeEl) safeEl.textContent = (25-count) + ' безопасных клеток';
+      if (diffEl) diffEl.textContent = labels[count] || '';
+    }
+
     function startMinesGame() {
       playSound('click');
       minesBet = parseFloat(document.getElementById('mines-bet')?.value) || 0;
-      const count = parseInt(document.getElementById('mines-count')?.value) || 3;
+      const count = selectedMinesCount || 5;
       if (minesBet <= 0 || minesBet > balance) return;
 
       updateLocalBalance(-minesBet);
@@ -1778,7 +2002,9 @@
       for(let i=0; i<25; i++) {
         const cell = document.createElement('div');
         cell.className = 'mine-cell';
-        cell.textContent = '❓';
+        cell.style.border = '1.5px solid rgba(245,158,11,0.35)';
+        cell.style.background = 'linear-gradient(180deg, #1a1a1a, #0d0d0d)';
+        cell.textContent = '';
         cell.onclick = () => clickMineCell(i, cell);
         grid.appendChild(cell);
       }
@@ -2037,6 +2263,70 @@
           }
         }
       }, fastModes.poker ? 50 : 120);
+    }
+
+    function openCase() {
+      playSound('click');
+      const bet = parseFloat(document.getElementById('case-bet')?.value) || 0;
+      if (bet <= 0 || bet > balance) return;
+      updateLocalBalance(-bet);
+      recordGamePlay();
+      const el = document.getElementById('case-display');
+      el.textContent = '✨';
+      setTimeout(() => {
+        const roll = Math.random() * 100;
+        let mult = 0, name = '';
+        if (roll < 5) { mult = 25; name = 'ЛЕГЕНДАРНЫЙ'; el.textContent = '👑'; }
+        else if (roll < 25) { mult = 5; name = 'Редкий'; el.textContent = '💎'; }
+        else if (roll < 60) { mult = 1.5; name = 'Обычный'; el.textContent = '📦'; }
+        else { mult = 0; name = 'Пусто'; el.textContent = '💨'; }
+        if (mult > 0) {
+          const win = Math.floor(bet * mult);
+          updateLocalBalance(win);
+          playSound('win');
+          showFloatingPopup(`+${win} 🪙 ${name}!`, true);
+        } else {
+          playSound('lose');
+          showFloatingPopup('Пустой кейс', false);
+        }
+        document.getElementById('case-status').textContent = name;
+      }, 800);
+    }
+
+    let cupsBall = 0, cupsLocked = false;
+    function pickCup(idx) {
+      if (cupsLocked) return;
+      playSound('click');
+      const bet = parseFloat(document.getElementById('cups-bet')?.value) || 0;
+      if (bet <= 0 || bet > balance) return;
+      updateLocalBalance(-bet);
+      recordGamePlay();
+      cupsLocked = true;
+      cupsBall = Math.floor(Math.random() * 3);
+      const row = document.getElementById('cups-row');
+      const btns = row.querySelectorAll('button');
+      btns.forEach((b,i) => {
+        b.textContent = i === cupsBall ? '🟡' : '🥛';
+        b.disabled = true;
+      });
+      setTimeout(() => {
+        if (idx === cupsBall) {
+          const win = Math.floor(bet * 2.8);
+          updateLocalBalance(win);
+          playSound('win');
+          showFloatingPopup(`+${win} 🪙 Нашёл!`, true);
+          document.getElementById('cups-status').textContent = 'Победа! x2.8';
+        } else {
+          playSound('lose');
+          showFloatingPopup('Мимо', false);
+          document.getElementById('cups-status').textContent = 'Шарик был в другом';
+        }
+        setTimeout(() => {
+          btns.forEach(b => { b.textContent = '🥛'; b.disabled = false; });
+          cupsLocked = false;
+          document.getElementById('cups-status').textContent = 'Выберите стаканчик';
+        }, 1500);
+      }, 600);
     }
 
     window.onload = init;
