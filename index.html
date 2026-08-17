@@ -204,25 +204,37 @@
 
     .floating-popup {
       position: fixed;
-      top: 24px;
+      top: 72px;
       left: 50%;
-      transform: translateX(-50%) translateY(-60px);
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      padding: 12px 24px;
-      border-radius: 40px;
+      transform: translateX(-50%) translateY(-80px) scale(0.85);
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 20, 50, 0.98));
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      padding: 14px 28px;
+      border-radius: 20px;
       font-weight: 800;
-      font-size: 14px;
-      z-index: 100;
+      font-size: 15px;
+      z-index: 99999;
       opacity: 0;
       pointer-events: none;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.65), 0 0 24px rgba(245,158,11,0.25);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      max-width: 90vw;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .floating-popup.show {
-      transform: translateX(-50%) translateY(0);
+      transform: translateX(-50%) translateY(0) scale(1);
       opacity: 1;
+    }
+    .floating-popup.show.win-pop {
+      border-color: rgba(52, 211, 153, 0.7);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.65), 0 0 30px rgba(52, 211, 153, 0.45);
+    }
+    .floating-popup.show.lose-pop {
+      border-color: rgba(248, 113, 113, 0.7);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.65), 0 0 30px rgba(248, 113, 113, 0.4);
     }
 
     @keyframes winGlow {
@@ -340,7 +352,8 @@
       50% { transform: translate(18px, -22px) scale(1.08); }
     }
 
-    main, header, nav, #floating-notification, #sound-menu { position: relative; z-index: 1; }
+    main, header, nav, #sound-menu { position: relative; z-index: 1; }
+    #floating-notification { position: fixed !important; z-index: 99999 !important; }
 
     /* Карточки: объём + мягкая внутренняя подсветка сверху */
     .glass-card {
@@ -702,6 +715,112 @@
       font-weight: 800;
       color: #fbbf24;
     }
+
+    /* ============ ROULETTE STRIP ============ */
+    .roulette-strip-wrap {
+      position: relative;
+      height: 56px;
+      overflow: hidden;
+      border-radius: 14px;
+      background: #0a0a0a;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .roulette-strip-track {
+      display: flex;
+      gap: 4px;
+      position: absolute;
+      left: 0; top: 4px;
+      will-change: transform;
+      transition: none;
+    }
+    .roulette-strip-track.spinning {
+      transition: transform var(--spin-dur, 4s) cubic-bezier(0.12, 0.75, 0.15, 1);
+    }
+    .roulette-num {
+      flex-shrink: 0;
+      width: 42px; height: 48px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 800; color: #fff;
+    }
+    .roulette-num.red { background: linear-gradient(180deg, #dc2626, #991b1b); }
+    .roulette-num.black { background: linear-gradient(180deg, #1f2937, #111827); border: 1px solid rgba(255,255,255,0.12); }
+    .roulette-num.green { background: linear-gradient(180deg, #059669, #047857); }
+    .roulette-pointer {
+      position: absolute;
+      left: 50%; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, #fbbf24, #f59e0b);
+      transform: translateX(-50%);
+      z-index: 5;
+      box-shadow: 0 0 12px rgba(251,191,36,0.8);
+      pointer-events: none;
+    }
+    .roulette-pointer::before {
+      content: '';
+      position: absolute;
+      top: -2px; left: 50%; transform: translateX(-50%);
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 9px solid #fbbf24;
+    }
+    .roulette-felt {
+      background: linear-gradient(180deg, #0d3d2a 0%, #0a2e20 100%);
+      border: 1px solid rgba(52,211,153,0.2);
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    /* ============ SWEET BONANZA ============ */
+    .sb-board {
+      background: linear-gradient(160deg, #3b1d6e 0%, #1a0b33 50%, #0f0620 100%);
+      border-radius: 20px;
+      border: 2px solid rgba(192,132,252,0.35);
+      padding: 8px;
+      box-shadow: 0 0 40px rgba(139,92,246,0.25), inset 0 0 30px rgba(0,0,0,0.4);
+    }
+    .sb-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 4px;
+    }
+    .sb-cell {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+    .sb-cell.win-cell {
+      background: rgba(251,191,36,0.25);
+      box-shadow: 0 0 14px rgba(251,191,36,0.5);
+      transform: scale(1.08);
+      animation: sbPulse 0.5s ease;
+    }
+    @keyframes sbPulse {
+      0%, 100% { transform: scale(1.08); }
+      50% { transform: scale(1.18); }
+    }
+    .sb-cell.tumble {
+      animation: sbTumble 0.35s ease forwards;
+    }
+    @keyframes sbTumble {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(0.3) translateY(20px); opacity: 0; }
+    }
+    .sb-header-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 6px 10px; margin-bottom: 6px;
+    }
+    .sb-spin-btn {
+      background: linear-gradient(180deg, #fde68a, #f59e0b);
+      color: #1c1005;
+      font-weight: 800;
+      border-radius: 999px;
+      box-shadow: 0 6px 20px rgba(245,158,11,0.4);
+    }
   </style>
 </head>
 <body class="pb-32">
@@ -932,8 +1051,8 @@
             <div class="game-tag">x2500</div>
           </div>
           <div class="p-3">
-            <div class="font-bold text-sm text-white">Слоты</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">До 2500x за линию</div>
+            <div class="font-bold text-sm text-white">Sweet Bonanza</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Кластеры · до x60</div>
           </div>
         </div>
         <div onclick="openGameScreen('cases')" class="game-banner-card">
@@ -1461,29 +1580,25 @@
         <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад</span></button>
         <button onclick="toggleFastMode('slots')" id="fast-btn-slots" class="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-[10px] font-extrabold text-gray-300">⚡ Быстро</button>
       </div>
-      <div id="slots-card-box" class="glass-card p-4 space-y-4 shadow-2xl">
-        <!-- Paytable -->
-        <div class="flex justify-center space-x-4 text-[11px] font-bold">
-          <div class="flex items-center space-x-1 bg-black/40 px-3 py-1.5 rounded-full border border-white/10"><span>💎</span><span class="text-sky-300">x2500</span></div>
-          <div class="flex items-center space-x-1 bg-black/40 px-3 py-1.5 rounded-full border border-white/10"><span>7️⃣</span><span class="text-amber-300">x150</span></div>
-          <div class="flex items-center space-x-1 bg-black/40 px-3 py-1.5 rounded-full border border-white/10"><span>⭐</span><span class="text-yellow-300">x3+</span></div>
-        </div>
-        <!-- 3x3 Grid -->
-        <div class="bg-black/50 rounded-2xl p-3 border border-amber-500/20">
-          <div class="grid grid-cols-3 gap-2" id="slots-grid">
-            <div id="s11" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">7️⃣</div>
-            <div id="s12" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">⭐</div>
-            <div id="s13" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">🔔</div>
-            <div id="s21" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">🍒</div>
-            <div id="s22" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">💎</div>
-            <div id="s23" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">🍋</div>
-            <div id="s31" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">🍇</div>
-            <div id="s32" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">🍒</div>
-            <div id="s33" class="aspect-square bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-500/30 flex items-center justify-center text-3xl shadow-inner">⭐</div>
+      <div id="slots-card-box" class="glass-card p-3 space-y-3 shadow-2xl border-violet-500/20">
+        <div class="flex items-center justify-between px-1">
+          <div class="font-extrabold text-sm text-white">🍬 Sweet Bonanza</div>
+          <div class="flex items-center gap-2 text-[10px] font-bold">
+            <span class="text-pink-300">❤️ x60</span>
+            <span class="text-violet-300">4+</span>
           </div>
         </div>
-        <!-- Bet controls -->
-        <div class="space-y-2">
+
+        <div class="sb-board">
+          <div class="sb-header-bar">
+            <span class="text-[10px] font-bold text-pink-300">Кластер · 8+</span>
+            <span class="text-[10px] font-bold text-violet-200" id="sb-status">Крути барабаны</span>
+            <span class="text-[10px] font-bold text-amber-300" id="sb-win-label"></span>
+          </div>
+          <div class="sb-grid" id="sb-grid"></div>
+        </div>
+
+        <div class="space-y-2 px-1">
           <div class="flex items-center justify-between">
             <span class="text-[11px] text-gray-400 font-bold">СТАВКА</span>
             <div class="flex space-x-1.5">
@@ -1494,15 +1609,17 @@
           </div>
           <input id="slots-bet" type="number" value="50" class="w-full bg-black/50 border border-white/10 rounded-2xl p-3 text-center font-extrabold text-base outline-none text-white">
           <div class="grid grid-cols-4 gap-2">
-            <button onclick="setSlotsBet(50)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">50</button>
+            <button onclick="setSlotsBet(50)" class="py-2 rounded-xl bg-amber-500/25 border border-amber-500/40 text-xs font-bold text-amber-200">50</button>
             <button onclick="setSlotsBet(100)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">100</button>
             <button onclick="setSlotsBet(500)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">500</button>
             <button onclick="setSlotsBet(1000)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">1K</button>
           </div>
         </div>
-        <button onclick="playSlots()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-600 text-black font-extrabold text-sm shadow-lg shadow-amber-900/40 active:scale-95 transition-transform">
+
+        <button onclick="playSlots()" class="sb-spin-btn w-full py-3.5 text-sm active:scale-95 transition-transform">
           ⚡ Крутить · <span id="slots-spin-label">50</span>
         </button>
+        <p class="text-[10px] text-gray-500 text-center">8+ одинаковых символов = выигрыш · сердце до x60</p>
       </div>
     </div>
 
@@ -1699,88 +1816,68 @@
     <div id="screen-roulette" class="screen space-y-3">
       <div class="flex justify-between items-center mb-1">
         <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад</span></button>
-        <div class="flex items-center space-x-2">
-          <button onclick="toggleFastMode('roulette')" id="fast-btn-roulette" class="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-[10px] font-extrabold text-gray-300">⚡ Быстро: ВЫКЛ</button>
-        </div>
+        <button onclick="toggleFastMode('roulette')" id="fast-btn-roulette" class="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-[10px] font-extrabold text-gray-300">⚡ Быстро: ВЫКЛ</button>
       </div>
 
-      <div id="roulette-card-box" class="glass-card p-4 space-y-4 shadow-2xl border-amber-500/20 overflow-hidden">
-        <!-- Верхняя лента номеров -->
-        <div class="flex overflow-x-auto no-scrollbar space-x-1.5 py-1 px-1 bg-black/40 rounded-xl">
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-600 flex items-center justify-center text-[11px] font-bold text-white">12</div>
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-black border border-white/20 flex items-center justify-center text-[11px] font-bold text-white">7</div>
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-600 flex items-center justify-center text-[11px] font-bold text-white">1</div>
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-black border border-white/20 flex items-center justify-center text-[11px] font-bold text-white">24</div>
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-600 flex items-center justify-center text-[11px] font-bold text-white">2</div>
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-black border border-white/20 flex items-center justify-center text-[11px] font-bold text-white">8</div>
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-[11px] font-bold text-white">0</div>
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-600 flex items-center justify-center text-[11px] font-bold text-white">36</div>
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-black border border-white/20 flex items-center justify-center text-[11px] font-bold text-white">16</div>
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-600 flex items-center justify-center text-[11px] font-bold text-white">15</div>
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-black border border-white/20 flex items-center justify-center text-[11px] font-bold text-white">11</div>
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-600 flex items-center justify-center text-[11px] font-bold text-white">29</div>
+      <div id="roulette-card-box" class="glass-card p-3 space-y-3 shadow-2xl border-amber-500/15 overflow-hidden">
+        <div class="flex items-center justify-between px-1">
+          <div class="font-extrabold text-sm text-white flex items-center gap-1.5">🎡 Рулетка</div>
+          <div class="text-[10px] text-gray-400 font-bold">Европейская · x36</div>
         </div>
 
-        <!-- История + таймер -->
-        <div class="bg-gradient-to-r from-emerald-950/40 to-black/40 border border-emerald-500/20 rounded-2xl p-3">
+        <!-- Крутящаяся лента -->
+        <div class="roulette-strip-wrap" id="roulette-strip-wrap">
+          <div class="roulette-pointer"></div>
+          <div class="roulette-strip-track" id="roulette-strip-track"></div>
+        </div>
+
+        <!-- Зелёное поле истории -->
+        <div class="roulette-felt">
           <div class="flex items-center justify-between mb-2">
-            <div class="text-[11px] font-bold text-emerald-400" id="roulette-status">Приём ставок · ставят: 0</div>
-            <div class="text-[10px] text-gray-400 font-medium">Европейская рулетка</div>
+            <div class="text-[11px] font-bold text-emerald-300" id="roulette-status">Приём ставок · готово</div>
+            <div class="text-[10px] text-emerald-600/80 font-medium">одно колесо</div>
           </div>
-          <div class="flex overflow-x-auto no-scrollbar space-x-1.5" id="roulette-history">
-            <div class="flex-shrink-0 w-7 h-7 rounded-lg bg-emerald-600 flex items-center justify-center text-[10px] font-bold text-white">0</div>
-            <div class="flex-shrink-0 w-7 h-7 rounded-lg bg-black border border-white/20 flex items-center justify-center text-[10px] font-bold text-white">32</div>
-            <div class="flex-shrink-0 w-7 h-7 rounded-lg bg-red-600 flex items-center justify-center text-[10px] font-bold text-white">15</div>
-            <div class="flex-shrink-0 w-7 h-7 rounded-lg bg-black border border-white/20 flex items-center justify-center text-[10px] font-bold text-white">19</div>
-            <div class="flex-shrink-0 w-7 h-7 rounded-lg bg-red-600 flex items-center justify-center text-[10px] font-bold text-white">4</div>
-            <div class="flex-shrink-0 w-7 h-7 rounded-lg bg-red-600 flex items-center justify-center text-[10px] font-bold text-white">21</div>
-            <div class="flex-shrink-0 w-7 h-7 rounded-lg bg-black border border-white/20 flex items-center justify-center text-[10px] font-bold text-white">2</div>
-            <div class="flex-shrink-0 w-7 h-7 rounded-lg bg-red-600 flex items-center justify-center text-[10px] font-bold text-white">25</div>
-          </div>
-        </div>
-
-        <!-- Колесо -->
-        <div class="flex justify-center py-2">
-          <div class="w-36 h-36 rounded-full bg-gradient-to-br from-amber-900/30 via-black to-black border-4 border-amber-500/40 flex items-center justify-center text-6xl shadow-[0_0_40px_rgba(245,158,11,0.25)] relative" id="roulette-drum">
-            <span class="absolute inset-0 rounded-full border-2 border-amber-400/20 animate-pulse"></span>
-            🎡
-          </div>
+          <div class="flex overflow-x-auto no-scrollbar gap-1.5" id="roulette-history"></div>
         </div>
 
         <!-- Ставка -->
-        <div class="space-y-2">
+        <div class="space-y-2 px-1">
           <div class="flex items-center justify-between">
-            <span class="text-[11px] text-gray-400 font-bold uppercase tracking-wide">Ставка</span>
-            <div class="flex items-center space-x-1.5">
+            <span class="text-[11px] text-gray-400 font-bold uppercase">Ставка</span>
+            <div class="flex items-center gap-1.5">
               <button onclick="setRouletteBetHalf()" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">1/2</button>
               <button onclick="setRouletteBetDouble()" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">2x</button>
               <button onclick="setRouletteBetMax()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-500/30 text-[10px] font-bold text-amber-300">MAX</button>
             </div>
           </div>
-          <input id="roulette-bet" type="number" value="50" class="w-full bg-black/50 border border-white/10 rounded-2xl p-3.5 text-center font-extrabold text-base outline-none text-white tracking-wide">
+          <div class="flex items-center gap-2">
+            <input id="roulette-bet" type="number" value="50" class="flex-1 bg-black/50 border border-white/10 rounded-xl p-2.5 text-center font-extrabold text-base outline-none text-white">
+          </div>
           <div class="grid grid-cols-4 gap-2">
-            <button onclick="setRouletteBet(50)" class="py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300 hover:bg-white/10">50</button>
-            <button onclick="setRouletteBet(100)" class="py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300 hover:bg-white/10">100</button>
-            <button onclick="setRouletteBet(500)" class="py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300 hover:bg-white/10">500</button>
-            <button onclick="setRouletteBet(1000)" class="py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300 hover:bg-white/10">1K</button>
+            <button onclick="setRouletteBet(50)" class="py-2 rounded-xl bg-amber-500/25 border border-amber-500/40 text-xs font-bold text-amber-200">50</button>
+            <button onclick="setRouletteBet(100)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">100</button>
+            <button onclick="setRouletteBet(500)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">500</button>
+            <button onclick="setRouletteBet(1000)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">1K</button>
           </div>
         </div>
 
+        <div class="text-[10px] text-gray-500 text-center font-medium">Нажмите на цвет, чтобы поставить</div>
+
         <!-- Цвета -->
-        <div class="grid grid-cols-3 gap-2.5 pt-1">
-          <button onclick="playRouletteColor('red')" class="py-4 rounded-2xl bg-gradient-to-b from-red-600 to-red-800 border border-red-400/30 text-sm font-extrabold text-white shadow-lg shadow-red-900/40 active:scale-95 transition-transform">
-            Красное<br><span class="text-[11px] opacity-80 font-bold">x2</span>
+        <div class="grid grid-cols-3 gap-2">
+          <button onclick="playRouletteColor('red')" class="py-3.5 rounded-2xl bg-gradient-to-b from-red-500 to-red-800 border border-red-400/40 text-sm font-extrabold text-white shadow-lg shadow-red-900/30 active:scale-95 transition-transform">
+            Красное<br><span class="text-[11px] opacity-80">2x</span>
           </button>
-          <button onclick="playRouletteColor('zero')" class="py-4 rounded-2xl bg-gradient-to-b from-emerald-500 to-emerald-800 border border-emerald-400/30 text-sm font-extrabold text-white shadow-lg shadow-emerald-900/40 active:scale-95 transition-transform">
-            Зеро<br><span class="text-[11px] opacity-80 font-bold">x36</span>
+          <button onclick="playRouletteColor('zero')" class="py-3.5 rounded-2xl bg-gradient-to-b from-emerald-500 to-emerald-800 border border-emerald-400/40 text-sm font-extrabold text-white shadow-lg shadow-emerald-900/30 active:scale-95 transition-transform">
+            Зеро<br><span class="text-[11px] opacity-80">36x</span>
           </button>
-          <button onclick="playRouletteColor('black')" class="py-4 rounded-2xl bg-gradient-to-b from-gray-700 to-black border border-white/20 text-sm font-extrabold text-white shadow-lg active:scale-95 transition-transform">
-            Чёрное<br><span class="text-[11px] opacity-80 font-bold">x2</span>
+          <button onclick="playRouletteColor('black')" class="py-3.5 rounded-2xl bg-gradient-to-b from-gray-600 to-gray-900 border border-white/15 text-sm font-extrabold text-white shadow-lg active:scale-95 transition-transform">
+            Чёрное<br><span class="text-[11px] opacity-80">2x</span>
           </button>
         </div>
 
         <p class="text-[10px] text-gray-500 text-center leading-relaxed px-2">
-          Европейская рулетка · одно общее колесо. Красное и чёрное — x2, зеро — x36.
+          Европейская рулетка · красное и чёрное — 2x, зеро — 36x. Зеро забирает красное и чёрное.
         </p>
       </div>
     </div>
@@ -2190,10 +2287,14 @@
       const popup = document.getElementById('floating-notification');
       if (!popup) return;
       popup.textContent = text;
-      popup.style.color = isWin ? '#34d399' : '#f87171';
-      popup.style.borderColor = isWin ? 'rgba(52, 211, 153, 0.4)' : 'rgba(248, 113, 113, 0.4)';
-      popup.classList.add('show');
-      setTimeout(() => { popup.classList.remove('show'); }, 1800);
+      popup.style.color = isWin ? '#6ee7b7' : '#fca5a5';
+      popup.classList.remove('show', 'win-pop', 'lose-pop');
+      void popup.offsetWidth;
+      popup.classList.add('show', isWin ? 'win-pop' : 'lose-pop');
+      clearTimeout(popup._hideTimer);
+      popup._hideTimer = setTimeout(() => {
+        popup.classList.remove('show', 'win-pop', 'lose-pop');
+      }, 2200);
     }
 
     function triggerCardEffect(cardId, isWin) {
@@ -2226,6 +2327,8 @@
         updateUI();
         updateDailyBonusUI();
         initHiloCard();
+        buildRouletteStrip();
+        initSbGrid();
       } catch (e) {}
     }
 
@@ -2290,6 +2393,8 @@
     function openGameScreen(id) {
       showScreen(id);
       if (id === 'hilo') initHiloCard();
+      if (id === 'roulette') buildRouletteStrip();
+      if (id === 'slots') initSbGrid();
     }
 
     function setTheme(themeName) {
@@ -2913,56 +3018,119 @@
       }, duration);
     }
 
-    const slotSymbols = ['🍒', '🍋', '🔔', '⭐', '💎', '7️⃣', '🍇'];
+    // ============= SWEET BONANZA =============
+    const SB_SYMBOLS = ['🍌', '🍇', '🍉', '🫐', '🍬', '⭐', '💜', '❤️'];
+    const SB_PAY = { '❤️': 60, '💜': 25, '⭐': 12, '🍬': 8, '🫐': 5, '🍉': 3, '🍇': 2, '🍌': 1.5 };
+    const SB_COLS = 6, SB_ROWS = 5;
+    let sbBusy = false;
+    let sbGrid = [];
+
     function setSlotsBet(v) { playSound('click'); const el=document.getElementById('slots-bet'); if(el){ el.value=Math.min(balance||v,v); document.getElementById('slots-spin-label').textContent=el.value; } }
     function setSlotsBetHalf() { const el=document.getElementById('slots-bet'); if(el){ el.value=Math.max(10,Math.floor((+el.value||50)/2)); document.getElementById('slots-spin-label').textContent=el.value; } }
     function setSlotsBetDouble() { const el=document.getElementById('slots-bet'); if(el){ el.value=Math.min(balance,(+el.value||50)*2); document.getElementById('slots-spin-label').textContent=el.value; } }
     function setSlotsBetMax() { const el=document.getElementById('slots-bet'); if(el){ el.value=Math.max(10,balance); document.getElementById('slots-spin-label').textContent=el.value; } }
 
+    function initSbGrid() {
+      const grid = document.getElementById('sb-grid');
+      if (!grid) return;
+      sbGrid = [];
+      grid.innerHTML = '';
+      for (let i = 0; i < SB_COLS * SB_ROWS; i++) {
+        const sym = SB_SYMBOLS[Math.floor(Math.random() * SB_SYMBOLS.length)];
+        sbGrid.push(sym);
+        const cell = document.createElement('div');
+        cell.className = 'sb-cell';
+        cell.id = 'sb-' + i;
+        cell.textContent = sym;
+        grid.appendChild(cell);
+      }
+    }
+
+    function renderSbGrid(highlights) {
+      for (let i = 0; i < sbGrid.length; i++) {
+        const cell = document.getElementById('sb-' + i);
+        if (!cell) continue;
+        cell.textContent = sbGrid[i];
+        cell.className = 'sb-cell' + (highlights && highlights.has(i) ? ' win-cell' : '');
+      }
+    }
+
     function playSlots() {
+      if (sbBusy) return;
       playSound('click');
       const bet = parseFloat(document.getElementById('slots-bet')?.value) || 0;
       if (bet <= 0 || bet > balance) return;
       updateLocalBalance(-bet);
       recordGamePlay();
       document.getElementById('slots-spin-label').textContent = bet;
+      const statusEl = document.getElementById('sb-status');
+      const winLabel = document.getElementById('sb-win-label');
+      if (statusEl) statusEl.textContent = 'Крутим...';
+      if (winLabel) winLabel.textContent = '';
+      sbBusy = true;
 
-      const cells = ['s11','s12','s13','s21','s22','s23','s31','s32','s33'].map(id => document.getElementById(id));
+      // Ensure grid exists
+      if (!document.getElementById('sb-0')) initSbGrid();
+
       let spins = 0;
-      const maxSpins = fastModes.slots ? 5 : 14;
+      const maxSpins = fastModes.slots ? 6 : 12;
       const interval = setInterval(() => {
-        cells.forEach(c => { if(c) c.textContent = slotSymbols[Math.floor(Math.random()*slotSymbols.length)]; });
+        for (let i = 0; i < SB_COLS * SB_ROWS; i++) {
+          sbGrid[i] = SB_SYMBOLS[Math.floor(Math.random() * SB_SYMBOLS.length)];
+        }
+        renderSbGrid(null);
         spins++;
         if (spins > maxSpins) {
           clearInterval(interval);
-          const isWin = checkWinCondition(35);
-          let finalSyms;
-          if (isWin) {
-            const sym = slotSymbols[Math.floor(Math.random()*slotSymbols.length)];
-            finalSyms = Array(9).fill(sym);
-          } else {
-            finalSyms = Array.from({length:9}, () => slotSymbols[Math.floor(Math.random()*slotSymbols.length)]);
-          }
-          cells.forEach((c,i) => { if(c) c.textContent = finalSyms[i]; });
 
-          let win = 0;
-          if (finalSyms[3] === finalSyms[4] && finalSyms[4] === finalSyms[5]) {
-            if (finalSyms[3] === '💎') win = bet * 50;
-            else if (finalSyms[3] === '7️⃣') win = bet * 15;
-            else win = bet * 5;
+          // Force a cluster win sometimes via luck/god
+          const forceWin = checkWinCondition(32);
+          if (forceWin) {
+            const sym = SB_SYMBOLS[Math.floor(Math.random() * SB_SYMBOLS.length)];
+            const count = 8 + Math.floor(Math.random() * 6);
+            const idxs = [];
+            while (idxs.length < count) {
+              const i = Math.floor(Math.random() * sbGrid.length);
+              if (!idxs.includes(i)) idxs.push(i);
+            }
+            idxs.forEach(i => { sbGrid[i] = sym; });
           }
-          if (win > 0) {
-            updateLocalBalance(win);
+
+          // Count clusters (total count of each symbol on grid)
+          const counts = {};
+          sbGrid.forEach(s => { counts[s] = (counts[s] || 0) + 1; });
+          let totalWin = 0;
+          const winIdxs = new Set();
+          Object.keys(counts).forEach(sym => {
+            if (counts[sym] >= 8) {
+              const pay = SB_PAY[sym] || 1;
+              // Scale by how many over 8
+              const mult = pay * (1 + (counts[sym] - 8) * 0.15);
+              totalWin += Math.floor(bet * mult);
+              sbGrid.forEach((s, i) => { if (s === sym) winIdxs.add(i); });
+            }
+          });
+
+          renderSbGrid(winIdxs);
+
+          if (totalWin > 0) {
+            updateLocalBalance(totalWin);
             playSound('win');
             triggerCardEffect('slots-card-box', true);
-            showFloatingPopup(`+${win} 🪙 ДЖЕКПОТ!`, true);
+            showFloatingPopup(`🍬 +${totalWin} 🪙 Sweet!`, true);
+            if (statusEl) statusEl.textContent = 'Выигрыш!';
+            if (winLabel) winLabel.textContent = '+' + totalWin;
+            recordWin(true);
           } else {
             playSound('lose');
             triggerCardEffect('slots-card-box', false);
-            showFloatingPopup(`ПРОИГРЫШ`, false);
+            showFloatingPopup('Мимо', false);
+            if (statusEl) statusEl.textContent = 'Нет кластера';
+            recordWin(false);
           }
+          sbBusy = false;
         }
-      }, fastModes.slots ? 40 : 80);
+      }, fastModes.slots ? 50 : 90);
     }
 
     let minesGameActive = false, minesBet = 0, minesList = [], currentMult = 1.0, selectedMinesCount = 5;
@@ -3373,43 +3541,135 @@
       }, fastModes.upgrader ? 800 : 2500);
     }
 
+    // ============= ROULETTE STRIP =============
+    const ROULETTE_ORDER = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
+    const ROULETTE_RED = new Set([1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]);
+    let rouletteHistoryNums = [0,32,15,19,4,21,2,25];
+    let rouletteSpinning = false;
+    let rouletteStripBuilt = false;
+
+    function rouletteColorOf(n) {
+      if (n === 0) return 'green';
+      return ROULETTE_RED.has(n) ? 'red' : 'black';
+    }
+
+    function buildRouletteStrip() {
+      const track = document.getElementById('roulette-strip-track');
+      if (!track) return;
+      track.innerHTML = '';
+      // Repeat sequence many times for long spin
+      const reps = 12;
+      for (let r = 0; r < reps; r++) {
+        ROULETTE_ORDER.forEach(n => {
+          const d = document.createElement('div');
+          d.className = 'roulette-num ' + rouletteColorOf(n);
+          d.textContent = n;
+          d.dataset.num = n;
+          track.appendChild(d);
+        });
+      }
+      rouletteStripBuilt = true;
+      renderRouletteHistory();
+    }
+
+    function renderRouletteHistory() {
+      const box = document.getElementById('roulette-history');
+      if (!box) return;
+      box.innerHTML = rouletteHistoryNums.map(n => {
+        const c = rouletteColorOf(n);
+        const bg = c === 'green' ? 'bg-emerald-600' : c === 'red' ? 'bg-red-600' : 'bg-gray-900 border border-white/20';
+        return `<div class="flex-shrink-0 w-8 h-8 rounded-lg ${bg} flex items-center justify-center text-[11px] font-bold text-white">${n}</div>`;
+      }).join('');
+    }
+
     function playRouletteColor(colorChoice) {
+      if (rouletteSpinning) return;
       playSound('click');
       const bet = parseFloat(document.getElementById('roulette-bet')?.value) || 0;
       if (bet <= 0 || bet > balance) return;
       updateLocalBalance(-bet);
       recordGamePlay();
 
-      const drum = document.getElementById('roulette-drum');
-      const duration = fastModes.roulette ? 400 : 1500;
-      drum.style.setProperty('--anim-speed', (duration / 1000) + 's');
-      drum.classList.add('coin-flipping');
+      if (!rouletteStripBuilt) buildRouletteStrip();
+      const track = document.getElementById('roulette-strip-track');
+      const wrap = document.getElementById('roulette-strip-wrap');
+      if (!track || !wrap) return;
+
+      rouletteSpinning = true;
+      document.getElementById('roulette-status').textContent = 'Крутим колесо...';
+
+      // Determine result number
+      let resultNum;
+      if (godMode) {
+        if (colorChoice === 'zero') resultNum = 0;
+        else if (colorChoice === 'red') resultNum = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36][Math.floor(Math.random()*18)];
+        else resultNum = [2,4,6,8,10,11,13,15,17,20,22,24,26,28,29,31,33,35][Math.floor(Math.random()*18)];
+      } else if (checkWinCondition(colorChoice === 'zero' ? 3 : 48)) {
+        if (colorChoice === 'zero') resultNum = 0;
+        else if (colorChoice === 'red') resultNum = [...ROULETTE_RED][Math.floor(Math.random()*18)];
+        else {
+          const blacks = ROULETTE_ORDER.filter(n => n !== 0 && !ROULETTE_RED.has(n));
+          resultNum = blacks[Math.floor(Math.random()*blacks.length)];
+        }
+      } else {
+        // Lose: pick opposing
+        if (colorChoice === 'zero') {
+          resultNum = ROULETTE_ORDER[1 + Math.floor(Math.random() * 36)];
+        } else if (colorChoice === 'red') {
+          const blacks = ROULETTE_ORDER.filter(n => n !== 0 && !ROULETTE_RED.has(n));
+          resultNum = Math.random() < 0.08 ? 0 : blacks[Math.floor(Math.random()*blacks.length)];
+        } else {
+          resultNum = Math.random() < 0.08 ? 0 : [...ROULETTE_RED][Math.floor(Math.random()*18)];
+        }
+      }
+
+      const cellW = 46; // 42 + 4 gap
+      const orderIdx = ROULETTE_ORDER.indexOf(resultNum);
+      const baseLoop = ROULETTE_ORDER.length * cellW;
+      // Stop so winning cell is under center pointer
+      const wrapW = wrap.clientWidth || 320;
+      const centerOffset = wrapW / 2 - 21;
+      const loops = fastModes.roulette ? 3 : 6;
+      const targetX = -(loops * baseLoop + orderIdx * cellW - centerOffset);
+
+      track.classList.remove('spinning');
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(0px)';
+      void track.offsetWidth;
+
+      const dur = fastModes.roulette ? 1.2 : 4;
+      track.style.setProperty('--spin-dur', dur + 's');
+      track.classList.add('spinning');
+      track.style.transform = `translateX(${targetX}px)`;
 
       setTimeout(() => {
-        drum.classList.remove('coin-flipping');
-        
-        let isWin = checkWinCondition(50);
-        let winningColor = isWin ? colorChoice : (colorChoice === 'red' ? 'black' : 'red');
+        rouletteSpinning = false;
+        const resultColor = rouletteColorOf(resultNum);
+        rouletteHistoryNums.unshift(resultNum);
+        if (rouletteHistoryNums.length > 10) rouletteHistoryNums.pop();
+        renderRouletteHistory();
 
-        if (godMode) winningColor = colorChoice;
-
-        let won = (winningColor === colorChoice);
-        let multiplier = colorChoice === 'zero' ? 36 : 2;
+        const won = (colorChoice === 'zero' && resultNum === 0) ||
+                    (colorChoice === 'red' && resultColor === 'red') ||
+                    (colorChoice === 'black' && resultColor === 'black');
+        const multiplier = colorChoice === 'zero' ? 36 : 2;
 
         if (won) {
-          let winAmt = bet * multiplier;
+          const winAmt = bet * multiplier;
           updateLocalBalance(winAmt);
           playSound('win');
           triggerCardEffect('roulette-card-box', true);
-          showFloatingPopup(`🎯 Выпало ${winningColor.toUpperCase()}! +${winAmt} 🪙`, true);
-          document.getElementById('roulette-status').textContent = `Выпало: ${winningColor.toUpperCase()}. Победа!`;
+          showFloatingPopup(`🎯 ${resultNum} · +${winAmt} 🪙`, true);
+          document.getElementById('roulette-status').textContent = `Выпало ${resultNum} (${resultColor}) · Победа!`;
+          recordWin(true);
         } else {
           playSound('lose');
           triggerCardEffect('roulette-card-box', false);
-          showFloatingPopup(`🎯 Выпало ${winningColor.toUpperCase()}. Проигрыш`, false);
-          document.getElementById('roulette-status').textContent = `Выпало: ${winningColor.toUpperCase()}. Попробуйте снова!`;
+          showFloatingPopup(`🎯 ${resultNum} · проигрыш`, false);
+          document.getElementById('roulette-status').textContent = `Выпало ${resultNum} (${resultColor})`;
+          recordWin(false);
         }
-      }, duration);
+      }, dur * 1000 + 80);
     }
 
     const pokerCards = ['🂡', '🂮', '🂭', '🂫', '🂪', '🂩', '🂨', '🂧', '🂦', '🂥'];
