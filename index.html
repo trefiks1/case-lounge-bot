@@ -716,58 +716,53 @@
       color: #fbbf24;
     }
 
-    /* ============ ROULETTE WHEEL ============ */
-    .roulette-wheel-wrap {
+    /* ============ ROULETTE STRIP ============ */
+    .roulette-strip-wrap {
       position: relative;
-      width: 220px;
-      height: 220px;
-      margin: 0 auto;
+      height: 56px;
+      overflow: hidden;
+      border-radius: 14px;
+      background: #0a0a0a;
+      border: 1px solid rgba(255,255,255,0.08);
     }
-    .roulette-wheel {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      border: 4px solid #f59e0b;
-      box-shadow: 0 0 30px rgba(245,158,11,0.35), inset 0 0 20px rgba(0,0,0,0.6);
-      transition: transform var(--wheel-speed, 4s) cubic-bezier(0.12, 0.75, 0.12, 1);
-      will-change: transform;
-    }
-    .roulette-wheel-pointer {
-      position: absolute;
-      top: -6px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      width: 0; height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-top: 16px solid #fbbf24;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
-    }
-    .roulette-wheel-center {
-      position: absolute;
-      inset: 32%;
-      border-radius: 50%;
-      background: radial-gradient(circle, #1a1226, #0a0712);
-      border: 2px solid rgba(245,158,11,0.5);
+    .roulette-strip-track {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      gap: 4px;
+      position: absolute;
+      left: 0; top: 4px;
+      will-change: transform;
+      transition: none;
+    }
+    .roulette-strip-track.spinning {
+      transition: transform var(--spin-dur, 4s) cubic-bezier(0.12, 0.75, 0.15, 1);
+    }
+    .roulette-num {
+      flex-shrink: 0;
+      width: 42px; height: 48px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 800; color: #fff;
+    }
+    .roulette-num.red { background: linear-gradient(180deg, #dc2626, #991b1b); }
+    .roulette-num.black { background: linear-gradient(180deg, #1f2937, #111827); border: 1px solid rgba(255,255,255,0.12); }
+    .roulette-num.green { background: linear-gradient(180deg, #059669, #047857); }
+    .roulette-pointer {
+      position: absolute;
+      left: 50%; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, #fbbf24, #f59e0b);
+      transform: translateX(-50%);
       z-index: 5;
-      box-shadow: 0 0 16px rgba(0,0,0,0.7);
+      box-shadow: 0 0 12px rgba(251,191,36,0.8);
+      pointer-events: none;
     }
-    .roulette-wheel-center .rw-num {
-      font-size: 28px;
-      font-weight: 800;
-      line-height: 1;
-    }
-    .roulette-wheel-center .rw-label {
-      font-size: 9px;
-      font-weight: 700;
-      color: #9ca3af;
-      text-transform: uppercase;
-      margin-top: 2px;
+    .roulette-pointer::before {
+      content: '';
+      position: absolute;
+      top: -2px; left: 50%; transform: translateX(-50%);
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 9px solid #fbbf24;
     }
     .roulette-felt {
       background: linear-gradient(180deg, #0d3d2a 0%, #0a2e20 100%);
@@ -825,34 +820,6 @@
       font-weight: 800;
       border-radius: 999px;
       box-shadow: 0 6px 20px rgba(245,158,11,0.4);
-    }
-    .sb-bomb-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-      padding: 2px 7px;
-      border-radius: 999px;
-      font-size: 10px;
-      font-weight: 800;
-      background: linear-gradient(135deg, #7c3aed, #db2777);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.25);
-      box-shadow: 0 0 10px rgba(219,39,119,0.45);
-      animation: sbBombIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    @keyframes sbBombIn {
-      from { transform: scale(0); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-    .sb-cell.bomb-cell {
-      background: radial-gradient(circle, rgba(219,39,119,0.35), rgba(0,0,0,0.4));
-      box-shadow: 0 0 12px rgba(219,39,119,0.55);
-      font-size: 11px;
-      font-weight: 800;
-      color: #fde68a;
-      flex-direction: column;
-      line-height: 1.1;
     }
   </style>
 </head>
@@ -1085,7 +1052,7 @@
           </div>
           <div class="p-3">
             <div class="font-bold text-sm text-white">Sweet Bonanza</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Кластеры · до ~x5.5</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Кластеры · до x60</div>
           </div>
         </div>
         <div onclick="openGameScreen('cases')" class="game-banner-card">
@@ -1330,34 +1297,6 @@
             <div class="text-xs font-extrabold text-violet-300">+7 500 🪙</div>
           </div>
           <button id="quest-combo-btn" onclick="claimComboQuest()" class="btn-primary px-4 py-2 text-xs opacity-50 cursor-not-allowed bg-gradient-to-r from-violet-600 to-fuchsia-600" disabled>Ожидание</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ТОПЫ -->
-    <div id="screen-tops" class="screen space-y-4">
-      <div class="pt-1">
-        <h1 class="text-xl font-extrabold text-white">🏆 Топы мира</h1>
-        <p class="text-[11px] text-gray-400 mt-0.5">Рейтинг игроков арены</p>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2">
-        <button onclick="switchTopsTab('balance')" id="tops-tab-balance" class="py-2.5 rounded-xl bg-amber-500/20 border-2 border-amber-500 text-xs font-extrabold text-amber-300">💰 По балансу</button>
-        <button onclick="switchTopsTab('spins')" id="tops-tab-spins" class="py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-extrabold text-gray-300">🎰 По прокрутам</button>
-      </div>
-
-      <div class="glass-card p-3 space-y-1" id="tops-list">
-        <!-- filled by JS -->
-      </div>
-
-      <div class="glass-card p-3 flex items-center justify-between border border-amber-500/25 bg-gradient-to-r from-amber-950/30 to-transparent">
-        <div>
-          <div class="text-[10px] text-amber-400 font-bold uppercase">Ваше место</div>
-          <div class="text-sm font-extrabold text-white" id="tops-you-rank">—</div>
-        </div>
-        <div class="text-right">
-          <div class="text-[10px] text-gray-400 font-bold" id="tops-you-label">Баланс</div>
-          <div class="text-sm font-extrabold text-amber-300" id="tops-you-value">0</div>
         </div>
       </div>
     </div>
@@ -1645,7 +1584,7 @@
         <div class="flex items-center justify-between px-1">
           <div class="font-extrabold text-sm text-white">🍬 Sweet Bonanza</div>
           <div class="flex items-center gap-2 text-[10px] font-bold">
-            <span class="text-pink-300">❤️ x5.5</span>
+            <span class="text-pink-300">❤️ x60</span>
             <span class="text-violet-300">4+</span>
           </div>
         </div>
@@ -1656,8 +1595,6 @@
             <span class="text-[10px] font-bold text-violet-200" id="sb-status">Крути барабаны</span>
             <span class="text-[10px] font-bold text-amber-300" id="sb-win-label"></span>
           </div>
-          <!-- Накопленные бомбы-множители -->
-          <div id="sb-bombs-bar" class="flex flex-wrap gap-1 px-1 pb-2 min-h-[28px]"></div>
           <div class="sb-grid" id="sb-grid"></div>
         </div>
 
@@ -1670,7 +1607,7 @@
               <button onclick="setSlotsBetMax()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-500/30 text-[10px] font-bold text-amber-300">MAX</button>
             </div>
           </div>
-          <input id="slots-bet" type="number" value="50" oninput="updateSbBonusPrice()" class="w-full bg-black/50 border border-white/10 rounded-2xl p-3 text-center font-extrabold text-base outline-none text-white">
+          <input id="slots-bet" type="number" value="50" class="w-full bg-black/50 border border-white/10 rounded-2xl p-3 text-center font-extrabold text-base outline-none text-white">
           <div class="grid grid-cols-4 gap-2">
             <button onclick="setSlotsBet(50)" class="py-2 rounded-xl bg-amber-500/25 border border-amber-500/40 text-xs font-bold text-amber-200">50</button>
             <button onclick="setSlotsBet(100)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">100</button>
@@ -1679,16 +1616,10 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-5 gap-2">
-          <button onclick="playSlots()" class="sb-spin-btn col-span-3 py-3.5 text-sm active:scale-95 transition-transform">
-            ⚡ Крутить · <span id="slots-spin-label">50</span>
-          </button>
-          <button onclick="buySbBonus()" id="sb-bonus-btn" class="col-span-2 py-3.5 rounded-full bg-gradient-to-r from-fuchsia-600 to-violet-700 text-white font-extrabold text-[11px] shadow-lg shadow-violet-900/40 active:scale-95 transition-transform border border-fuchsia-400/30">
-            🎁 БОНУС<br><span class="text-[10px] opacity-90" id="sb-bonus-price">15× · 750</span>
-          </button>
-        </div>
-        <div class="text-center text-[10px] font-bold text-fuchsia-300/80" id="sb-fs-counter"></div>
-        <p class="text-[10px] text-gray-500 text-center">8+ символов = выигрыш · 💣 бомбы копятся и умножают · бонус = 15 фриспинов</p>
+        <button onclick="playSlots()" class="sb-spin-btn w-full py-3.5 text-sm active:scale-95 transition-transform">
+          ⚡ Крутить · <span id="slots-spin-label">50</span>
+        </button>
+        <p class="text-[10px] text-gray-500 text-center">8+ одинаковых символов = выигрыш · сердце до x60</p>
       </div>
     </div>
 
@@ -1894,14 +1825,10 @@
           <div class="text-[10px] text-gray-400 font-bold">Европейская · x36</div>
         </div>
 
-        <!-- Крутящееся колесо -->
-        <div class="roulette-wheel-wrap">
-          <div class="roulette-wheel-pointer"></div>
-          <div id="roulette-wheel" class="roulette-wheel"></div>
-          <div class="roulette-wheel-center">
-            <div class="rw-num" id="roulette-result-num">?</div>
-            <div class="rw-label" id="roulette-result-label">ждём</div>
-          </div>
+        <!-- Крутящаяся лента -->
+        <div class="roulette-strip-wrap" id="roulette-strip-wrap">
+          <div class="roulette-pointer"></div>
+          <div class="roulette-strip-track" id="roulette-strip-track"></div>
         </div>
 
         <!-- Зелёное поле истории -->
@@ -2092,9 +2019,6 @@
     </button>
     <button onclick="openScreen('quests')" id="nav-quests" class="nav-item flex flex-col items-center space-y-1">
       <span class="text-lg">🎯</span><span class="font-bold">Задания</span>
-    </button>
-    <button onclick="openScreen('tops')" id="nav-tops" class="nav-item flex flex-col items-center space-y-1">
-      <span class="text-lg">🏆</span><span class="font-bold">Топы</span>
     </button>
     <button onclick="openScreen('support')" id="nav-support" class="nav-item flex flex-col items-center space-y-1">
       <span class="text-lg">🎧</span><span class="font-bold">Саппорт</span>
@@ -2465,146 +2389,12 @@
       document.getElementById('nav-' + name)?.classList.add('active');
     }
 
-    function openScreen(name) {
-      showScreen(name);
-      if (name === 'tops') renderTops();
-    }
+    function openScreen(name) { showScreen(name); }
     function openGameScreen(id) {
       showScreen(id);
       if (id === 'hilo') initHiloCard();
       if (id === 'roulette') buildRouletteStrip();
       if (id === 'slots') initSbGrid();
-    }
-
-    // ============= ТОПЫ (реальные игроки) =============
-    // Список реальных игроков хранится в localStorage.
-    // Позже можно подтягивать с бэкенда / из бота.
-    // Формат: [{ id, name, balance, spins }, ...]
-    let topsTab = 'balance';
-    const REAL_TOPS_KEY = 'case_lounge_real_tops';
-
-    function loadRealTopsPlayers() {
-      try {
-        const raw = localStorage.getItem(REAL_TOPS_KEY);
-        if (!raw) return [];
-        const arr = JSON.parse(raw);
-        return Array.isArray(arr) ? arr : [];
-      } catch (e) {
-        return [];
-      }
-    }
-
-    function saveRealTopsPlayers(list) {
-      try {
-        localStorage.setItem(REAL_TOPS_KEY, JSON.stringify(list || []));
-      } catch (e) {}
-    }
-
-    /** Добавить / обновить реального игрока в топе (для будущего API / админки) */
-    function upsertRealTopPlayer(player) {
-      if (!player || !player.id) return;
-      const list = loadRealTopsPlayers();
-      const idx = list.findIndex(p => String(p.id) === String(player.id));
-      const entry = {
-        id: String(player.id),
-        name: player.name || ('Игрок ' + player.id),
-        balance: Math.max(0, Math.floor(Number(player.balance) || 0)),
-        spins: Math.max(0, Math.floor(Number(player.spins) || 0))
-      };
-      if (idx >= 0) list[idx] = { ...list[idx], ...entry };
-      else list.push(entry);
-      saveRealTopsPlayers(list);
-    }
-
-    function getRealTopsList(mode) {
-      const players = loadRealTopsPlayers();
-      return players.map(p => ({
-        name: p.name || ('Игрок ' + p.id),
-        value: mode === 'balance' ? (Number(p.balance) || 0) : (Number(p.spins) || 0),
-        id: String(p.id),
-        isReal: true
-      }));
-    }
-
-    function switchTopsTab(tab) {
-      playSound('click');
-      topsTab = tab;
-      const balBtn = document.getElementById('tops-tab-balance');
-      const spBtn = document.getElementById('tops-tab-spins');
-      if (balBtn && spBtn) {
-        if (tab === 'balance') {
-          balBtn.className = 'py-2.5 rounded-xl bg-amber-500/20 border-2 border-amber-500 text-xs font-extrabold text-amber-300';
-          spBtn.className = 'py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-extrabold text-gray-300';
-        } else {
-          spBtn.className = 'py-2.5 rounded-xl bg-amber-500/20 border-2 border-amber-500 text-xs font-extrabold text-amber-300';
-          balBtn.className = 'py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-extrabold text-gray-300';
-        }
-      }
-      renderTops();
-    }
-
-    function renderTops() {
-      const listEl = document.getElementById('tops-list');
-      if (!listEl) return;
-
-      const mode = topsTab;
-      const realPlayers = getRealTopsList(mode);
-      const myName = (document.getElementById('user-name')?.textContent || 'Вы').trim() || 'Вы';
-      const myValue = mode === 'balance' ? balance : gamesPlayed;
-      const meId = String(currentUserId || 'me');
-      const me = { name: myName + ' (вы)', value: myValue, id: meId, isMe: true, isReal: true };
-
-      // Не дублируем себя, если уже есть в списке реальных
-      const others = realPlayers.filter(p => String(p.id) !== meId);
-      const all = others.concat([me]).sort((a, b) => b.value - a.value);
-      const top = all.slice(0, 20);
-      const myRank = all.findIndex(x => x.isMe || String(x.id) === meId) + 1;
-
-      if (top.length <= 1 && others.length === 0) {
-        listEl.innerHTML = `
-          <div class="px-3 py-6 text-center space-y-2">
-            <div class="text-2xl">🏆</div>
-            <div class="text-sm font-bold text-white">Пока только вы</div>
-            <div class="text-[11px] text-gray-400 leading-relaxed">Реальные игроки появятся в топе, когда подключатся к арене.<br>Список обновляется автоматически.</div>
-          </div>
-          <div class="flex items-center justify-between px-3 py-2.5 rounded-xl bg-amber-500/15 border border-amber-500/30">
-            <div class="flex items-center gap-2.5 min-w-0">
-              <span class="w-7 text-center text-sm font-extrabold">🥇</span>
-              <span class="text-sm font-bold text-white truncate">${me.name}</span>
-            </div>
-            <span class="text-xs font-extrabold text-amber-300 whitespace-nowrap">${mode === 'balance' ? (myValue.toLocaleString('ru') + ' 🪙') : (myValue.toLocaleString('ru') + ' игр')}</span>
-          </div>`;
-      } else {
-        const medals = ['🥇', '🥈', '🥉'];
-        listEl.innerHTML = top.map((row, i) => {
-          const rank = i + 1;
-          const medal = medals[i] || (`${rank}.`);
-          const valStr = mode === 'balance'
-            ? (row.value.toLocaleString('ru') + ' 🪙')
-            : (row.value.toLocaleString('ru') + ' игр');
-          const hl = row.isMe
-            ? 'bg-amber-500/15 border border-amber-500/30'
-            : 'border border-transparent';
-          return `<div class="flex items-center justify-between px-3 py-2.5 rounded-xl ${hl}">
-            <div class="flex items-center gap-2.5 min-w-0">
-              <span class="w-7 text-center text-sm font-extrabold ${i < 3 ? '' : 'text-gray-500'}">${medal}</span>
-              <span class="text-sm font-bold text-white truncate">${row.name}</span>
-            </div>
-            <span class="text-xs font-extrabold ${row.isMe ? 'text-amber-300' : 'text-gray-300'} whitespace-nowrap">${valStr}</span>
-          </div>`;
-        }).join('');
-      }
-
-      const youRank = document.getElementById('tops-you-rank');
-      const youLabel = document.getElementById('tops-you-label');
-      const youValue = document.getElementById('tops-you-value');
-      if (youRank) youRank.textContent = myRank > 0 ? `#${myRank} из ${all.length}` : '—';
-      if (youLabel) youLabel.textContent = mode === 'balance' ? 'Баланс' : 'Прокруты';
-      if (youValue) {
-        youValue.textContent = mode === 'balance'
-          ? balance.toLocaleString('ru') + ' 🪙'
-          : gamesPlayed.toLocaleString('ru') + ' игр';
-      }
     }
 
     function setTheme(themeName) {
@@ -3230,80 +3020,15 @@
 
     // ============= SWEET BONANZA =============
     const SB_SYMBOLS = ['🍌', '🍇', '🍉', '🫐', '🍬', '⭐', '💜', '❤️'];
-    // Выплаты снижены: чаще спины без окупаемости ставки
-    const SB_PAY = { '❤️': 5.5, '💜': 2.8, '⭐': 1.8, '🍬': 1.25, '🫐': 1.0, '🍉': 0.85, '🍇': 0.7, '🍌': 0.55 };
-    // Bombs: value + relative weight (higher = more common)
-    const SB_BOMBS = [
-      { v: 2, w: 55 },
-      { v: 5, w: 32 },
-      { v: 10, w: 10 },
-      { v: 25, w: 1.2 },
-      { v: 50, w: 0.5 },
-      { v: 100, w: 0.2 },
-      { v: 200, w: 0.08 }
-    ];
-    const SB_BOMB_TOTAL_W = SB_BOMBS.reduce((a, b) => a + b.w, 0);
+    const SB_PAY = { '❤️': 60, '💜': 25, '⭐': 12, '🍬': 8, '🫐': 5, '🍉': 3, '🍇': 2, '🍌': 1.5 };
     const SB_COLS = 6, SB_ROWS = 5;
     let sbBusy = false;
-    let sbGrid = [];       // symbols or {bomb: true, v: N}
-    let sbBombs = [];      // accumulated multipliers during free spins
-    let sbFreeSpins = 0;
-    let sbBonusActive = false;
-    let sbBonusTotalWin = 0;
-    let sbCurrentBet = 50;
+    let sbGrid = [];
 
-    function setSlotsBet(v) {
-      playSound('click');
-      const el = document.getElementById('slots-bet');
-      if (el) { el.value = Math.min(balance || v, v); document.getElementById('slots-spin-label').textContent = el.value; }
-      updateSbBonusPrice();
-    }
-    function setSlotsBetHalf() {
-      const el = document.getElementById('slots-bet');
-      if (el) { el.value = Math.max(10, Math.floor((+el.value || 50) / 2)); document.getElementById('slots-spin-label').textContent = el.value; }
-      updateSbBonusPrice();
-    }
-    function setSlotsBetDouble() {
-      const el = document.getElementById('slots-bet');
-      if (el) { el.value = Math.min(balance, (+el.value || 50) * 2); document.getElementById('slots-spin-label').textContent = el.value; }
-      updateSbBonusPrice();
-    }
-    function setSlotsBetMax() {
-      const el = document.getElementById('slots-bet');
-      if (el) { el.value = Math.max(10, balance); document.getElementById('slots-spin-label').textContent = el.value; }
-      updateSbBonusPrice();
-    }
-    function updateSbBonusPrice() {
-      const bet = parseFloat(document.getElementById('slots-bet')?.value) || 50;
-      const price = Math.floor(bet * 15);
-      const el = document.getElementById('sb-bonus-price');
-      if (el) el.textContent = `15× · ${price}`;
-      const spinLabel = document.getElementById('slots-spin-label');
-      if (spinLabel) spinLabel.textContent = bet;
-    }
-
-    function pickSbBomb() {
-      let r = Math.random() * SB_BOMB_TOTAL_W;
-      for (const b of SB_BOMBS) {
-        r -= b.w;
-        if (r <= 0) return b.v;
-      }
-      return 2;
-    }
-
-    function renderSbBombsBar() {
-      const bar = document.getElementById('sb-bombs-bar');
-      if (!bar) return;
-      if (!sbBombs.length) {
-        bar.innerHTML = sbBonusActive
-          ? '<span class="text-[10px] text-gray-500">Бомбы появятся здесь и умножат выигрыш</span>'
-          : '';
-        return;
-      }
-      const sum = sbBombs.reduce((a, b) => a + b, 0);
-      bar.innerHTML = sbBombs.map(v => `<span class="sb-bomb-badge">💣×${v}</span>`).join('') +
-        `<span class="sb-bomb-badge" style="background:linear-gradient(135deg,#f59e0b,#ea580c)">Σ×${sum}</span>`;
-    }
+    function setSlotsBet(v) { playSound('click'); const el=document.getElementById('slots-bet'); if(el){ el.value=Math.min(balance||v,v); document.getElementById('slots-spin-label').textContent=el.value; } }
+    function setSlotsBetHalf() { const el=document.getElementById('slots-bet'); if(el){ el.value=Math.max(10,Math.floor((+el.value||50)/2)); document.getElementById('slots-spin-label').textContent=el.value; } }
+    function setSlotsBetDouble() { const el=document.getElementById('slots-bet'); if(el){ el.value=Math.min(balance,(+el.value||50)*2); document.getElementById('slots-spin-label').textContent=el.value; } }
+    function setSlotsBetMax() { const el=document.getElementById('slots-bet'); if(el){ el.value=Math.max(10,balance); document.getElementById('slots-spin-label').textContent=el.value; } }
 
     function initSbGrid() {
       const grid = document.getElementById('sb-grid');
@@ -3319,245 +3044,93 @@
         cell.textContent = sym;
         grid.appendChild(cell);
       }
-      updateSbBonusPrice();
-      renderSbBombsBar();
     }
 
     function renderSbGrid(highlights) {
       for (let i = 0; i < sbGrid.length; i++) {
         const cell = document.getElementById('sb-' + i);
         if (!cell) continue;
-        const item = sbGrid[i];
-        if (item && typeof item === 'object' && item.bomb) {
-          cell.className = 'sb-cell bomb-cell' + (highlights && highlights.has(i) ? ' win-cell' : '');
-          cell.innerHTML = `💣<br>×${item.v}`;
-        } else {
-          cell.className = 'sb-cell' + (highlights && highlights.has(i) ? ' win-cell' : '');
-          cell.textContent = item;
-        }
+        cell.textContent = sbGrid[i];
+        cell.className = 'sb-cell' + (highlights && highlights.has(i) ? ' win-cell' : '');
       }
-    }
-
-    function fillSbRandom(bombChance) {
-      // Very rare bombs. Hard cap: max 3 per spin (3 is very rare).
-      let bombsPlaced = 0;
-      const maxBombsThisSpin = Math.random() < 0.06 ? 3 : (Math.random() < 0.22 ? 2 : 1);
-      for (let i = 0; i < SB_COLS * SB_ROWS; i++) {
-        if (bombsPlaced < maxBombsThisSpin && Math.random() < bombChance) {
-          sbGrid[i] = { bomb: true, v: pickSbBomb() };
-          bombsPlaced++;
-        } else {
-          sbGrid[i] = SB_SYMBOLS[Math.floor(Math.random() * SB_SYMBOLS.length)];
-        }
-      }
-    }
-
-    function evaluateSbSpin(bet) {
-      // Collect bombs on grid
-      const newBombs = [];
-      const bombIdxs = new Set();
-      sbGrid.forEach((item, i) => {
-        if (item && typeof item === 'object' && item.bomb) {
-          newBombs.push(item.v);
-          bombIdxs.add(i);
-        }
-      });
-
-      // Count symbol clusters (ignore bombs)
-      const counts = {};
-      sbGrid.forEach(s => {
-        if (typeof s === 'string') counts[s] = (counts[s] || 0) + 1;
-      });
-
-      let baseWin = 0;
-      const winIdxs = new Set();
-      Object.keys(counts).forEach(sym => {
-        if (counts[sym] >= 8) {
-          const pay = SB_PAY[sym] || 1;
-          const mult = pay * (1 + (counts[sym] - 8) * 0.06);
-          baseWin += Math.floor(bet * mult);
-          sbGrid.forEach((s, i) => { if (s === sym) winIdxs.add(i); });
-        }
-      });
-      bombIdxs.forEach(i => winIdxs.add(i));
-
-      return { baseWin, newBombs, winIdxs };
-    }
-
-    function runSbSpinAnimation(bet, onDone) {
-      const statusEl = document.getElementById('sb-status');
-      const winLabel = document.getElementById('sb-win-label');
-      if (statusEl) {
-        statusEl.textContent = sbBonusActive
-          ? `Фриспин ${16 - sbFreeSpins}/15`
-          : 'Крутим...';
-      }
-      if (winLabel) winLabel.textContent = '';
-
-      if (!document.getElementById('sb-0')) initSbGrid();
-
-      let spins = 0;
-      const maxSpins = fastModes.slots ? 5 : 10;
-      // Very low: ~1 bomb every few spins; bonus a bit higher
-      // Реже бомбы и кластеры — часть спинов вообще не окупается
-      const bombChance = sbBonusActive ? 0.012 : 0.004;
-
-      const interval = setInterval(() => {
-        fillSbRandom(bombChance);
-        renderSbGrid(null);
-        spins++;
-        if (spins > maxSpins) {
-          clearInterval(interval);
-
-          // Меньше принудительных кластеров → чаще «пустые» спины без окупа
-          const forceChance = sbBonusActive ? 14 : 7;
-          if (checkWinCondition(forceChance)) {
-            const sym = SB_SYMBOLS[Math.floor(Math.random() * SB_SYMBOLS.length)];
-            const count = 8 + Math.floor(Math.random() * 5);
-            let placed = 0;
-            for (let i = 0; i < sbGrid.length && placed < count; i++) {
-              if (typeof sbGrid[i] === 'string') {
-                sbGrid[i] = sym;
-                placed++;
-              }
-            }
-          }
-
-          const { baseWin, newBombs, winIdxs } = evaluateSbSpin(bet);
-
-          // Accumulate bombs during bonus; on base game apply immediately if any
-          if (sbBonusActive) {
-            newBombs.forEach(v => sbBombs.push(v));
-            renderSbBombsBar();
-          } else if (newBombs.length) {
-            sbBombs = newBombs.slice();
-            renderSbBombsBar();
-          }
-
-          let finalWin = baseWin;
-          if (baseWin > 0 && sbBombs.length) {
-            // Cap total bomb multiplier to protect economy
-            const bombSum = Math.min(15, sbBombs.reduce((a, b) => a + b, 0));
-            finalWin = Math.floor(baseWin * bombSum);
-            // After applying on base game, clear bombs; in bonus keep them
-            if (!sbBonusActive) {
-              // keep display briefly then clear
-              setTimeout(() => { sbBombs = []; renderSbBombsBar(); }, 1200);
-            }
-          }
-
-          renderSbGrid(winIdxs);
-
-          if (finalWin > 0) {
-            if (!sbBonusActive) {
-              updateLocalBalance(finalWin);
-              playSound('win');
-              triggerCardEffect('slots-card-box', true);
-              showFloatingPopup(`🍬 +${finalWin} 🪙`, true);
-              recordWin(true);
-            } else {
-              sbBonusTotalWin += finalWin;
-              playSound('win');
-            }
-            if (statusEl) statusEl.textContent = finalWin > baseWin
-              ? `×бомбы! +${finalWin}`
-              : `+${finalWin}`;
-            if (winLabel) winLabel.textContent = '+' + finalWin;
-          } else {
-            if (!sbBonusActive) {
-              playSound('lose');
-              triggerCardEffect('slots-card-box', false);
-              showFloatingPopup('Мимо', false);
-              recordWin(false);
-              sbBombs = [];
-              renderSbBombsBar();
-            }
-            if (statusEl) statusEl.textContent = sbBonusActive ? 'Пусто' : 'Нет кластера';
-          }
-
-          onDone(finalWin);
-        }
-      }, fastModes.slots ? 45 : 80);
     }
 
     function playSlots() {
-      if (sbBusy || sbBonusActive) return;
+      if (sbBusy) return;
       playSound('click');
       const bet = parseFloat(document.getElementById('slots-bet')?.value) || 0;
       if (bet <= 0 || bet > balance) return;
       updateLocalBalance(-bet);
       recordGamePlay();
-      sbCurrentBet = bet;
       document.getElementById('slots-spin-label').textContent = bet;
-      updateSbBonusPrice();
+      const statusEl = document.getElementById('sb-status');
+      const winLabel = document.getElementById('sb-win-label');
+      if (statusEl) statusEl.textContent = 'Крутим...';
+      if (winLabel) winLabel.textContent = '';
       sbBusy = true;
-      sbBombs = [];
-      renderSbBombsBar();
 
-      runSbSpinAnimation(bet, () => {
-        sbBusy = false;
-      });
-    }
+      // Ensure grid exists
+      if (!document.getElementById('sb-0')) initSbGrid();
 
-    function buySbBonus() {
-      if (sbBusy || sbBonusActive) return;
-      playSound('click');
-      const bet = parseFloat(document.getElementById('slots-bet')?.value) || 0;
-      const cost = Math.floor(bet * 15);
-      if (bet <= 0 || cost > balance) {
-        showFloatingPopup('Недостаточно фишек', false);
-        return;
-      }
-      updateLocalBalance(-cost);
-      recordGamePlay();
-      sbCurrentBet = bet;
-      sbBonusActive = true;
-      sbFreeSpins = 15;
-      sbBombs = [];
-      sbBonusTotalWin = 0;
-      sbBusy = true;
-      renderSbBombsBar();
-      const fsEl = document.getElementById('sb-fs-counter');
-      if (fsEl) fsEl.textContent = '🎁 БОНУС · 15 фриспинов';
-      document.getElementById('sb-status').textContent = 'Бонус запущен!';
-      showFloatingPopup('🎁 15 фриспинов!', true);
-      runSbBonusLoop();
-    }
-
-    function runSbBonusLoop() {
-      if (sbFreeSpins <= 0) {
-        // End bonus: apply accumulated bombs if last wins already applied per spin
-        // Total already summed in sbBonusTotalWin (bombs applied when win happened)
-        sbBonusActive = false;
-        sbBusy = false;
-        const fsEl = document.getElementById('sb-fs-counter');
-        if (fsEl) fsEl.textContent = '';
-        if (sbBonusTotalWin > 0) {
-          updateLocalBalance(sbBonusTotalWin);
-          playSound('win');
-          triggerCardEffect('slots-card-box', true);
-          showFloatingPopup(`🎁 Бонус: +${sbBonusTotalWin} 🪙`, true);
-          recordWin(true);
-          document.getElementById('sb-status').textContent = `Бонус завершён · +${sbBonusTotalWin}`;
-        } else {
-          playSound('lose');
-          showFloatingPopup('Бонус без выигрыша', false);
-          document.getElementById('sb-status').textContent = 'Бонус завершён';
-          recordWin(false);
+      let spins = 0;
+      const maxSpins = fastModes.slots ? 6 : 12;
+      const interval = setInterval(() => {
+        for (let i = 0; i < SB_COLS * SB_ROWS; i++) {
+          sbGrid[i] = SB_SYMBOLS[Math.floor(Math.random() * SB_SYMBOLS.length)];
         }
-        // Clear bombs after short delay
-        setTimeout(() => { sbBombs = []; renderSbBombsBar(); }, 2000);
-        return;
-      }
+        renderSbGrid(null);
+        spins++;
+        if (spins > maxSpins) {
+          clearInterval(interval);
 
-      const fsEl = document.getElementById('sb-fs-counter');
-      if (fsEl) fsEl.textContent = `🎁 Фриспин ${16 - sbFreeSpins} / 15 · бомбы: ${sbBombs.length}`;
+          // Force a cluster win sometimes via luck/god
+          const forceWin = checkWinCondition(32);
+          if (forceWin) {
+            const sym = SB_SYMBOLS[Math.floor(Math.random() * SB_SYMBOLS.length)];
+            const count = 8 + Math.floor(Math.random() * 6);
+            const idxs = [];
+            while (idxs.length < count) {
+              const i = Math.floor(Math.random() * sbGrid.length);
+              if (!idxs.includes(i)) idxs.push(i);
+            }
+            idxs.forEach(i => { sbGrid[i] = sym; });
+          }
 
-      sbFreeSpins--;
-      runSbSpinAnimation(sbCurrentBet, () => {
-        // Brief pause between free spins
-        setTimeout(runSbBonusLoop, fastModes.slots ? 350 : 700);
-      });
+          // Count clusters (total count of each symbol on grid)
+          const counts = {};
+          sbGrid.forEach(s => { counts[s] = (counts[s] || 0) + 1; });
+          let totalWin = 0;
+          const winIdxs = new Set();
+          Object.keys(counts).forEach(sym => {
+            if (counts[sym] >= 8) {
+              const pay = SB_PAY[sym] || 1;
+              // Scale by how many over 8
+              const mult = pay * (1 + (counts[sym] - 8) * 0.15);
+              totalWin += Math.floor(bet * mult);
+              sbGrid.forEach((s, i) => { if (s === sym) winIdxs.add(i); });
+            }
+          });
+
+          renderSbGrid(winIdxs);
+
+          if (totalWin > 0) {
+            updateLocalBalance(totalWin);
+            playSound('win');
+            triggerCardEffect('slots-card-box', true);
+            showFloatingPopup(`🍬 +${totalWin} 🪙 Sweet!`, true);
+            if (statusEl) statusEl.textContent = 'Выигрыш!';
+            if (winLabel) winLabel.textContent = '+' + totalWin;
+            recordWin(true);
+          } else {
+            playSound('lose');
+            triggerCardEffect('slots-card-box', false);
+            showFloatingPopup('Мимо', false);
+            if (statusEl) statusEl.textContent = 'Нет кластера';
+            recordWin(false);
+          }
+          sbBusy = false;
+        }
+      }, fastModes.slots ? 50 : 90);
     }
 
     let minesGameActive = false, minesBet = 0, minesList = [], currentMult = 1.0, selectedMinesCount = 5;
@@ -3924,47 +3497,33 @@
       const arrowEl = document.getElementById('upgrader-arrow');
       if (arrowEl) arrowEl.classList.remove('arrow-win', 'arrow-lose');
 
-      // Результат: выигрыш или проигрыш
+      // Определяем результат: выигрыш или проигрыш
       const isWin = checkWinCondition(chance);
 
       const wheel = document.getElementById('upgrader-wheel');
       const wheelSpeed = fastModes.upgrader ? '0.8s' : '2.5s';
       wheel.style.setProperty('--wheel-speed', wheelSpeed);
 
-      // Колесо: conic-gradient идёт по часовой от верха (стрелка).
-      // Оранжевая зона = [0° .. chanceDeg), чёрная = [chanceDeg .. 360).
-      // После rotate(R) под стрелкой оказывается исходный угол (360 - R%360).
-      // Поэтому для WIN крутим так, чтобы под стрелкой был угол из оранжевой зоны;
-      // для LOSE — из чёрной.
-      const chanceDeg = chance * 3.6;
-      // Небольшой отступ от границы, чтобы не «касаться» линии раздела
-      const margin = Math.min(4, chanceDeg * 0.08, (360 - chanceDeg) * 0.08);
-      let sectorAngle; // исходный угол сектора, который должен оказаться сверху
+      // Рассчитываем угол остановки:
+      // - Если выигрыш: останавливаемся в пределах золотой зоны (0° - chance*3.6°)
+      // - Если проигрыш: останавливаемся в темной зоне (chance*3.6° - 360°)
+      let targetDegree;
       if (isWin) {
-        const span = Math.max(1, chanceDeg - margin * 2);
-        sectorAngle = margin + Math.random() * span; // внутри оранжевого
+        targetDegree = Math.random() * (chance * 3.6);
       } else {
-        const span = Math.max(1, 360 - chanceDeg - margin * 2);
-        sectorAngle = chanceDeg + margin + Math.random() * span; // внутри чёрного
+        targetDegree = chance * 3.6 + Math.random() * ((100 - chance) * 3.6);
       }
-      // Поворот, чтобы sectorAngle оказался под верхней стрелкой
-      let targetDegree = (360 - sectorAngle) % 360;
-
-      // Несколько полных оборотов + доведение до targetDegree
-      const fullSpins = fastModes.upgrader ? 2 : 3;
-      const currentMod = ((currentWheelRotation % 360) + 360) % 360;
-      let delta = targetDegree - currentMod;
-      if (delta <= 0) delta += 360;
-      currentWheelRotation += fullSpins * 360 + delta;
+      
+      // Добавляем несколько полных оборотов для красоты
+      currentWheelRotation += 720 + (targetDegree - (currentWheelRotation % 360));
       wheel.style.transform = `rotate(${currentWheelRotation}deg)`;
 
-      const spinMs = fastModes.upgrader ? 800 : 2500;
       setTimeout(() => {
         btn.disabled = false;
         btn.classList.remove('opacity-50');
         btn.textContent = 'Улучшить';
 
-        // Стрелка подсвечивается: оранжевая = победа, тёмная = проигрыш
+        // Стрелка "падает" на жёлтое при победе и на чёрное при проигрыше
         if (arrowEl) arrowEl.classList.add(isWin ? 'arrow-win' : 'arrow-lose');
         upgraderHistory.push(isWin);
         renderUpgraderHistory();
@@ -3974,23 +3533,20 @@
           playSound('win');
           triggerCardEffect('upgrader-card-box', true);
           showFloatingPopup(`⚡️ +${target} 🪙 x${mult}!`, true);
-          recordWin(true);
         } else {
           playSound('lose');
           triggerCardEffect('upgrader-card-box', false);
           showFloatingPopup(`⚡️ НЕ УДАЛОСЬ`, false);
-          recordWin(false);
         }
-      }, spinMs);
+      }, fastModes.upgrader ? 800 : 2500);
     }
 
-    // ============= ROULETTE WHEEL =============
+    // ============= ROULETTE STRIP =============
     const ROULETTE_ORDER = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
     const ROULETTE_RED = new Set([1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]);
     let rouletteHistoryNums = [0,32,15,19,4,21,2,25];
     let rouletteSpinning = false;
-    let rouletteWheelBuilt = false;
-    let rouletteWheelRotation = 0;
+    let rouletteStripBuilt = false;
 
     function rouletteColorOf(n) {
       if (n === 0) return 'green';
@@ -3998,20 +3554,21 @@
     }
 
     function buildRouletteStrip() {
-      // Builds the circular wheel (conic-gradient) — same init hook name
-      const wheel = document.getElementById('roulette-wheel');
-      if (!wheel) return;
-      const n = ROULETTE_ORDER.length;
-      const step = 100 / n;
-      const parts = ROULETTE_ORDER.map((num, i) => {
-        const c = rouletteColorOf(num);
-        const col = c === 'green' ? '#059669' : c === 'red' ? '#dc2626' : '#111827';
-        const a = (i * step).toFixed(3);
-        const b = ((i + 1) * step).toFixed(3);
-        return `${col} ${a}% ${b}%`;
-      });
-      wheel.style.background = `conic-gradient(from -${(step / 2)}deg, ${parts.join(', ')})`;
-      rouletteWheelBuilt = true;
+      const track = document.getElementById('roulette-strip-track');
+      if (!track) return;
+      track.innerHTML = '';
+      // Repeat sequence many times for long spin
+      const reps = 12;
+      for (let r = 0; r < reps; r++) {
+        ROULETTE_ORDER.forEach(n => {
+          const d = document.createElement('div');
+          d.className = 'roulette-num ' + rouletteColorOf(n);
+          d.textContent = n;
+          d.dataset.num = n;
+          track.appendChild(d);
+        });
+      }
+      rouletteStripBuilt = true;
       renderRouletteHistory();
     }
 
@@ -4033,16 +3590,13 @@
       updateLocalBalance(-bet);
       recordGamePlay();
 
-      if (!rouletteWheelBuilt) buildRouletteStrip();
-      const wheel = document.getElementById('roulette-wheel');
-      if (!wheel) return;
+      if (!rouletteStripBuilt) buildRouletteStrip();
+      const track = document.getElementById('roulette-strip-track');
+      const wrap = document.getElementById('roulette-strip-wrap');
+      if (!track || !wrap) return;
 
       rouletteSpinning = true;
       document.getElementById('roulette-status').textContent = 'Крутим колесо...';
-      const resNumEl = document.getElementById('roulette-result-num');
-      const resLabEl = document.getElementById('roulette-result-label');
-      if (resNumEl) resNumEl.textContent = '…';
-      if (resLabEl) resLabEl.textContent = 'крутим';
 
       // Determine result number
       let resultNum;
@@ -4058,6 +3612,7 @@
           resultNum = blacks[Math.floor(Math.random()*blacks.length)];
         }
       } else {
+        // Lose: pick opposing
         if (colorChoice === 'zero') {
           resultNum = ROULETTE_ORDER[1 + Math.floor(Math.random() * 36)];
         } else if (colorChoice === 'red') {
@@ -4068,18 +3623,24 @@
         }
       }
 
-      // Angle: pointer at top. Segment i is centered at i * (360/n)
-      const n = ROULETTE_ORDER.length;
-      const seg = 360 / n;
+      const cellW = 46; // 42 + 4 gap
       const orderIdx = ROULETTE_ORDER.indexOf(resultNum);
-      // Rotate so that segment center lands under top pointer
-      const targetDeg = 360 - (orderIdx * seg);
-      const spins = fastModes.roulette ? 4 : (5 + Math.floor(Math.random() * 3)); // 5–7 full turns
-      const dur = fastModes.roulette ? 2 : (3.5 + Math.random() * 1.5); // 3.5–5s
+      const baseLoop = ROULETTE_ORDER.length * cellW;
+      // Stop so winning cell is under center pointer
+      const wrapW = wrap.clientWidth || 320;
+      const centerOffset = wrapW / 2 - 21;
+      const loops = fastModes.roulette ? 3 : 6;
+      const targetX = -(loops * baseLoop + orderIdx * cellW - centerOffset);
 
-      rouletteWheelRotation += spins * 360 + (targetDeg - (rouletteWheelRotation % 360));
-      wheel.style.setProperty('--wheel-speed', dur + 's');
-      wheel.style.transform = `rotate(${rouletteWheelRotation}deg)`;
+      track.classList.remove('spinning');
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(0px)';
+      void track.offsetWidth;
+
+      const dur = fastModes.roulette ? 1.2 : 4;
+      track.style.setProperty('--spin-dur', dur + 's');
+      track.classList.add('spinning');
+      track.style.transform = `translateX(${targetX}px)`;
 
       setTimeout(() => {
         rouletteSpinning = false;
@@ -4087,12 +3648,6 @@
         rouletteHistoryNums.unshift(resultNum);
         if (rouletteHistoryNums.length > 10) rouletteHistoryNums.pop();
         renderRouletteHistory();
-
-        if (resNumEl) {
-          resNumEl.textContent = resultNum;
-          resNumEl.style.color = resultColor === 'green' ? '#34d399' : resultColor === 'red' ? '#f87171' : '#e5e7eb';
-        }
-        if (resLabEl) resLabEl.textContent = resultColor === 'green' ? 'зеро' : resultColor === 'red' ? 'красное' : 'чёрное';
 
         const won = (colorChoice === 'zero' && resultNum === 0) ||
                     (colorChoice === 'red' && resultColor === 'red') ||
@@ -4105,16 +3660,16 @@
           playSound('win');
           triggerCardEffect('roulette-card-box', true);
           showFloatingPopup(`🎯 ${resultNum} · +${winAmt} 🪙`, true);
-          document.getElementById('roulette-status').textContent = `Выпало ${resultNum} · Победа!`;
+          document.getElementById('roulette-status').textContent = `Выпало ${resultNum} (${resultColor}) · Победа!`;
           recordWin(true);
         } else {
           playSound('lose');
           triggerCardEffect('roulette-card-box', false);
           showFloatingPopup(`🎯 ${resultNum} · проигрыш`, false);
-          document.getElementById('roulette-status').textContent = `Выпало ${resultNum}`;
+          document.getElementById('roulette-status').textContent = `Выпало ${resultNum} (${resultColor})`;
           recordWin(false);
         }
-      }, dur * 1000 + 50);
+      }, dur * 1000 + 80);
     }
 
     const pokerCards = ['🂡', '🂮', '🂭', '🂫', '🂪', '🂩', '🂨', '🂧', '🂦', '🂥'];
