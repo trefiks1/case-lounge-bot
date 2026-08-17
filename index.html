@@ -667,54 +667,40 @@
     .hilo-btn-up { background: linear-gradient(135deg, #059669, #022c22); color: #d1fae5; }
     .hilo-btn-down { background: linear-gradient(135deg, #dc2626, #2a0505); color: #fecaca; }
 
-    /* ============ PLINKO ============ */
-    .plinko-board {
+    /* ============ HI-LO EXTRA ============ */
+    .hilo-table {
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(16,185,129,0.12), transparent 70%), #050608;
+      border-radius: 22px;
+      border: 1px solid rgba(52,211,153,0.15);
+      padding: 20px 16px;
       position: relative;
-      height: 210px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background:
-        radial-gradient(circle, rgba(255,255,255,0.35) 1.6px, transparent 1.6px) 0 0/12.5% 16.6%,
-        linear-gradient(160deg, #140b22, #050308);
       overflow: hidden;
     }
-    #plinko-ball {
-      position: absolute;
-      width: 14px; height: 14px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%, #fff, var(--accent) 60%, #b45309);
-      box-shadow: 0 0 12px rgba(245,158,11,0.85);
-      top: 6px;
-      left: 50%;
-      transform: translateX(-50%);
-      transition: left 0.28s cubic-bezier(0.45,0,0.55,1), top 0.28s linear;
-      z-index: 5;
+    .hilo-history {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 4px 0;
     }
-    .plinko-buckets {
-      display: grid;
-      grid-template-columns: repeat(9, 1fr);
-      gap: 3px;
-      margin-top: 8px;
-    }
-    .plinko-bucket {
-      text-align: center;
-      font-size: 9px;
-      font-weight: 800;
-      padding: 6px 0;
+    .hilo-history-item {
+      flex-shrink: 0;
+      width: 28px; height: 36px;
       border-radius: 8px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: var(--text-muted);
-      transition: all 0.25s ease;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800;
+      border: 1px solid rgba(255,255,255,0.1);
     }
-    .plinko-bucket.hi { color: #fca5a5; }
-    .plinko-bucket.mid { color: #fcd34d; }
-    .plinko-bucket.lo { color: #6ee7b7; }
-    .plinko-bucket.landed {
-      transform: scale(1.15) translateY(-2px);
-      background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
-      color: #fff;
-      box-shadow: 0 0 18px var(--brand-glow);
+    .hilo-streak-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: linear-gradient(90deg, rgba(245,158,11,0.2), rgba(236,72,153,0.15));
+      border: 1px solid rgba(245,158,11,0.3);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #fbbf24;
     }
   </style>
 </head>
@@ -906,8 +892,8 @@
             <div class="game-tag">x100</div>
           </div>
           <div class="p-3">
-            <div class="font-bold text-sm text-white">Краш / Плинко</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">До 100x · умножение</div>
+            <div class="font-bold text-sm text-white">Краш</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">До 100x · забери до краша</div>
           </div>
         </div>
         <div onclick="openGameScreen('mines')" class="game-banner-card">
@@ -1070,26 +1056,6 @@
             <div class="text-[10px] text-gray-400 mt-0.5 truncate">Выше или ниже — копи множитель</div>
           </div>
         </div>
-        <div onclick="openGameScreen('plinko')" class="game-banner-card">
-          <div class="relative">
-            <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <radialGradient id="g-plinko-bg" cx="50%" cy="42%" r="75%">
-                  <stop offset="0%" stop-color="#1c0a2a"/><stop offset="100%" stop-color="#07030a"/>
-                </radialGradient>
-              </defs>
-              <rect width="300" height="200" fill="url(#g-plinko-bg)"/>
-              <circle cx="150" cy="90" r="58" fill="none" stroke="#c084fc" stroke-width="2" stroke-opacity="0.35"/>
-              <text x="150" y="105" text-anchor="middle" font-size="64" dominant-baseline="middle">🔵</text>
-              <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#c084fc" font-family="Plus Jakarta Sans, sans-serif" letter-spacing="2">PLINKO</text>
-            </svg>
-            <div class="game-tag">x9</div>
-          </div>
-          <div class="p-3">
-            <div class="font-bold text-sm text-white">Плинко</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Кидай шар — лови множитель</div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -1167,6 +1133,51 @@
             <div class="text-xs font-extrabold text-amber-400">+5 000 🪙</div>
           </div>
           <button id="quest-lvl-btn" onclick="claimLvlQuest()" class="btn-primary px-4 py-2 text-xs opacity-50 cursor-not-allowed" disabled>Ожидание</button>
+        </div>
+
+        <div class="glass-card p-4 flex items-center justify-between">
+          <div class="space-y-1">
+            <div class="font-bold text-sm text-white">🚀 Забрать в Краше на 5x+</div>
+            <div class="text-[11px] text-gray-400" id="quest-crash-status">Прогресс: 0 / 1</div>
+            <div class="text-xs font-extrabold text-amber-400">+2 500 🪙</div>
+          </div>
+          <button id="quest-crash-btn" onclick="claimCrashQuest()" class="btn-primary px-4 py-2 text-xs opacity-50 cursor-not-allowed" disabled>Ожидание</button>
+        </div>
+
+        <div class="glass-card p-4 flex items-center justify-between">
+          <div class="space-y-1">
+            <div class="font-bold text-sm text-white">🎁 Открыть 5 кейсов</div>
+            <div class="text-[11px] text-gray-400" id="quest-cases-status">Прогресс: 0 / 5</div>
+            <div class="text-xs font-extrabold text-amber-400">+1 800 🪙</div>
+          </div>
+          <button id="quest-cases-btn" onclick="claimCasesQuest()" class="btn-primary px-4 py-2 text-xs opacity-50 cursor-not-allowed" disabled>Ожидание</button>
+        </div>
+
+        <div class="glass-card p-4 flex items-center justify-between">
+          <div class="space-y-1">
+            <div class="font-bold text-sm text-white">🔺 Серия Hi-Lo ×5</div>
+            <div class="text-[11px] text-gray-400" id="quest-hilo-status">Прогресс: 0 / 5</div>
+            <div class="text-xs font-extrabold text-amber-400">+3 500 🪙</div>
+          </div>
+          <button id="quest-hilo-btn" onclick="claimHiloQuest()" class="btn-primary px-4 py-2 text-xs opacity-50 cursor-not-allowed" disabled>Ожидание</button>
+        </div>
+
+        <div class="glass-card p-4 flex items-center justify-between">
+          <div class="space-y-1">
+            <div class="font-bold text-sm text-white">💎 Выиграть 50 000 фишек</div>
+            <div class="text-[11px] text-gray-400" id="quest-won-status">Прогресс: 0 / 50000</div>
+            <div class="text-xs font-extrabold text-amber-400">+4 000 🪙</div>
+          </div>
+          <button id="quest-won-btn" onclick="claimWonQuest()" class="btn-primary px-4 py-2 text-xs opacity-50 cursor-not-allowed" disabled>Ожидание</button>
+        </div>
+
+        <div class="glass-card p-4 flex items-center justify-between border border-violet-500/20 bg-gradient-to-r from-violet-950/30 to-transparent">
+          <div class="space-y-1">
+            <div class="font-bold text-sm text-white">🔥 Комбо ×10 (любые игры)</div>
+            <div class="text-[11px] text-gray-400" id="quest-combo-status">Прогресс: 0 / 10</div>
+            <div class="text-xs font-extrabold text-violet-300">+7 500 🪙</div>
+          </div>
+          <button id="quest-combo-btn" onclick="claimComboQuest()" class="btn-primary px-4 py-2 text-xs opacity-50 cursor-not-allowed bg-gradient-to-r from-violet-600 to-fuchsia-600" disabled>Ожидание</button>
         </div>
       </div>
     </div>
@@ -1358,6 +1369,16 @@
         <div class="flex justify-between text-xs py-2"><span class="text-gray-400">Выиграно фишек:</span><span id="stat-won" class="font-bold text-emerald-400">0 🪙</span></div>
       </div>
 
+      <div class="glass-card p-4 space-y-3 bg-gradient-to-r from-violet-950/40 to-transparent border border-violet-500/20">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-sm font-bold text-white">🎁 Ежедневный бонус</div>
+            <div class="text-[11px] text-gray-400 mt-0.5" id="daily-bonus-status">Забери 500 🪙 раз в сутки</div>
+          </div>
+          <button id="daily-bonus-btn" onclick="claimDailyBonus()" class="btn-primary px-4 py-2.5 text-xs bg-gradient-to-r from-violet-600 to-fuchsia-600 shadow-violet-900/40">Забрать</button>
+        </div>
+      </div>
+
       <div class="glass-card p-4 space-y-3">
         <div class="text-sm font-bold text-gray-300">Активировать промокод</div>
         <div class="flex space-x-2">
@@ -1534,22 +1555,85 @@
       </div>
     </div>
 
-    <!-- РЕЖИМ: КРАШ-БАШНЯ -->
-    <div id="screen-crash" class="screen space-y-4">
-      <div class="flex justify-between items-center mb-2">
-        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад к играм</span></button>
+    <!-- РЕЖИМ: КРАШ -->
+    <div id="screen-crash" class="screen space-y-3">
+      <div class="flex justify-between items-center mb-1">
+        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад</span></button>
         <button onclick="toggleFastMode('crash')" id="fast-btn-crash" class="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-[10px] font-extrabold text-gray-300">⚡ Быстро: ВЫКЛ</button>
       </div>
-      <div id="crash-card-box" class="glass-card p-6 text-center space-y-6 shadow-2xl">
-        <h2 class="font-extrabold text-lg text-white">Краш-Башня</h2>
-        <div class="h-40 bg-black/50 rounded-2xl border border-white/10 flex flex-col items-center justify-center relative overflow-hidden shadow-inner">
-          <div id="crash-multiplier" class="text-4xl font-extrabold text-amber-400 tracking-tight">1.00x</div>
-          <div class="text-xs text-gray-400 mt-1.5 font-medium" id="crash-status">Сделайте ставку и запустите ракету</div>
+      <div id="crash-card-box" class="glass-card p-4 space-y-4 shadow-2xl border-red-500/15">
+        <div class="flex items-center justify-between">
+          <h2 class="font-extrabold text-lg text-white">🚀 Краш</h2>
+          <div class="text-[10px] font-extrabold text-amber-400 bg-amber-500/15 border border-amber-500/30 px-2.5 py-1 rounded-full">до x100</div>
         </div>
-        <div class="space-y-3">
-          <input id="crash-bet" type="number" value="100" class="w-full bg-black/40 border border-white/10 rounded-2xl p-3.5 text-center font-extrabold text-sm outline-none text-white">
-          <button id="crash-action-btn" onclick="startCrashGame()" class="btn-primary w-full py-3.5 text-xs font-extrabold">Запустить ракету</button>
+
+        <!-- История крашей -->
+        <div class="flex overflow-x-auto no-scrollbar gap-1.5" id="crash-history">
+          <div class="flex-shrink-0 px-2 py-1 rounded-lg bg-black/40 border border-white/10 text-[10px] font-bold text-gray-400">—</div>
         </div>
+
+        <!-- График -->
+        <div class="crash-graph-wrap" id="crash-graph-wrap">
+          <div class="crash-graph-grid"></div>
+          <svg viewBox="0 0 300 180" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="crashGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#f59e0b"/>
+                <stop offset="100%" stop-color="#34d399"/>
+              </linearGradient>
+              <linearGradient id="crashGradLose" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#f87171"/>
+                <stop offset="100%" stop-color="#ef4444"/>
+              </linearGradient>
+              <linearGradient id="crashFillGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="rgba(245,158,11,0.35)"/>
+                <stop offset="100%" stop-color="rgba(245,158,11,0)"/>
+              </linearGradient>
+            </defs>
+            <path id="crash-fill" d="M0,180 L0,180"/>
+            <path id="crash-line" d="M0,180"/>
+            <circle id="crash-dot" cx="0" cy="180" r="5" fill="#f59e0b"/>
+          </svg>
+          <div class="crash-hud">
+            <div id="crash-multiplier" class="text-4xl font-extrabold text-amber-400 tracking-tight drop-shadow-lg">1.00x</div>
+            <div class="text-xs text-gray-400 mt-1 font-medium" id="crash-status">Сделайте ставку и запустите ракету</div>
+          </div>
+        </div>
+
+        <!-- Авто-кэшаут -->
+        <div class="bg-black/40 border border-white/10 rounded-2xl p-3 space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="flex items-center gap-2 text-[11px] font-bold text-gray-300 cursor-pointer">
+              <input type="checkbox" id="crash-auto-enabled" class="accent-amber-500" onchange="onCrashAutoToggle()">
+              Авто-забрать
+            </label>
+            <span id="crash-auto-label" class="text-[11px] font-extrabold text-amber-400">2.00x</span>
+          </div>
+          <input id="crash-auto-range" type="range" min="1.1" max="50" step="0.1" value="2" oninput="onCrashAutoRange()" class="w-full accent-amber-500 h-1.5 bg-black/50 rounded-lg cursor-pointer" disabled>
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] text-gray-400 font-bold">СТАВКА</span>
+            <div class="flex space-x-1.5">
+              <button onclick="setCrashBetHalf()" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">1/2</button>
+              <button onclick="setCrashBetDouble()" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">2x</button>
+              <button onclick="setCrashBetMax()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-500/30 text-[10px] font-bold text-amber-300">MAX</button>
+            </div>
+          </div>
+          <input id="crash-bet" type="number" value="100" class="w-full bg-black/50 border border-white/10 rounded-2xl p-3 text-center font-extrabold text-base outline-none text-white">
+          <div class="grid grid-cols-4 gap-2">
+            <button onclick="setCrashBet(50)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">50</button>
+            <button onclick="setCrashBet(100)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">100</button>
+            <button onclick="setCrashBet(500)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">500</button>
+            <button onclick="setCrashBet(1000)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">1K</button>
+          </div>
+        </div>
+
+        <button id="crash-action-btn" onclick="startCrashGame()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 text-black font-extrabold text-sm shadow-lg shadow-orange-900/40 active:scale-95 transition-transform">
+          🚀 Запустить ракету
+        </button>
+        <p class="text-[10px] text-gray-500 text-center">Множитель растёт до краша · теоретический максимум x100</p>
       </div>
     </div>
 
@@ -1761,6 +1845,71 @@
       </div>
     </div>
 
+    <!-- ИГРА: HI-LO -->
+    <div id="screen-hilo" class="screen space-y-3">
+      <div class="flex justify-between items-center mb-1">
+        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад</span></button>
+        <button onclick="toggleFastMode('hilo')" id="fast-btn-hilo" class="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-[10px] font-extrabold text-gray-300">⚡ Быстро: ВЫКЛ</button>
+      </div>
+      <div id="hilo-card-box" class="glass-card p-4 space-y-4 shadow-2xl border-emerald-500/20">
+        <div class="flex items-center justify-between">
+          <h2 class="font-extrabold text-lg text-white">🔺 Hi-Lo</h2>
+          <div class="hilo-streak-badge" id="hilo-streak-badge">🔥 Серия: 0</div>
+        </div>
+
+        <div class="hilo-table">
+          <div class="flex justify-center mb-3">
+            <div class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Текущая карта</div>
+          </div>
+          <div class="flex justify-center items-center gap-6">
+            <div id="hilo-current-card" class="hilo-card black">
+              <div class="rank">A</div>
+              <div class="suit">♠</div>
+            </div>
+            <div class="text-2xl text-gray-600 font-extrabold">→</div>
+            <div id="hilo-next-card" class="hilo-card black opacity-40">
+              <div class="rank">?</div>
+              <div class="suit">?</div>
+            </div>
+          </div>
+          <div class="text-center mt-4 text-xs text-emerald-400 font-bold" id="hilo-status">Угадайте: следующая карта выше или ниже?</div>
+        </div>
+
+        <div class="hilo-history no-scrollbar" id="hilo-history"></div>
+
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] text-gray-400 font-bold">СТАВКА</span>
+            <div class="flex space-x-1.5">
+              <button onclick="setHiloBetHalf()" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">1/2</button>
+              <button onclick="setHiloBetDouble()" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">2x</button>
+              <button onclick="setHiloBetMax()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-500/30 text-[10px] font-bold text-amber-300">MAX</button>
+            </div>
+          </div>
+          <input id="hilo-bet" type="number" value="100" class="w-full bg-black/50 border border-white/10 rounded-2xl p-3 text-center font-extrabold text-base outline-none text-white">
+          <div class="grid grid-cols-4 gap-2">
+            <button onclick="setHiloBet(50)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">50</button>
+            <button onclick="setHiloBet(100)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">100</button>
+            <button onclick="setHiloBet(500)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">500</button>
+            <button onclick="setHiloBet(1000)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">1K</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <button id="hilo-btn-up" onclick="playHilo('up')" class="hilo-btn hilo-btn-up">
+            🔺 ВЫШЕ<br><span class="text-[11px] opacity-80 font-bold">x1.95</span>
+          </button>
+          <button id="hilo-btn-down" onclick="playHilo('down')" class="hilo-btn hilo-btn-down">
+            🔻 НИЖЕ<br><span class="text-[11px] opacity-80 font-bold">x1.95</span>
+          </button>
+        </div>
+
+        <p class="text-[10px] text-gray-500 text-center leading-relaxed">
+          A=1 … K=13 · при равенстве — возврат ставки · серия увеличивает множитель
+        </p>
+      </div>
+    </div>
+
   </main>
 
   <!-- Нижняя навигация -->
@@ -1830,10 +1979,21 @@
     let streakQuestClaimed = typeof savedData.streakQuestClaimed === 'boolean' ? savedData.streakQuestClaimed : false;
     let spendQuestClaimed = typeof savedData.spendQuestClaimed === 'boolean' ? savedData.spendQuestClaimed : false;
     let lvlQuestClaimed = typeof savedData.lvlQuestClaimed === 'boolean' ? savedData.lvlQuestClaimed : false;
+    let crashQuestClaimed = typeof savedData.crashQuestClaimed === 'boolean' ? savedData.crashQuestClaimed : false;
+    let casesQuestClaimed = typeof savedData.casesQuestClaimed === 'boolean' ? savedData.casesQuestClaimed : false;
+    let hiloQuestClaimed = typeof savedData.hiloQuestClaimed === 'boolean' ? savedData.hiloQuestClaimed : false;
+    let wonQuestClaimed = typeof savedData.wonQuestClaimed === 'boolean' ? savedData.wonQuestClaimed : false;
+    let comboQuestClaimed = typeof savedData.comboQuestClaimed === 'boolean' ? savedData.comboQuestClaimed : false;
+    let crashCashout5Done = typeof savedData.crashCashout5Done === 'boolean' ? savedData.crashCashout5Done : false;
+    let casesOpened = typeof savedData.casesOpened === 'number' ? savedData.casesOpened : 0;
+    let maxHiloStreak = typeof savedData.maxHiloStreak === 'number' ? savedData.maxHiloStreak : 0;
+    let maxCombo = typeof savedData.maxCombo === 'number' ? savedData.maxCombo : 0;
     let winStreak = typeof savedData.winStreak === 'number' ? savedData.winStreak : 0;
+    let globalCombo = typeof savedData.globalCombo === 'number' ? savedData.globalCombo : 0;
     let playSeconds = typeof savedData.playSeconds === 'number' ? savedData.playSeconds : 0;
     let matchSecondsLeft = 180; 
     let customPromos = savedData.customPromos || { "VIP2026": 2000, "START": 1000 };
+    let lastDailyClaim = typeof savedData.lastDailyClaim === 'number' ? savedData.lastDailyClaim : 0;
     let adminLogs = savedData.adminLogs || ["[Система] Лог инициализирован."];
     
     let globalLuck = typeof savedData.globalLuck === 'number' ? savedData.globalLuck : 1;
@@ -1845,7 +2005,7 @@
     let currentGodMinutes = 0;
 
     let fastModes = {
-      coinflip: false, dice: false, slots: false, mines: false, crash: false, upgrader: false, roulette: false, poker: false
+      coinflip: false, dice: false, slots: false, mines: false, crash: false, upgrader: false, roulette: false, poker: false, hilo: false
     };
 
     function logAdminAction(text) {
@@ -1878,8 +2038,11 @@
       try {
         const dataToSave = { 
           balance, gamesPlayed, totalSpent, totalWon, userXp, userLevel,
-          tgSubClaimed, timeQuestClaimed, gamesQuestClaimed, streakQuestClaimed, spendQuestClaimed, lvlQuestClaimed, winStreak, playSeconds, 
-          customPromos, globalLuck, luckExpiresAt, godMode, godExpiresAt, adminLogs
+          tgSubClaimed, timeQuestClaimed, gamesQuestClaimed, streakQuestClaimed, spendQuestClaimed, lvlQuestClaimed,
+          crashQuestClaimed, casesQuestClaimed, hiloQuestClaimed, wonQuestClaimed, comboQuestClaimed,
+          crashCashout5Done, casesOpened, maxHiloStreak, maxCombo,
+          winStreak, globalCombo, playSeconds, 
+          customPromos, lastDailyClaim, globalLuck, luckExpiresAt, godMode, godExpiresAt, adminLogs
         };
         localStorage.setItem(storageKey, JSON.stringify(dataToSave));
         localStorage.setItem('case_lounge_global_admins', JSON.stringify(adminUserIds));
@@ -1954,6 +2117,7 @@
 
       saveGameData();
       updateQuestsUI();
+      if (playSeconds % 30 === 0) updateDailyBonusUI();
     }, 1000);
 
     let audioCtx = null;
@@ -2060,6 +2224,8 @@
         updateLevelUI();
         renderAdminLogs();
         updateUI();
+        updateDailyBonusUI();
+        initHiloCard();
       } catch (e) {}
     }
 
@@ -2121,7 +2287,10 @@
     }
 
     function openScreen(name) { showScreen(name); }
-    function openGameScreen(id) { showScreen(id); }
+    function openGameScreen(id) {
+      showScreen(id);
+      if (id === 'hilo') initHiloCard();
+    }
 
     function setTheme(themeName) {
       playSound('click');
@@ -2369,6 +2538,47 @@
       }
     }
 
+    function canClaimDailyBonus() {
+      const now = Date.now();
+      const dayMs = 24 * 60 * 60 * 1000;
+      return (now - lastDailyClaim) >= dayMs;
+    }
+
+    function updateDailyBonusUI() {
+      const btn = document.getElementById('daily-bonus-btn');
+      const status = document.getElementById('daily-bonus-status');
+      if (!btn || !status) return;
+      if (canClaimDailyBonus()) {
+        btn.disabled = false;
+        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+        btn.textContent = 'Забрать';
+        status.textContent = 'Забери 500 🪙 раз в сутки';
+      } else {
+        const left = 24 * 60 * 60 * 1000 - (Date.now() - lastDailyClaim);
+        const h = Math.floor(left / 3600000);
+        const m = Math.floor((left % 3600000) / 60000);
+        btn.disabled = true;
+        btn.classList.add('opacity-50', 'cursor-not-allowed');
+        btn.textContent = 'Ждите';
+        status.textContent = `Следующий через ${h}ч ${m}м`;
+      }
+    }
+
+    function claimDailyBonus() {
+      playSound('click');
+      if (!canClaimDailyBonus()) {
+        showFloatingPopup('Бонус уже получен сегодня', false);
+        return;
+      }
+      lastDailyClaim = Date.now();
+      updateLocalBalance(500);
+      addXp(50);
+      saveGameData();
+      updateDailyBonusUI();
+      playSound('win');
+      showFloatingPopup('+500 🪙 Ежедневный бонус!', true);
+    }
+
     function updateQuestsUI() {
       const activeTimer = document.getElementById('global-active-timer');
       if (activeTimer) {
@@ -2430,6 +2640,46 @@
         if (lvlQuestClaimed) { lvBtn.textContent='Готово ✅'; lvBtn.disabled=true; lvBtn.classList.add('opacity-50'); }
         else if (userLevel >= 5) { lvBtn.textContent='Забрать'; lvBtn.disabled=false; lvBtn.classList.remove('opacity-50'); }
       }
+      // crash 5x
+      const crStat = document.getElementById('quest-crash-status');
+      const crBtn = document.getElementById('quest-crash-btn');
+      if (crStat && crBtn) {
+        if (crashQuestClaimed) { crStat.textContent='Награда получена'; crBtn.textContent='Готово ✅'; crBtn.disabled=true; crBtn.classList.add('opacity-50'); }
+        else if (crashCashout5Done) { crStat.textContent='Задание выполнено!'; crBtn.textContent='Забрать'; crBtn.disabled=false; crBtn.classList.remove('opacity-50'); }
+        else crStat.textContent = 'Прогресс: 0 / 1';
+      }
+      // cases
+      const caStat = document.getElementById('quest-cases-status');
+      const caBtn = document.getElementById('quest-cases-btn');
+      if (caStat && caBtn) {
+        if (casesQuestClaimed) { caStat.textContent='Награда получена'; caBtn.textContent='Готово ✅'; caBtn.disabled=true; caBtn.classList.add('opacity-50'); }
+        else if (casesOpened >= 5) { caStat.textContent='Задание выполнено!'; caBtn.textContent='Забрать'; caBtn.disabled=false; caBtn.classList.remove('opacity-50'); }
+        else caStat.textContent = `Прогресс: ${casesOpened} / 5`;
+      }
+      // hilo streak
+      const hiStat = document.getElementById('quest-hilo-status');
+      const hiBtn = document.getElementById('quest-hilo-btn');
+      if (hiStat && hiBtn) {
+        if (hiloQuestClaimed) { hiStat.textContent='Награда получена'; hiBtn.textContent='Готово ✅'; hiBtn.disabled=true; hiBtn.classList.add('opacity-50'); }
+        else if (maxHiloStreak >= 5) { hiStat.textContent='Задание выполнено!'; hiBtn.textContent='Забрать'; hiBtn.disabled=false; hiBtn.classList.remove('opacity-50'); }
+        else hiStat.textContent = `Прогресс: ${maxHiloStreak} / 5`;
+      }
+      // total won
+      const woStat = document.getElementById('quest-won-status');
+      const woBtn = document.getElementById('quest-won-btn');
+      if (woStat && woBtn) {
+        if (wonQuestClaimed) { woStat.textContent='Награда получена'; woBtn.textContent='Готово ✅'; woBtn.disabled=true; woBtn.classList.add('opacity-50'); }
+        else if (totalWon >= 50000) { woStat.textContent='Задание выполнено!'; woBtn.textContent='Забрать'; woBtn.disabled=false; woBtn.classList.remove('opacity-50'); }
+        else woStat.textContent = `Прогресс: ${totalWon} / 50000`;
+      }
+      // combo
+      const coStat = document.getElementById('quest-combo-status');
+      const coBtn = document.getElementById('quest-combo-btn');
+      if (coStat && coBtn) {
+        if (comboQuestClaimed) { coStat.textContent='Награда получена'; coBtn.textContent='Готово ✅'; coBtn.disabled=true; coBtn.classList.add('opacity-50'); }
+        else if (maxCombo >= 10) { coStat.textContent='Задание выполнено!'; coBtn.textContent='Забрать'; coBtn.disabled=false; coBtn.classList.remove('opacity-50'); }
+        else coStat.textContent = `Прогресс: ${Math.max(globalCombo, maxCombo)} / 10`;
+      }
       updateAdminPanelUI();
     }
 
@@ -2481,10 +2731,52 @@
       if (lvlQuestClaimed || userLevel < 5) return;
       lvlQuestClaimed = true; updateLocalBalance(5000); addXp(500); saveGameData(); updateQuestsUI(); playSound('win'); showFloatingPopup('+5 000 🪙 уровень!', true);
     }
+    function claimCrashQuest() {
+      if (crashQuestClaimed || !crashCashout5Done) return;
+      crashQuestClaimed = true; updateLocalBalance(2500); addXp(350); saveGameData(); updateQuestsUI(); playSound('win'); showFloatingPopup('+2 500 🪙 Краш 5x!', true);
+    }
+    function claimCasesQuest() {
+      if (casesQuestClaimed || casesOpened < 5) return;
+      casesQuestClaimed = true; updateLocalBalance(1800); addXp(250); saveGameData(); updateQuestsUI(); playSound('win'); showFloatingPopup('+1 800 🪙 кейсы!', true);
+    }
+    function claimHiloQuest() {
+      if (hiloQuestClaimed || maxHiloStreak < 5) return;
+      hiloQuestClaimed = true; updateLocalBalance(3500); addXp(400); saveGameData(); updateQuestsUI(); playSound('win'); showFloatingPopup('+3 500 🪙 Hi-Lo серия!', true);
+    }
+    function claimWonQuest() {
+      if (wonQuestClaimed || totalWon < 50000) return;
+      wonQuestClaimed = true; updateLocalBalance(4000); addXp(450); saveGameData(); updateQuestsUI(); playSound('win'); showFloatingPopup('+4 000 🪙 за выигрыши!', true);
+    }
+    function claimComboQuest() {
+      if (comboQuestClaimed || maxCombo < 10) return;
+      comboQuestClaimed = true; updateLocalBalance(7500); addXp(600); saveGameData(); updateQuestsUI(); playSound('win'); showFloatingPopup('+7 500 🪙 КОМБО x10!', true);
+    }
 
     function recordGamePlay() {
       gamesPlayed++;
       addXp(50);
+      saveGameData();
+      updateQuestsUI();
+    }
+
+    function recordWin(isWin) {
+      if (isWin) {
+        winStreak++;
+        globalCombo++;
+        if (globalCombo > maxCombo) maxCombo = globalCombo;
+        if (globalCombo >= 3) {
+          showFloatingPopup(`🔥 Комбо x${globalCombo}!`, true);
+        }
+        // Small combo bonus chips every 5
+        if (globalCombo > 0 && globalCombo % 5 === 0) {
+          const bonus = globalCombo * 20;
+          updateLocalBalance(bonus);
+          showFloatingPopup(`⚡ Комбо-бонус +${bonus} 🪙`, true);
+        }
+      } else {
+        winStreak = 0;
+        globalCombo = 0;
+      }
       saveGameData();
       updateQuestsUI();
     }
@@ -2520,10 +2812,12 @@
           playSound('win');
           triggerCardEffect('coin-card-box', true);
           showFloatingPopup(`+${winAmt} 🪙 ПОБЕДА!`, true);
+          recordWin(true);
         } else {
           playSound('lose');
           triggerCardEffect('coin-card-box', false);
           showFloatingPopup(`ПОРАЖЕНИЕ`, false);
+          recordWin(false);
         }
       }, duration);
     }
@@ -2609,10 +2903,12 @@
           playSound('win');
           triggerCardEffect('dice-card-box', true);
           showFloatingPopup(`ПОБЕДА! (${pRoll} : ${bRoll})`, true);
+          recordWin(true);
         } else {
           playSound('lose');
           triggerCardEffect('dice-card-box', false);
           showFloatingPopup(`ПОРАЖЕНИЕ (${pRoll} : ${bRoll})`, false);
+          recordWin(false);
         }
       }, duration);
     }
@@ -2731,6 +3027,12 @@
         minesGameActive = false;
         playSound('lose');
         showFloatingPopup('ВЫ ПОДОРВАЛИСЬ!', false);
+        recordWin(false);
+        document.getElementById('mines-cashout-btn')?.classList.add('hidden');
+        setTimeout(() => {
+          document.getElementById('mines-setup')?.classList.remove('hidden');
+          document.getElementById('mines-board-container')?.classList.add('hidden');
+        }, 1200);
         return;
       }
       el.textContent = '💎'; el.style.background = 'rgba(16, 185, 129, 0.2)';
@@ -2744,8 +3046,105 @@
     }
 
     let crashActive = false, crashMult = 1.0, crashTimer = null, crashBetAmt = 0;
+    let crashTarget = 2.0, crashPoints = [], crashHistoryList = [];
+    let crashAutoEnabled = false, crashAutoAt = 2.0;
+
+    function generateCrashPoint() {
+      if (godMode) return 100;
+      // Instant crash ~3%
+      if (Math.random() < 0.03) return 1.00;
+      // Fair-ish distribution with house edge, capped at 100x
+      // P(crash before m) ≈ 1 - 0.97/m
+      const r = Math.random();
+      const point = 0.97 / (1 - r);
+      return Math.min(100, Math.max(1.01, Math.floor(point * 100) / 100));
+    }
+
+    function setCrashBet(v) {
+      playSound('click');
+      const el = document.getElementById('crash-bet');
+      if (el) el.value = Math.min(balance || v, v);
+    }
+    function setCrashBetHalf() {
+      playSound('click');
+      const el = document.getElementById('crash-bet');
+      if (el) el.value = Math.max(10, Math.floor((+el.value || 100) / 2));
+    }
+    function setCrashBetDouble() {
+      playSound('click');
+      const el = document.getElementById('crash-bet');
+      if (el) el.value = Math.min(balance, (+el.value || 100) * 2);
+    }
+    function setCrashBetMax() {
+      playSound('click');
+      const el = document.getElementById('crash-bet');
+      if (el) el.value = Math.max(10, balance);
+    }
+    function onCrashAutoToggle() {
+      const cb = document.getElementById('crash-auto-enabled');
+      const range = document.getElementById('crash-auto-range');
+      crashAutoEnabled = !!(cb && cb.checked);
+      if (range) range.disabled = !crashAutoEnabled;
+    }
+    function onCrashAutoRange() {
+      const range = document.getElementById('crash-auto-range');
+      const label = document.getElementById('crash-auto-label');
+      if (!range) return;
+      crashAutoAt = parseFloat(range.value) || 2;
+      if (label) label.textContent = crashAutoAt.toFixed(2) + 'x';
+    }
+
+    function updateCrashGraph() {
+      const line = document.getElementById('crash-line');
+      const fill = document.getElementById('crash-fill');
+      const dot = document.getElementById('crash-dot');
+      if (!line || crashPoints.length < 1) return;
+      const w = 300, h = 180;
+      const maxM = Math.max(2, crashMult, crashTarget * 0.6);
+      let d = '';
+      let fd = `M0,${h} `;
+      crashPoints.forEach((m, i) => {
+        const x = (i / Math.max(1, crashPoints.length - 1)) * w;
+        const y = h - Math.min(h - 8, ((m - 1) / (maxM - 1)) * (h - 16));
+        d += (i === 0 ? `M${x},${y}` : ` L${x},${y}`);
+        fd += `L${x},${y} `;
+      });
+      fd += `L${w},${h} Z`;
+      line.setAttribute('d', d);
+      fill.setAttribute('d', fd);
+      const last = crashPoints[crashPoints.length - 1];
+      const lx = w;
+      const ly = h - Math.min(h - 8, ((last - 1) / (maxM - 1)) * (h - 16));
+      if (dot) { dot.setAttribute('cx', lx); dot.setAttribute('cy', ly); }
+    }
+
+    function pushCrashHistory(mult, crashed) {
+      crashHistoryList.unshift({ m: mult, c: crashed });
+      if (crashHistoryList.length > 12) crashHistoryList.pop();
+      const box = document.getElementById('crash-history');
+      if (!box) return;
+      box.innerHTML = crashHistoryList.map(h => {
+        const col = h.c ? (h.m < 2 ? 'text-red-400' : h.m < 5 ? 'text-amber-400' : 'text-emerald-400') : 'text-sky-300';
+        const bg = h.c ? 'bg-black/40' : 'bg-sky-500/20 border-sky-400/30';
+        return `<div class="flex-shrink-0 px-2 py-1 rounded-lg ${bg} border border-white/10 text-[10px] font-bold ${col}">${h.m.toFixed(2)}x</div>`;
+      }).join('');
+    }
+
+    function resetCrashGraph() {
+      crashPoints = [1];
+      const wrap = document.getElementById('crash-graph-wrap');
+      if (wrap) wrap.classList.remove('crashed');
+      const line = document.getElementById('crash-line');
+      const fill = document.getElementById('crash-fill');
+      const dot = document.getElementById('crash-dot');
+      if (line) line.setAttribute('d', 'M0,180');
+      if (fill) fill.setAttribute('d', 'M0,180 L0,180');
+      if (dot) { dot.setAttribute('cx', '0'); dot.setAttribute('cy', '180'); dot.setAttribute('fill', '#f59e0b'); }
+    }
+
     function startCrashGame() {
       playSound('click');
+      if (crashActive) return;
       crashBetAmt = parseFloat(document.getElementById('crash-bet')?.value) || 0;
       if (crashBetAmt <= 0 || crashBetAmt > balance) return;
       updateLocalBalance(-crashBetAmt);
@@ -2753,27 +3152,60 @@
 
       crashActive = true;
       crashMult = 1.0;
-      const btn = document.getElementById('crash-action-btn');
-      btn.textContent = 'Забрать выигрыш';
-      btn.onclick = cashoutCrash;
+      crashTarget = generateCrashPoint();
+      resetCrashGraph();
 
-      const targetCrash = godMode ? 100 : (Math.random() > 0.5 ? 1.2 : 2.0);
+      const btn = document.getElementById('crash-action-btn');
+      btn.textContent = '💰 Забрать';
+      btn.onclick = cashoutCrash;
+      btn.className = 'w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-600 text-black font-extrabold text-sm shadow-lg shadow-emerald-900/40 active:scale-95 transition-transform';
+
+      const multEl = document.getElementById('crash-multiplier');
+      multEl.style.color = '#fbbf24';
+      document.getElementById('crash-status').textContent = 'Ракета летит...';
+
+      const tick = fastModes.crash ? 40 : 90;
+      const step = fastModes.crash ? 0.08 : 0.03;
 
       crashTimer = setInterval(() => {
-        crashMult = parseFloat((crashMult + (fastModes.crash ? 0.2 : 0.05)).toFixed(2));
-        document.getElementById('crash-multiplier').textContent = crashMult + 'x';
-        document.getElementById('crash-status').textContent = 'Ракета летит вверх...';
+        // Growth slows a bit at higher multipliers for drama
+        const growth = step * (crashMult < 2 ? 1 : crashMult < 5 ? 1.15 : crashMult < 20 ? 1.35 : 1.6);
+        crashMult = parseFloat((crashMult + growth).toFixed(2));
+        if (crashMult > 100) crashMult = 100;
 
-        if (crashMult >= targetCrash) {
+        crashPoints.push(crashMult);
+        if (crashPoints.length > 80) crashPoints.shift();
+        updateCrashGraph();
+
+        multEl.textContent = crashMult.toFixed(2) + 'x';
+        if (crashMult >= 10) multEl.style.color = '#34d399';
+        else if (crashMult >= 5) multEl.style.color = '#fbbf24';
+        else multEl.style.color = '#f59e0b';
+
+        // Auto cashout
+        if (crashAutoEnabled && crashMult >= crashAutoAt) {
+          cashoutCrash();
+          return;
+        }
+
+        if (crashMult >= crashTarget) {
           clearInterval(crashTimer);
           crashActive = false;
+          const wrap = document.getElementById('crash-graph-wrap');
+          if (wrap) wrap.classList.add('crashed');
+          const dot = document.getElementById('crash-dot');
+          if (dot) dot.setAttribute('fill', '#ef4444');
+          multEl.style.color = '#ef4444';
           playSound('lose');
           triggerCardEffect('crash-card-box', false);
-          document.getElementById('crash-status').textContent = 'КРАШ!';
-          btn.textContent = 'Запустить ракету';
+          document.getElementById('crash-status').textContent = `💥 КРАШ на ${crashTarget.toFixed(2)}x`;
+          pushCrashHistory(crashTarget, true);
+          recordWin(false);
+          btn.textContent = '🚀 Запустить ракету';
           btn.onclick = startCrashGame;
+          btn.className = 'w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 text-black font-extrabold text-sm shadow-lg shadow-orange-900/40 active:scale-95 transition-transform';
         }
-      }, fastModes.crash ? 40 : 100);
+      }, tick);
     }
 
     function cashoutCrash() {
@@ -2784,11 +3216,32 @@
       updateLocalBalance(win);
       playSound('win');
       triggerCardEffect('crash-card-box', true);
-      showFloatingPopup(`+${win} 🪙 УСПЕХ!`, true);
-      document.getElementById('crash-status').textContent = `Забрано на ${crashMult}x`;
+      showFloatingPopup(`🚀 +${win} 🪙 на ${crashMult.toFixed(2)}x!`, true);
+      document.getElementById('crash-status').textContent = `Забрано на ${crashMult.toFixed(2)}x`;
+      pushCrashHistory(crashMult, false);
+      recordWin(true);
+      if (crashMult >= 5) {
+        crashCashout5Done = true;
+        saveGameData();
+        updateQuestsUI();
+      }
       const btn = document.getElementById('crash-action-btn');
-      btn.textContent = 'Запустить ракету';
+      btn.textContent = '🚀 Запустить ракету';
       btn.onclick = startCrashGame;
+      btn.className = 'w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 text-black font-extrabold text-sm shadow-lg shadow-orange-900/40 active:scale-95 transition-transform';
+    }
+
+    function cashoutMines() {
+      if (!minesGameActive) return;
+      minesGameActive = false;
+      const win = Math.floor(minesBet * currentMult);
+      updateLocalBalance(win);
+      playSound('win');
+      showFloatingPopup(`💎 +${win} 🪙 Забрано!`, true);
+      recordWin(true);
+      document.getElementById('mines-cashout-btn').classList.add('hidden');
+      document.getElementById('mines-setup').classList.remove('hidden');
+      document.getElementById('mines-board-container').classList.add('hidden');
     }
 
     // ============= АПГРЕЙДЕР — ПРАВИЛЬНАЯ МЕХАНИКА С КОЛЕСОМ =============
@@ -3004,12 +3457,168 @@
       }, fastModes.poker ? 50 : 120);
     }
 
+    // ============= HI-LO =============
+    const HILO_RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+    const HILO_SUITS = [
+      { s: '♠', color: 'black' },
+      { s: '♥', color: 'red' },
+      { s: '♦', color: 'red' },
+      { s: '♣', color: 'black' }
+    ];
+    let hiloCurrentRank = 0;
+    let hiloStreak = 0;
+    let hiloHistory = [];
+    let hiloBusy = false;
+
+    function drawHiloCard() {
+      return {
+        rank: Math.floor(Math.random() * 13),
+        suit: HILO_SUITS[Math.floor(Math.random() * 4)]
+      };
+    }
+
+    function renderHiloCard(elId, card, flip) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      el.className = 'hilo-card ' + card.suit.color + (flip ? ' flipping' : '');
+      el.innerHTML = `<div class="rank">${HILO_RANKS[card.rank]}</div><div class="suit">${card.suit.s}</div>`;
+    }
+
+    function updateHiloStreakUI() {
+      const badge = document.getElementById('hilo-streak-badge');
+      if (badge) badge.textContent = `🔥 Серия: ${hiloStreak}`;
+      const hist = document.getElementById('hilo-history');
+      if (hist) {
+        hist.innerHTML = hiloHistory.slice(-10).map(c => {
+          const col = c.suit.color === 'red' ? '#f43f5e' : '#e5e7eb';
+          return `<div class="hilo-history-item" style="background:rgba(0,0,0,0.5);color:${col}">${HILO_RANKS[c.rank]}</div>`;
+        }).join('');
+      }
+    }
+
+    function setHiloBet(v) {
+      playSound('click');
+      const el = document.getElementById('hilo-bet');
+      if (el) el.value = Math.min(balance || v, v);
+    }
+    function setHiloBetHalf() {
+      playSound('click');
+      const el = document.getElementById('hilo-bet');
+      if (el) el.value = Math.max(10, Math.floor((+el.value || 100) / 2));
+    }
+    function setHiloBetDouble() {
+      playSound('click');
+      const el = document.getElementById('hilo-bet');
+      if (el) el.value = Math.min(balance, (+el.value || 100) * 2);
+    }
+    function setHiloBetMax() {
+      playSound('click');
+      const el = document.getElementById('hilo-bet');
+      if (el) el.value = Math.max(10, balance);
+    }
+
+    function initHiloCard() {
+      const c = drawHiloCard();
+      hiloCurrentRank = c.rank;
+      renderHiloCard('hilo-current-card', c, false);
+      const next = document.getElementById('hilo-next-card');
+      if (next) {
+        next.className = 'hilo-card black opacity-40';
+        next.innerHTML = '<div class="rank">?</div><div class="suit">?</div>';
+      }
+      updateHiloStreakUI();
+    }
+
+    function playHilo(dir) {
+      if (hiloBusy) return;
+      playSound('click');
+      const bet = parseFloat(document.getElementById('hilo-bet')?.value) || 0;
+      if (bet <= 0 || bet > balance) return;
+      updateLocalBalance(-bet);
+      recordGamePlay();
+      hiloBusy = true;
+
+      const btnUp = document.getElementById('hilo-btn-up');
+      const btnDown = document.getElementById('hilo-btn-down');
+      if (btnUp) btnUp.disabled = true;
+      if (btnDown) btnDown.disabled = true;
+
+      const nextCard = drawHiloCard();
+      // Soft bias via checkWinCondition so luck/godmode still apply
+      let forceWin = checkWinCondition(48);
+      if (forceWin) {
+        if (dir === 'up' && nextCard.rank <= hiloCurrentRank) {
+          nextCard.rank = Math.min(12, hiloCurrentRank + 1 + Math.floor(Math.random() * 2));
+        } else if (dir === 'down' && nextCard.rank >= hiloCurrentRank) {
+          nextCard.rank = Math.max(0, hiloCurrentRank - 1 - Math.floor(Math.random() * 2));
+        }
+      }
+
+      const duration = fastModes.hilo ? 280 : 550;
+      setTimeout(() => {
+        renderHiloCard('hilo-next-card', nextCard, true);
+        document.getElementById('hilo-next-card')?.classList.remove('opacity-40');
+
+        setTimeout(() => {
+          const isEqual = nextCard.rank === hiloCurrentRank;
+          const isWin = !isEqual && ((dir === 'up' && nextCard.rank > hiloCurrentRank) || (dir === 'down' && nextCard.rank < hiloCurrentRank));
+
+          if (isEqual) {
+            updateLocalBalance(bet); // push
+            playSound('click');
+            document.getElementById('hilo-status').textContent = 'Ничья — ставка возвращена';
+            showFloatingPopup('Ничья · ставка возвращена', true);
+            hiloStreak = 0;
+          } else if (isWin) {
+            hiloStreak++;
+            if (hiloStreak > maxHiloStreak) maxHiloStreak = hiloStreak;
+            // Streak bonus: base 1.95, +0.05 per streak step, max 2.5
+            const mult = Math.min(2.5, 1.95 + (hiloStreak - 1) * 0.05);
+            const winAmt = Math.floor(bet * mult);
+            updateLocalBalance(winAmt);
+            playSound('win');
+            triggerCardEffect('hilo-card-box', true);
+            document.getElementById('hilo-status').textContent = `Верно! +${winAmt} 🪙 (x${mult.toFixed(2)})`;
+            showFloatingPopup(`🔺 +${winAmt} 🪙 Серия ${hiloStreak}!`, true);
+            recordWin(true);
+          } else {
+            hiloStreak = 0;
+            playSound('lose');
+            triggerCardEffect('hilo-card-box', false);
+            document.getElementById('hilo-status').textContent = 'Не угадали';
+            showFloatingPopup('Мимо', false);
+            recordWin(false);
+          }
+
+          hiloHistory.push(nextCard);
+          hiloCurrentRank = nextCard.rank;
+          updateHiloStreakUI();
+
+          // Move next → current after short pause
+          setTimeout(() => {
+            renderHiloCard('hilo-current-card', nextCard, false);
+            const nextEl = document.getElementById('hilo-next-card');
+            if (nextEl) {
+              nextEl.className = 'hilo-card black opacity-40';
+              nextEl.innerHTML = '<div class="rank">?</div><div class="suit">?</div>';
+            }
+            hiloBusy = false;
+            if (btnUp) btnUp.disabled = false;
+            if (btnDown) btnDown.disabled = false;
+          }, fastModes.hilo ? 200 : 400);
+        }, 200);
+      }, duration);
+    }
+
     function openCase() {
       playSound('click');
       const bet = parseFloat(document.getElementById('case-bet')?.value) || 0;
       if (bet <= 0 || bet > balance) return;
       updateLocalBalance(-bet);
       recordGamePlay();
+      casesOpened++;
+      saveGameData();
+      updateQuestsUI();
       const el = document.getElementById('case-display');
       el.textContent = '✨';
       setTimeout(() => {
@@ -3024,9 +3633,11 @@
           updateLocalBalance(win);
           playSound('win');
           showFloatingPopup(`+${win} 🪙 ${name}!`, true);
+          recordWin(true);
         } else {
           playSound('lose');
           showFloatingPopup('Пустой кейс', false);
+          recordWin(false);
         }
         document.getElementById('case-status').textContent = name;
       }, 800);
