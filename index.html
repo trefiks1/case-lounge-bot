@@ -1542,6 +1542,24 @@
         </div>
       </div>
 
+      <!-- Онлайн на арене -->
+      <div class="glass-card p-4 flex items-center justify-between border border-emerald-500/20 bg-gradient-to-r from-emerald-950/30 to-transparent">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center relative">
+            <span class="text-lg">👥</span>
+            <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" style="animation: pulseDot 1.5s infinite;"></span>
+          </div>
+          <div>
+            <div class="text-[10px] text-emerald-400 font-extrabold uppercase tracking-wide">Сейчас на арене</div>
+            <div class="text-lg font-extrabold text-white leading-tight"><span id="online-players-count">—</span> <span class="text-xs text-gray-400 font-bold">игроков</span></div>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="text-[10px] text-gray-500 font-bold" id="online-players-hint">обновляется</div>
+          <div class="text-[10px] text-emerald-400/80 font-bold mt-0.5" id="online-peak-label">пик сегодня: —</div>
+        </div>
+      </div>
+
       <div class="glass-card p-4 space-y-3">
         <div class="text-sm font-bold text-gray-300">Статистика игрока</div>
         <div class="flex justify-between text-xs py-2 border-b border-white/5"><span class="text-gray-400">Сыграно игр:</span><span id="games-played" class="font-bold text-white">0</span></div>
@@ -2381,6 +2399,89 @@
       el.classList.add(isWin ? 'animate-win' : 'animate-lose');
     }
 
+    // ============= ОНЛАЙН НА АРЕНЕ =============
+    // Без общего сервера считаем «живую» оценку по времени суток + лёгкий дрейф.
+    // Когда появится API бота — подставьте реальный ответ в fetchOnlinePlayers().
+    let onlinePlayersNow = 0;
+    let onlinePlayersPeak = 0;
+    let onlineTickTimer = null;
+
+    function baseOnlineByHour(hour) {
+      // Пик вечером (19–23), спад ночью
+      const curve = [
+        18, 14, 11, 9, 8, 10,           // 0–5
+        16, 28, 42, 55, 62, 70,         // 6–11
+        78, 85, 90, 88, 92, 105,        // 12–17
+        125, 148, 162, 155, 130, 85     // 18–23
+      ];
+      return curve[hour] || 40;
+    }
+
+    function computeOnlineEstimate() {
+      const now = new Date();
+      const hour = now.getHours();
+      const min = now.getMinutes();
+      const base = baseOnlineByHour(hour);
+      const next = baseOnlineByHour((hour + 1) % 24);
+      // Плавный переход внутри часа
+      const blended = base + (next - base) * (min / 60);
+      // Стабильный «шум» от минуты (не прыгает каждую секунду)
+      const seed = hour * 60 + Math.floor(min / 2);
+      const noise = ((Math.sin(seed * 12.9898) * 43758.5453) % 1);
+      const n = Math.abs(noise);
+      const delta = Math.floor((n - 0.5) * 18);
+      // +1 за текущего игрока
+      return Math.max(3, Math.round(blended + delta) + 1);
+    }
+
+    function updateOnlinePlayersUI() {
+      onlinePlayersNow = computeOnlineEstimate();
+      try {
+        const dayKey = 'case_lounge_online_peak_' + new Date().toISOString().slice(0, 10);
+        const stored = parseInt(localStorage.getItem(dayKey) || '0', 10) || 0;
+        onlinePlayersPeak = Math.max(stored, onlinePlayersNow);
+        localStorage.setItem(dayKey, String(onlinePlayersPeak));
+      } catch (e) {
+        onlinePlayersPeak = Math.max(onlinePlayersPeak, onlinePlayersNow);
+      }
+
+      const countEl = document.getElementById('online-players-count');
+      const hintEl = document.getElementById('online-players-hint');
+      const peakEl = document.getElementById('online-peak-label');
+      if (countEl) countEl.textContent = onlinePlayersNow.toLocaleString('ru');
+      if (hintEl) {
+        const t = new Date();
+        const hh = String(t.getHours()).padStart(2, '0');
+        const mm = String(t.getMinutes()).padStart(2, '0');
+        hintEl.textContent = `обновлено ${hh}:${mm}`;
+      }
+      if (peakEl) peakEl.textContent = `пик сегодня: ${onlinePlayersPeak.toLocaleString('ru')}`;
+    }
+
+    /** Заготовка под реальный API (бот на Railway). Раскомментируйте и укажите URL. */
+    async function fetchOnlinePlayers() {
+      // Пример:
+      // try {
+      //   const r = await fetch('https://case-lounge-bot-production.up.railway.app/api/online');
+      //   const j = await r.json();
+      //   if (j && typeof j.online === 'number') {
+      //     onlinePlayersNow = j.online;
+      //     ...
+      //     return true;
+      //   }
+      // } catch (e) {}
+      return false;
+    }
+
+    function startOnlinePlayersTicker() {
+      updateOnlinePlayersUI();
+      if (onlineTickTimer) clearInterval(onlineTickTimer);
+      onlineTickTimer = setInterval(async () => {
+        const fromApi = await fetchOnlinePlayers();
+        if (!fromApi) updateOnlinePlayersUI();
+      }, 20000);
+    }
+
     function init() {
       try {
         if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
@@ -2405,6 +2506,7 @@
         initHiloCard();
         buildRouletteStrip();
         initSbGrid();
+        startOnlinePlayersTicker();
       } catch (e) {}
     }
 
