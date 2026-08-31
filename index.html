@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Case Lounge Arena</title>
+  <title>CASE LOUNGE</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -778,25 +778,26 @@
 
     /* ============ SWEET BONANZA ============ */
     .sb-board {
-      background: linear-gradient(160deg, #3b1d6e 0%, #1a0b33 50%, #0f0620 100%);
-      border-radius: 20px;
-      border: 2px solid rgba(192,132,252,0.35);
-      padding: 8px;
-      box-shadow: 0 0 40px rgba(139,92,246,0.25), inset 0 0 30px rgba(0,0,0,0.4);
+      background: linear-gradient(160deg, #7c3aed 0%, #4c1d95 35%, #2e1065 70%, #1a0533 100%);
+      border-radius: 22px;
+      border: 2px solid rgba(244,114,182,0.45);
+      padding: 10px;
+      box-shadow: 0 0 50px rgba(236,72,153,0.3), inset 0 0 40px rgba(0,0,0,0.45);
     }
     .sb-grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      gap: 4px;
+      gap: 5px;
     }
     .sb-cell {
       aspect-ratio: 1;
-      border-radius: 10px;
-      background: rgba(0,0,0,0.35);
-      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      background: linear-gradient(160deg, rgba(255,255,255,0.08), rgba(0,0,0,0.4));
+      border: 1px solid rgba(255,255,255,0.1);
       display: flex; align-items: center; justify-content: center;
-      font-size: 22px;
-      transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
+      font-size: 24px;
+      transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1), background 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
     }
     .sb-cell.win-cell {
       background: rgba(251,191,36,0.25);
@@ -854,6 +855,199 @@
       flex-direction: column;
       line-height: 1.1;
     }
+
+    /* ============ CASES CATALOG & ROULETTE ============ */
+    .case-card {
+      border-radius: 18px;
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(0,0,0,0.35));
+      cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .case-card:active { transform: scale(0.96); }
+    .case-card.selected {
+      border-color: rgba(245,158,11,0.55);
+      box-shadow: 0 0 24px rgba(245,158,11,0.25);
+    }
+    .case-card .case-price {
+      font-size: 11px; font-weight: 800; color: #fbbf24;
+    }
+    .case-strip-item {
+      flex: 0 0 72px;
+      width: 72px; height: 88px;
+      border-radius: 14px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.45);
+      font-size: 22px;
+      position: relative;
+    }
+    .case-strip-item .csm { font-size: 10px; font-weight: 800; margin-top: 4px; }
+    .case-strip-item .crarity {
+      position: absolute; top: 4px; left: 50%; transform: translateX(-50%);
+      font-size: 7px; font-weight: 800; letter-spacing: 0.3px;
+      padding: 1px 5px; border-radius: 999px; white-space: nowrap;
+    }
+    .case-glow-gold {
+      border-color: rgba(251,191,36,0.55) !important;
+      box-shadow: 0 0 40px rgba(251,191,36,0.45), 0 0 80px rgba(245,158,11,0.2) !important;
+      animation: caseGoldPulse 1.2s ease infinite;
+    }
+    .case-glow-jackpot {
+      border-color: rgba(232,121,249,0.7) !important;
+      box-shadow: 0 0 50px rgba(192,132,252,0.6), 0 0 100px rgba(236,72,153,0.3) !important;
+      animation: caseJackpotPulse 0.8s ease infinite;
+    }
+    @keyframes caseGoldPulse {
+      0%, 100% { box-shadow: 0 0 30px rgba(251,191,36,0.35); }
+      50% { box-shadow: 0 0 55px rgba(251,191,36,0.65); }
+    }
+    @keyframes caseJackpotPulse {
+      0%, 100% { box-shadow: 0 0 40px rgba(192,132,252,0.5); transform: scale(1); }
+      50% { box-shadow: 0 0 70px rgba(236,72,153,0.7); transform: scale(1.01); }
+    }
+    @keyframes caseScreenShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-4px) rotate(-0.4deg); }
+      40% { transform: translateX(4px) rotate(0.4deg); }
+      60% { transform: translateX(-3px); }
+      80% { transform: translateX(3px); }
+    }
+    .case-shake { animation: caseScreenShake 0.45s ease; }
+    .case-confetti-piece {
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 2px;
+      top: -10px;
+      animation: caseConfettiFall linear forwards;
+      opacity: 0.95;
+    }
+    @keyframes caseConfettiFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(320px) rotate(720deg); opacity: 0; }
+    }
+    .rarity-common { background: rgba(148,163,184,0.25); color: #cbd5e1; border: 1px solid rgba(148,163,184,0.35); }
+    .rarity-rare { background: rgba(56,189,248,0.25); color: #7dd3fc; border: 1px solid rgba(56,189,248,0.4); }
+    .rarity-epic { background: rgba(167,139,250,0.3); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.5); }
+    .rarity-legendary { background: rgba(251,191,36,0.3); color: #fde68a; border: 1px solid rgba(251,191,36,0.55); }
+    .rarity-mythic { background: linear-gradient(90deg, rgba(236,72,153,0.4), rgba(139,92,246,0.4)); color: #fce7f3; border: 1px solid rgba(236,72,153,0.6); }
+
+    /* ============ MINECRAFT MINE ============ */
+    .mc-block {
+      aspect-ratio: 1;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      border-radius: 4px;
+      transition: transform 0.15s ease, filter 0.2s ease, background 0.2s ease;
+      user-select: none;
+    }
+    .mc-block.broken {
+      transform: scale(0.85);
+      filter: brightness(0.55) grayscale(0.3);
+      opacity: 0.55;
+    }
+    .mc-block.ore-hit {
+      animation: mcOrePulse 0.45s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow: 0 0 14px rgba(251,191,36,0.7);
+    }
+    @keyframes mcOrePulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+    .mc-pick-slot {
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+    }
+    .mc-pick-slot.reveal {
+      transform: scale(1.12);
+      box-shadow: 0 0 16px rgba(132,204,22,0.45);
+    }
+
+    /* Cups shuffle / spin */
+    .cup-btn {
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .cup-btn.cup-shuffle {
+      animation: cupSwap 0.38s cubic-bezier(0.45,0.05,0.55,0.95);
+    }
+    .cup-btn.cup-lift {
+      animation: cupLift 0.45s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .cup-btn.cup-spin {
+      animation: cupSpinY 0.5s cubic-bezier(0.45,0.05,0.55,0.95);
+    }
+    .cup-btn.cup-win {
+      border-color: rgba(52,211,153,0.7) !important;
+      box-shadow: 0 0 28px rgba(52,211,153,0.45), inset 0 1px 0 rgba(255,255,255,0.2) !important;
+    }
+    .cup-btn.cup-lose {
+      border-color: rgba(248,113,113,0.5) !important;
+      opacity: 0.75;
+    }
+    @keyframes cupSwap {
+      0% { transform: translateX(0) scale(1); }
+      35% { transform: translateX(var(--cup-dx, 40px)) translateY(-18px) scale(1.06) rotateZ(var(--cup-rot, 8deg)); }
+      100% { transform: translateX(0) scale(1); }
+    }
+    @keyframes cupLift {
+      0% { transform: translateY(0) rotateX(0); }
+      40% { transform: translateY(-28px) rotateX(-25deg) scale(1.08); }
+      100% { transform: translateY(0) rotateX(0); }
+    }
+    @keyframes cupSpinY {
+      0% { transform: rotateY(0deg) scale(1); }
+      50% { transform: rotateY(180deg) scale(1.05); }
+      100% { transform: rotateY(360deg) scale(1); }
+    }
+
+    /* Keno premium cells */
+    #keno-grid button {
+      transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1), background 0.2s, box-shadow 0.2s, border-color 0.2s;
+      border-radius: 10px !important;
+      font-weight: 800 !important;
+    }
+    #keno-grid button:active { transform: scale(0.9); }
+
+    /* Mine blocks glow */
+    .mc-block {
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+      border-radius: 6px !important;
+    }
+
+    /* ===== OREL-ORESHKA GLOBAL PREMIUM SKIN ===== */
+    .brand-logo {
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, #fbbf24, #f59e0b 40%, #ec4899 75%, #a78bfa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 20px rgba(245,158,11,0.4));
+    }
+    .premium-header {
+      background: linear-gradient(180deg, rgba(8,6,14,0.96), rgba(10,8,18,0.85)) !important;
+      border-bottom: 1px solid rgba(245,158,11,0.12) !important;
+    }
+    .premium-nav {
+      background: linear-gradient(180deg, rgba(20,16,32,0.96), rgba(10,8,16,0.96)) !important;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(245,158,11,0.1), 0 0 30px rgba(139,92,246,0.12) !important;
+    }
+    .glass-card {
+      background: linear-gradient(165deg, rgba(255,255,255,0.07), rgba(17,24,39,0.72) 45%) !important;
+    }
+    input[type=number], input[type=text], textarea {
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    input[type=number]:focus, input[type=text]:focus, textarea:focus {
+      box-shadow: 0 0 0 3px rgba(245,158,11,0.15);
+    }
+
   </style>
 </head>
 <body class="pb-32">
@@ -909,20 +1103,20 @@
       <!-- Брендовый заголовок -->
       <div class="pt-1 pb-1">
         <h1 class="text-2xl brand-logo leading-tight">CASE LOUNGE</h1>
-        <div class="text-[10px] font-extrabold brand-tagline uppercase">Premium Arena · Демо-фишки</div>
+        <div class="text-[10px] font-extrabold brand-tagline uppercase">Premium Casino · Демо-фишки</div>
       </div>
 
       <!-- Промо-карусель -->
       <div class="promo-scroll no-scrollbar">
         <div class="promo-card promo-violet">
-          <div class="promo-title">⚡ Апгрейдер x50</div>
-          <div class="promo-sub">Честные 50/50 — испытай удачу прямо сейчас</div>
-          <span class="promo-emoji">⚡</span>
+          <div class="promo-title">🎁 Кейсы CASE LOUNGE</div>
+          <div class="promo-sub">Легендарные дропы до x50 · открой прямо сейчас</div>
+          <span class="promo-emoji">🎁</span>
         </div>
         <div class="promo-card promo-pink">
-          <div class="promo-title">🎁 Открывай кейсы</div>
-          <div class="promo-sub">Шанс поймать легендарный дроп x25</div>
-          <span class="promo-emoji">🎁</span>
+          <div class="promo-title">⚡ Апгрейдер x50</div>
+          <div class="promo-sub">Честные шансы — испытай удачу прямо сейчас</div>
+          <span class="promo-emoji">⚡</span>
         </div>
         <div class="promo-card promo-cyan">
           <div class="promo-title">🚀 Краш до x100</div>
@@ -1008,14 +1202,14 @@
               <rect width="300" height="200" fill="url(#g-coinflip-bg)"/>
               <circle cx="150" cy="90" r="58" fill="none" stroke="#fbbf24" stroke-width="2" stroke-opacity="0.35"/>
               <text x="150" y="105" text-anchor="middle" font-size="64" dominant-baseline="middle">🪙</text>
-              <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#fbbf24" font-family="Plus Jakarta Sans, sans-serif" letter-spacing="2">COINFLIP</text>
+              <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#fbbf24" font-family="Plus Jakarta Sans, sans-serif" letter-spacing="2">OREL</text>
             </svg>
             <div class="game-tag">x2</div>
             <div class="live-badge"><span class="live-dot"></span>LIVE</div>
           </div>
           <div class="p-3">
-            <div class="font-bold text-sm text-white">Арена</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Одно колесо, победитель забирает банк</div>
+            <div class="font-bold text-sm text-white">ОРЕЛ - ОРЕШКА</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Орёл или решка · честный x2</div>
           </div>
         </div>
       </div>
@@ -1106,6 +1300,26 @@
           <div class="p-3">
             <div class="font-bold text-sm text-white">Кейсы</div>
             <div class="text-[10px] text-gray-400 mt-0.5 truncate">Открой кейс, поймай легендарку</div>
+          </div>
+        </div>
+        <div onclick="openGameScreen('minecraft')" class="game-banner-card">
+          <div class="relative">
+            <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="g-mc-bg" cx="50%" cy="42%" r="75%">
+                  <stop offset="0%" stop-color="#1a2a0a"/><stop offset="100%" stop-color="#050a02"/>
+                </radialGradient>
+              </defs>
+              <rect width="300" height="200" fill="url(#g-mc-bg)"/>
+              <circle cx="150" cy="90" r="58" fill="none" stroke="#84cc16" stroke-width="2" stroke-opacity="0.35"/>
+              <text x="150" y="105" text-anchor="middle" font-size="56" dominant-baseline="middle">⛏️</text>
+              <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#84cc16" font-family="Plus Jakarta Sans, sans-serif" letter-spacing="1">MINECRAFT</text>
+            </svg>
+            <div class="game-tag">x25</div>
+          </div>
+          <div class="p-3">
+            <div class="font-bold text-sm text-white">Шахта Minecraft</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Кирки · руды · до x25</div>
           </div>
         </div>
         <div onclick="openGameScreen('upgrader')" class="game-banner-card">
@@ -1208,6 +1422,117 @@
             <div class="text-[10px] text-gray-400 mt-0.5 truncate">Выше или ниже — копи множитель</div>
           </div>
         </div>
+
+        <!-- NEW: PLINKO -->
+        <div onclick="openGameScreen('plinko')" class="game-banner-card">
+          <div class="relative">
+            <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="g-plinko-bg" cx="50%" cy="42%" r="75%">
+                  <stop offset="0%" stop-color="#1a0a2a"/><stop offset="100%" stop-color="#07030a"/>
+                </radialGradient>
+              </defs>
+              <rect width="300" height="200" fill="url(#g-plinko-bg)"/>
+              <circle cx="150" cy="90" r="58" fill="none" stroke="#c084fc" stroke-width="2" stroke-opacity="0.35"/>
+              <text x="150" y="105" text-anchor="middle" font-size="56" dominant-baseline="middle">🔮</text>
+              <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#c084fc" font-family="Plus Jakarta Sans, sans-serif" letter-spacing="2">PLINKO</text>
+            </svg>
+            <div class="game-tag">x1000</div>
+          </div>
+          <div class="p-3">
+            <div class="font-bold text-sm text-white">Plinko</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Падение шара · до x1000</div>
+          </div>
+        </div>
+
+        <!-- NEW: WHEEL OF FORTUNE -->
+        <div onclick="openGameScreen('wheel')" class="game-banner-card">
+          <div class="relative">
+            <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="g-wheel-bg" cx="50%" cy="42%" r="75%">
+                  <stop offset="0%" stop-color="#2a1a05"/><stop offset="100%" stop-color="#0a0703"/>
+                </radialGradient>
+              </defs>
+              <rect width="300" height="200" fill="url(#g-wheel-bg)"/>
+              <circle cx="150" cy="90" r="58" fill="none" stroke="#fbbf24" stroke-width="2" stroke-opacity="0.35"/>
+              <text x="150" y="105" text-anchor="middle" font-size="56" dominant-baseline="middle">🎡</text>
+              <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#fbbf24" font-family="Plus Jakarta Sans, sans-serif" letter-spacing="2">WHEEL</text>
+            </svg>
+            <div class="game-tag">DIAMOND</div>
+          </div>
+          <div class="p-3">
+            <div class="font-bold text-sm text-white">Колесо Фортуны</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Bronze · Silver · Gold · Diamond</div>
+          </div>
+        </div>
+
+        <!-- NEW: TOWERS -->
+        <div onclick="openGameScreen('towers')" class="game-banner-card">
+          <div class="relative">
+            <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="g-towers-bg" cx="50%" cy="42%" r="75%">
+                  <stop offset="0%" stop-color="#0a1a2a"/><stop offset="100%" stop-color="#03070a"/>
+                </radialGradient>
+              </defs>
+              <rect width="300" height="200" fill="url(#g-towers-bg)"/>
+              <circle cx="150" cy="90" r="58" fill="none" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.35"/>
+              <text x="150" y="105" text-anchor="middle" font-size="56" dominant-baseline="middle">🏰</text>
+              <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#38bdf8" font-family="Plus Jakarta Sans, sans-serif" letter-spacing="2">TOWERS</text>
+            </svg>
+            <div class="game-tag">x50+</div>
+          </div>
+          <div class="p-3">
+            <div class="font-bold text-sm text-white">Башня</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Поднимайся этаж за этажом</div>
+          </div>
+        </div>
+
+        <!-- NEW: COIN RACE -->
+        <div onclick="openGameScreen('coinrace')" class="game-banner-card">
+          <div class="relative">
+            <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="g-coinrace-bg" cx="50%" cy="42%" r="75%">
+                  <stop offset="0%" stop-color="#2a1505"/><stop offset="100%" stop-color="#0a0603"/>
+                </radialGradient>
+              </defs>
+              <rect width="300" height="200" fill="url(#g-coinrace-bg)"/>
+              <circle cx="150" cy="90" r="58" fill="none" stroke="#fb923c" stroke-width="2" stroke-opacity="0.35"/>
+              <text x="150" y="105" text-anchor="middle" font-size="56" dominant-baseline="middle">🏁</text>
+              <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#fb923c" font-family="Plus Jakarta Sans, sans-serif" letter-spacing="2">RACE</text>
+            </svg>
+            <div class="game-tag">1v1</div>
+          </div>
+          <div class="p-3">
+            <div class="font-bold text-sm text-white">Гонка Монет</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Дуэль на скорость · vs бот</div>
+          </div>
+        </div>
+
+        <!-- NEW: KENO -->
+        <div onclick="openGameScreen('keno')" class="game-banner-card">
+          <div class="relative">
+            <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="g-keno-bg" cx="50%" cy="42%" r="75%">
+                  <stop offset="0%" stop-color="#0a2a1a"/><stop offset="100%" stop-color="#030a07"/>
+                </radialGradient>
+              </defs>
+              <rect width="300" height="200" fill="url(#g-keno-bg)"/>
+              <circle cx="150" cy="90" r="58" fill="none" stroke="#34d399" stroke-width="2" stroke-opacity="0.35"/>
+              <text x="150" y="105" text-anchor="middle" font-size="56" dominant-baseline="middle">🎱</text>
+              <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#34d399" font-family="Plus Jakarta Sans, sans-serif" letter-spacing="2">KENO</text>
+            </svg>
+            <div class="game-tag">x100</div>
+          </div>
+          <div class="p-3">
+            <div class="font-bold text-sm text-white">Keno</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Выбери числа · лототрон</div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -1408,8 +1733,12 @@
         <div class="space-y-2 pt-2 border-t border-white/10">
           <div class="text-xs font-bold text-red-300">🛡 Управление администраторами</div>
           <div class="flex space-x-2">
-            <input id="admin-new-id" type="number" placeholder="Telegram ID игрока" class="bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs w-full outline-none text-white font-bold">
-            <button onclick="adminToggleAdminRole()" class="btn-primary px-4 py-2 text-xs bg-red-600 shadow-red-900/30 whitespace-nowrap">Добавить/Снять</button>
+            <input id="admin-new-id" type="number" placeholder="Telegram ID" class="bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs w-full outline-none text-white font-bold">
+            <button onclick="adminToggleAdminRole()" class="btn-primary px-4 py-2 text-xs bg-red-600 shadow-red-900/30 whitespace-nowrap">ID ±</button>
+          </div>
+          <div class="flex space-x-2 pt-1">
+            <input id="admin-new-username" type="text" placeholder="@username" class="bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs w-full outline-none text-white font-bold">
+            <button onclick="adminToggleAdminByUsername()" class="btn-primary px-4 py-2 text-xs bg-red-600 shadow-red-900/30 whitespace-nowrap">User ±</button>
           </div>
           <div class="text-[10px] text-gray-400" id="admin-list-label">Текущие админы: загрузка...</div>
           <div class="text-xs font-bold text-red-300 pt-2">💸 Выдать баланс по username</div>
@@ -1482,6 +1811,40 @@
           </div>
         </div>
 
+        <!-- RNG CONTROL -->
+        <div class="space-y-2 pt-2 border-t border-white/10">
+          <div class="text-xs font-bold text-red-300">🎲 RNG Control</div>
+          <div class="grid grid-cols-3 gap-1.5">
+            <button onclick="setRngPreset('win')" class="py-2 rounded-xl bg-emerald-900/50 border border-emerald-500/40 text-[10px] font-bold text-emerald-200">Всегда победа</button>
+            <button onclick="setRngPreset('fair')" class="py-2 rounded-xl bg-black/40 border border-white/10 text-[10px] font-bold text-white">Шанс 50%</button>
+            <button onclick="setRngPreset('lose')" class="py-2 rounded-xl bg-red-900/50 border border-red-500/40 text-[10px] font-bold text-red-200">Жёсткий слив</button>
+          </div>
+          <div class="text-xs font-bold text-fuchsia-300 pt-1">🎯 Кейсы: принудительный джекпот x50</div>
+          <button onclick="toggleCasesJackpotForce()" id="cases-jackpot-force-btn" class="w-full py-2.5 rounded-xl bg-black/40 border border-white/10 text-xs font-bold text-white">СТАТУС: ВЫКЛ</button>
+        </div>
+
+        <!-- MINE DROP CONTROL -->
+        <div class="space-y-2 pt-2 border-t border-white/10">
+          <div class="text-xs font-bold text-lime-300">⛏️ Шахта: шанс незеритовой кирки</div>
+          <div class="grid grid-cols-4 gap-1.5">
+            <button onclick="setMcNetherWeight(1)" class="py-1.5 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">1%</button>
+            <button onclick="setMcNetherWeight(3)" class="py-1.5 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">3%</button>
+            <button onclick="setMcNetherWeight(15)" class="py-1.5 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">15%</button>
+            <button onclick="setMcNetherWeight(50)" class="py-1.5 rounded-lg bg-lime-900/40 border border-lime-500/40 text-[10px] font-bold text-lime-200">50%</button>
+          </div>
+        </div>
+
+        <!-- PLATFORM STATS -->
+        <div class="space-y-2 pt-2 border-t border-white/10">
+          <div class="text-xs font-bold text-sky-300">📊 Статистика платформы</div>
+          <div class="grid grid-cols-2 gap-2 text-[10px]">
+            <div class="bg-black/40 rounded-xl p-2 border border-white/5"><div class="text-gray-500">Спинов</div><div class="font-extrabold text-white" id="admin-stat-spins">0</div></div>
+            <div class="bg-black/40 rounded-xl p-2 border border-white/5"><div class="text-gray-500">Оборот</div><div class="font-extrabold text-white" id="admin-stat-turnover">0</div></div>
+            <div class="bg-black/40 rounded-xl p-2 border border-white/5"><div class="text-gray-500">Выиграно</div><div class="font-extrabold text-emerald-300" id="admin-stat-won">0</div></div>
+            <div class="bg-black/40 rounded-xl p-2 border border-white/5"><div class="text-gray-500">Онлайн</div><div class="font-extrabold text-sky-300" id="admin-stat-online">—</div></div>
+          </div>
+        </div>
+
         <!-- ОПАСНЫЕ ДЕЙСТВИЯ -->
         <div class="space-y-3 pt-3 border-t border-red-500/30 bg-red-950/20 -mx-1 px-3 py-3 rounded-2xl">
           <div class="text-xs font-extrabold text-red-400 flex items-center space-x-1.5">
@@ -1505,10 +1868,38 @@
 
         <!-- СОЗДАНИЕ ПРОМОКОДА -->
         <div class="space-y-2 pt-2 border-t border-white/10">
-          <div class="text-xs font-bold text-gray-300">Создать промокод:</div>
+          <div class="text-xs font-bold text-gray-300">Создать промокод (глобальный):</div>
           <input id="admin-promo-code" type="text" placeholder="КОД (например: VIP2026)" class="bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs w-full outline-none uppercase font-bold text-white">
-          <input id="admin-promo-reward" type="number" placeholder="Сумма фишек" value="1000" class="bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs w-full outline-none text-white font-bold">
+          <div class="grid grid-cols-2 gap-2">
+            <input id="admin-promo-reward" type="number" placeholder="Сумма фишек" value="1000" class="bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs w-full outline-none text-white font-bold">
+            <input id="admin-promo-limit" type="number" placeholder="Лимит активаций" value="50" class="bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs w-full outline-none text-white font-bold">
+          </div>
           <button onclick="adminCreatePromo()" class="btn-primary w-full py-2.5 text-xs">Создать промокод</button>
+          <div id="admin-promo-list" class="text-[10px] text-gray-400 max-h-24 overflow-y-auto space-y-0.5"></div>
+        </div>
+
+
+        <!-- CASE LOUNGE: ДОП. УПРАВЛЕНИЕ -->
+        <div class="space-y-2 pt-2 border-t border-white/10">
+          <div class="text-xs font-bold text-cyan-300">🛠 CASE LOUNGE · Система</div>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="adminToggleMaintenance()" id="admin-maint-btn" class="py-2.5 rounded-xl bg-black/40 border border-white/10 text-[10px] font-bold text-white">🚧 Техработы: ВЫКЛ</button>
+            <button onclick="adminToggleFreezeBets()" id="admin-freeze-btn" class="py-2.5 rounded-xl bg-black/40 border border-white/10 text-[10px] font-bold text-white">❄️ Ставки: ОК</button>
+          </div>
+          <div class="text-[11px] text-gray-400">House edge (глобально): <span id="admin-edge-label" class="text-amber-300 font-bold">3%</span></div>
+          <input id="admin-edge-range" type="range" min="0" max="25" value="3" oninput="adminSetHouseEdge(this.value)" class="w-full accent-amber-500 h-2 bg-black/50 rounded-lg">
+          <div class="text-[11px] text-gray-400">Фейковый онлайн: <span id="admin-online-label" class="text-sky-300 font-bold">640</span></div>
+          <input id="admin-online-range" type="range" min="50" max="5000" value="640" oninput="adminSetFakeOnline(this.value)" class="w-full accent-sky-500 h-2 bg-black/50 rounded-lg">
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="adminGrantDailyBonus()" class="py-2.5 rounded-xl bg-emerald-900/50 border border-emerald-500/40 text-[10px] font-bold text-emerald-200">🎁 Выдать daily +5000</button>
+            <button onclick="adminResetAllQuests()" class="py-2.5 rounded-xl bg-violet-900/50 border border-violet-500/40 text-[10px] font-bold text-violet-200">🎯 Сброс заданий</button>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="adminForceLevel(5)" class="py-2.5 rounded-xl bg-amber-900/40 border border-amber-500/30 text-[10px] font-bold text-amber-200">⭐ LVL 5</button>
+            <button onclick="adminForceLevel(20)" class="py-2.5 rounded-xl bg-amber-900/40 border border-amber-500/30 text-[10px] font-bold text-amber-200">👑 LVL 20</button>
+          </div>
+          <button onclick="adminExportSave()" class="w-full py-2.5 rounded-xl bg-sky-900/40 border border-sky-500/30 text-[10px] font-bold text-sky-200">📤 Экспорт сейва в буфер</button>
+          <button onclick="adminThemeCycle()" id="admin-theme-btn" class="w-full py-2.5 rounded-xl bg-black/40 border border-white/10 text-[10px] font-bold text-white">🎨 Тема: Default</button>
         </div>
 
         <!-- ЖУРНАЛ ДЕЙСТВИЙ АДМИНА -->
@@ -1606,19 +1997,27 @@
     </div>
 
     <!-- ИГРА: МОНЕТКА -->
-    <div id="screen-coinflip" class="screen space-y-4">
-      <div class="flex justify-between items-center mb-2">
-        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад к играм</span></button>
-        <button onclick="toggleFastMode('coinflip')" id="fast-btn-coinflip" class="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-[10px] font-extrabold text-gray-300">⚡ Быстро: ВЫКЛ</button>
+    <div id="screen-coinflip" class="screen space-y-3">
+      <div class="flex justify-between items-center mb-1">
+        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад</span></button>
+        <button onclick="toggleFastMode('coinflip')" id="fast-btn-coinflip" class="px-3 py-1 rounded-xl bg-amber-500/10 border border-amber-500/30 text-[10px] font-extrabold text-amber-300">⚡ Быстро: ВЫКЛ</button>
       </div>
-      <div id="coin-card-box" class="glass-card p-6 text-center space-y-6 shadow-2xl">
-        <h2 class="font-extrabold text-lg text-white">Монетка</h2>
-        <div class="w-28 h-28 mx-auto rounded-full bg-gradient-to-br from-amber-500/20 to-amber-700/10 border-2 border-amber-500/40 flex items-center justify-center text-5xl shadow-2xl" id="coin-display">👑</div>
-        <div class="space-y-3">
-          <input id="coin-bet" type="number" value="100" class="w-full bg-black/40 border border-white/10 rounded-2xl p-3.5 text-center font-extrabold text-sm outline-none text-white">
+      <div id="coin-card-box" class="glass-card p-5 text-center space-y-5 shadow-2xl border-amber-500/30 bg-gradient-to-b from-amber-950/40 via-transparent to-yellow-950/20 relative overflow-hidden">
+        <div class="absolute inset-0 pointer-events-none opacity-40" style="background:radial-gradient(ellipse at 50% 20%,rgba(251,191,36,0.2),transparent 55%)"></div>
+        <div class="relative z-10">
+          <div class="text-[10px] font-extrabold tracking-[0.25em] text-amber-400/70 uppercase mb-1">Signature Game</div>
+          <h2 class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-300 to-orange-400">ОРЕЛ — ОРЕШКА</h2>
+          <div class="text-[11px] text-amber-200/50 mt-1">Честный x2 · выбери сторону</div>
+        </div>
+        <div class="relative z-10 mx-auto w-36 h-36 rounded-full flex items-center justify-center"
+             style="background:radial-gradient(circle at 35% 30%,#fde68a,#b45309 55%,#451a03);box-shadow:0 0 0 4px rgba(251,191,36,0.35),0 0 40px rgba(245,158,11,0.35),inset 0 -8px 20px rgba(0,0,0,0.35)">
+          <div id="coin-display" class="text-6xl drop-shadow-lg">👑</div>
+        </div>
+        <div class="relative z-10 space-y-3">
+          <input id="coin-bet" type="number" value="100" class="w-full bg-black/50 border border-amber-500/25 rounded-2xl p-3.5 text-center font-extrabold text-sm outline-none text-white focus:border-amber-400/60">
           <div class="grid grid-cols-2 gap-3">
-            <button onclick="playCoinflip('heads')" class="btn-primary py-3.5 text-xs font-extrabold">👑 Орел</button>
-            <button onclick="playCoinflip('tails')" class="btn-primary py-3.5 text-xs font-extrabold bg-gradient-to-r from-amber-600 to-yellow-600">🪙 Решка</button>
+            <button onclick="playCoinflip('heads')" class="py-4 rounded-2xl bg-gradient-to-b from-amber-400 to-amber-700 text-black font-extrabold text-xs shadow-lg shadow-amber-900/40 border border-amber-200/40 active:scale-95 transition-transform">👑 ОРЁЛ</button>
+            <button onclick="playCoinflip('tails')" class="py-4 rounded-2xl bg-gradient-to-b from-yellow-500 to-orange-700 text-black font-extrabold text-xs shadow-lg shadow-orange-900/40 border border-yellow-200/30 active:scale-95 transition-transform">🪙 РЕШКА</button>
           </div>
         </div>
       </div>
@@ -1657,56 +2056,60 @@
     <div id="screen-slots" class="screen space-y-3">
       <div class="flex justify-between items-center mb-1">
         <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад</span></button>
-        <button onclick="toggleFastMode('slots')" id="fast-btn-slots" class="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-[10px] font-extrabold text-gray-300">⚡ Быстро</button>
+        <button onclick="toggleFastMode('slots')" id="fast-btn-slots" class="px-3 py-1 rounded-xl bg-pink-500/15 border border-pink-400/30 text-[10px] font-extrabold text-pink-300">⚡ Быстро</button>
       </div>
-      <div id="slots-card-box" class="glass-card p-3 space-y-3 shadow-2xl border-violet-500/20">
-        <div class="flex items-center justify-between px-1">
-          <div class="font-extrabold text-sm text-white">🍬 Sweet Bonanza</div>
-          <div class="flex items-center gap-2 text-[10px] font-bold">
-            <span class="text-pink-300">❤️ x5.5</span>
-            <span class="text-violet-300">4+</span>
+      <div id="slots-card-box" class="glass-card p-3 space-y-3 shadow-2xl border-pink-500/30 bg-gradient-to-b from-fuchsia-950/40 via-violet-950/20 to-purple-950/30 relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-pink-500/20 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-12 -left-8 w-36 h-36 rounded-full bg-violet-500/20 blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 flex items-center justify-between px-1">
+          <div>
+            <div class="text-[10px] font-extrabold tracking-[0.2em] text-pink-300/70 uppercase">Pragmatic Style</div>
+            <div class="font-extrabold text-base text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-fuchsia-300 to-violet-300">🍬 Sweet Bonanza</div>
+          </div>
+          <div class="flex items-center gap-1.5 text-[10px] font-extrabold">
+            <span class="px-2 py-0.5 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-200">❤️ x5.5</span>
+            <span class="px-2 py-0.5 rounded-full bg-violet-500/20 border border-violet-400/40 text-violet-200">8+</span>
           </div>
         </div>
 
-        <div class="sb-board">
+        <div class="sb-board relative z-10" style="background:linear-gradient(160deg,#5b21b6 0%,#2e1065 40%,#1a0533 100%);border:2px solid rgba(244,114,182,0.45);box-shadow:0 0 40px rgba(236,72,153,0.25),inset 0 0 40px rgba(0,0,0,0.35)">
           <div class="sb-header-bar">
-            <span class="text-[10px] font-bold text-pink-300">Кластер · 8+</span>
-            <span class="text-[10px] font-bold text-violet-200" id="sb-status">Крути барабаны</span>
+            <span class="text-[10px] font-bold text-pink-200">Кластер · 8+</span>
+            <span class="text-[10px] font-bold text-fuchsia-100" id="sb-status">Крути барабаны</span>
             <span class="text-[10px] font-bold text-amber-300" id="sb-win-label"></span>
           </div>
-          <!-- Накопленные бомбы-множители -->
           <div id="sb-bombs-bar" class="flex flex-wrap gap-1 px-1 pb-2 min-h-[28px]"></div>
           <div class="sb-grid" id="sb-grid"></div>
         </div>
 
-        <div class="space-y-2 px-1">
+        <div class="space-y-2 px-1 relative z-10">
           <div class="flex items-center justify-between">
-            <span class="text-[11px] text-gray-400 font-bold">СТАВКА</span>
+            <span class="text-[11px] text-pink-200/60 font-bold">СТАВКА</span>
             <div class="flex space-x-1.5">
-              <button onclick="setSlotsBetHalf()" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">1/2</button>
-              <button onclick="setSlotsBetDouble()" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">2x</button>
-              <button onclick="setSlotsBetMax()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-500/30 text-[10px] font-bold text-amber-300">MAX</button>
+              <button onclick="setSlotsBetHalf()" class="px-2.5 py-1 rounded-lg bg-pink-500/15 border border-pink-400/30 text-[10px] font-bold text-pink-100">1/2</button>
+              <button onclick="setSlotsBetDouble()" class="px-2.5 py-1 rounded-lg bg-pink-500/15 border border-pink-400/30 text-[10px] font-bold text-pink-100">2x</button>
+              <button onclick="setSlotsBetMax()" class="px-2.5 py-1 rounded-lg bg-amber-500/25 border border-amber-400/40 text-[10px] font-bold text-amber-200">MAX</button>
             </div>
           </div>
-          <input id="slots-bet" type="number" value="50" oninput="updateSbBonusPrice()" class="w-full bg-black/50 border border-white/10 rounded-2xl p-3 text-center font-extrabold text-base outline-none text-white">
+          <input id="slots-bet" type="number" value="50" oninput="updateSbBonusPrice()" class="w-full bg-black/50 border border-pink-500/25 rounded-2xl p-3 text-center font-extrabold text-base outline-none text-white focus:border-pink-400/50">
           <div class="grid grid-cols-4 gap-2">
-            <button onclick="setSlotsBet(50)" class="py-2 rounded-xl bg-amber-500/25 border border-amber-500/40 text-xs font-bold text-amber-200">50</button>
-            <button onclick="setSlotsBet(100)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">100</button>
-            <button onclick="setSlotsBet(500)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">500</button>
-            <button onclick="setSlotsBet(1000)" class="py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300">1K</button>
+            <button onclick="setSlotsBet(50)" class="py-2 rounded-xl bg-pink-500/20 border border-pink-400/35 text-xs font-bold text-pink-100">50</button>
+            <button onclick="setSlotsBet(100)" class="py-2 rounded-xl bg-violet-500/15 border border-violet-400/25 text-xs font-bold text-violet-100">100</button>
+            <button onclick="setSlotsBet(500)" class="py-2 rounded-xl bg-violet-500/15 border border-violet-400/25 text-xs font-bold text-violet-100">500</button>
+            <button onclick="setSlotsBet(1000)" class="py-2 rounded-xl bg-violet-500/15 border border-violet-400/25 text-xs font-bold text-violet-100">1K</button>
           </div>
         </div>
 
-        <div class="grid grid-cols-5 gap-2">
-          <button onclick="playSlots()" class="sb-spin-btn col-span-3 py-3.5 text-sm active:scale-95 transition-transform">
+        <div class="grid grid-cols-5 gap-2 relative z-10">
+          <button onclick="playSlots()" class="sb-spin-btn col-span-3 py-3.5 text-sm active:scale-95 transition-transform" style="background:linear-gradient(180deg,#fce7f3,#ec4899,#db2777);color:#1c0a14;box-shadow:0 8px 24px rgba(236,72,153,0.45)">
             ⚡ Крутить · <span id="slots-spin-label">50</span>
           </button>
-          <button onclick="buySbBonus()" id="sb-bonus-btn" class="col-span-2 py-3.5 rounded-full bg-gradient-to-r from-fuchsia-600 to-violet-700 text-white font-extrabold text-[11px] shadow-lg shadow-violet-900/40 active:scale-95 transition-transform border border-fuchsia-400/30">
+          <button onclick="buySbBonus()" id="sb-bonus-btn" class="col-span-2 py-3.5 rounded-full bg-gradient-to-r from-violet-600 via-fuchsia-600 to-pink-600 text-white font-extrabold text-[11px] shadow-lg shadow-fuchsia-900/50 active:scale-95 transition-transform border border-fuchsia-300/40">
             🎁 БОНУС<br><span class="text-[10px] opacity-90" id="sb-bonus-price">15× · 750</span>
           </button>
         </div>
-        <div class="text-center text-[10px] font-bold text-fuchsia-300/80" id="sb-fs-counter"></div>
-        <p class="text-[10px] text-gray-500 text-center">8+ символов = выигрыш · 💣 бомбы копятся и умножают · бонус = 15 фриспинов</p>
+        <div class="text-center text-[10px] font-bold text-fuchsia-200/80 relative z-10" id="sb-fs-counter"></div>
+        <p class="text-[10px] text-pink-200/40 text-center relative z-10">8+ символов = выигрыш · 💣 бомбы умножают · бонус = 15 фриспинов</p>
       </div>
     </div>
 
@@ -1974,39 +2377,85 @@
     </div>
 
     <!-- КЕЙСЫ -->
-    <div id="screen-cases" class="screen space-y-4">
-      <div class="flex justify-between items-center mb-2">
+    <div id="screen-cases" class="screen space-y-3">
+      <div class="flex justify-between items-center mb-1">
         <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold"><span>←</span> Назад</button>
+        <span class="text-[10px] font-extrabold text-violet-300" id="cases-selected-label">Выберите кейс</span>
       </div>
-      <div class="glass-card p-5 text-center space-y-5 shadow-2xl">
-        <h2 class="font-extrabold text-lg text-white">🎁 Кейсы</h2>
-        <div class="w-28 h-28 mx-auto rounded-3xl bg-gradient-to-br from-amber-600/30 to-yellow-900/20 border-2 border-amber-500/40 flex items-center justify-center text-5xl shadow-2xl" id="case-display">📦</div>
-        <div class="text-xs text-gray-400" id="case-status">Открой кейс и поймай легендарный дроп</div>
-        <input id="case-bet" type="number" value="200" class="w-full bg-black/40 border border-white/10 rounded-2xl p-3.5 text-center font-extrabold text-sm outline-none text-white">
-        <div class="grid grid-cols-3 gap-2 text-[10px] font-bold text-gray-400">
-          <div class="bg-black/30 rounded-xl p-2">Обычный<br><span class="text-white">x1.5</span></div>
-          <div class="bg-black/30 rounded-xl p-2">Редкий<br><span class="text-sky-300">x5</span></div>
-          <div class="bg-black/30 rounded-xl p-2">Легенда<br><span class="text-amber-300">x25</span></div>
+
+      <!-- Онлайн в кейсах -->
+      <div class="glass-card px-3 py-2 flex items-center justify-between border border-emerald-500/20 bg-gradient-to-r from-emerald-950/25 to-transparent">
+        <div class="flex items-center gap-2">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
+          </span>
+          <span class="text-[11px] font-bold text-gray-300">Открывают кейсы сейчас</span>
         </div>
-        <button onclick="openCase()" class="btn-primary w-full py-3.5 text-xs font-extrabold">Открыть кейс</button>
+        <span class="text-sm font-extrabold text-emerald-300" id="cases-online-count">—</span>
+      </div>
+
+      <!-- Каталог кейсов -->
+      <div id="cases-catalog" class="space-y-2">
+        <div class="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest px-1">Каталог кейсов</div>
+        <div class="grid grid-cols-2 gap-2" id="cases-catalog-grid"></div>
+        <div class="text-[10px] text-gray-500 text-center px-1 leading-relaxed">Шансы: <b class="text-sky-300">x3.5 · 30%</b> · <b class="text-amber-300">x5 · 30%</b> · <b class="text-fuchsia-300">x50 · 7%</b> · пусто/мелочь — остальное</div>
+      </div>
+
+      <!-- Рулетка открытия -->
+      <div id="cases-open-view" class="hidden space-y-3 relative">
+        <div id="cases-confetti-layer" class="pointer-events-none absolute inset-0 overflow-hidden z-30 rounded-2xl" style="display:none"></div>
+        <div id="cases-glow-fx" class="glass-card p-3 shadow-2xl border-violet-500/25 overflow-hidden relative transition-all duration-500">
+          <div class="absolute top-0 bottom-0 left-1/2 w-0.5 bg-gradient-to-b from-transparent via-amber-400 to-transparent z-20 pointer-events-none" style="box-shadow:0 0 12px #f59e0b"></div>
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 border-2 border-amber-400/60 rounded-2xl z-10 pointer-events-none" style="box-shadow:0 0 20px rgba(245,158,11,0.35)"></div>
+          <div class="overflow-hidden rounded-xl">
+            <div id="cases-strip" class="flex gap-2 will-change-transform" style="transform:translateX(0)"></div>
+          </div>
+        </div>
+        <div class="text-center space-y-1">
+          <div class="text-sm font-extrabold text-white" id="cases-result-name">—</div>
+          <div class="text-xs font-bold text-amber-300 mt-0.5" id="cases-result-mult"></div>
+          <div id="cases-rarity-badge" class="inline-block px-3 py-0.5 rounded-full text-[10px] font-extrabold tracking-wide hidden"></div>
+        </div>
+        <div id="cases-multi-results" class="space-y-1.5 hidden"></div>
+        <button onclick="backToCasesCatalog()" id="cases-back-btn" class="w-full py-3 rounded-2xl bg-white/5 border border-white/10 text-xs font-bold text-gray-300 hidden">← К каталогу</button>
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="spinCaseRoulette(1)" id="cases-spin-btn" class="btn-primary py-3.5 text-sm font-extrabold">🎁 Открыть ×1</button>
+          <button onclick="spinCaseRoulette(3)" id="cases-spin-multi-btn" class="py-3.5 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 border border-fuchsia-400/30 text-sm font-extrabold text-white shadow-lg shadow-violet-900/40">⚡ ×3 разом</button>
+        </div>
       </div>
     </div>
 
     <!-- СТАКАНЧИКИ -->
-    <div id="screen-cups" class="screen space-y-4">
-      <div class="flex justify-between items-center mb-2">
+    <div id="screen-cups" class="screen space-y-3">
+      <div class="flex justify-between items-center mb-1">
         <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold"><span>←</span> Назад</button>
+        <span class="text-[10px] font-extrabold text-orange-300 tracking-widest uppercase">Shell Game</span>
       </div>
-      <div class="glass-card p-5 text-center space-y-5 shadow-2xl">
-        <h2 class="font-extrabold text-lg text-white">🥛 Стаканчики</h2>
-        <div class="text-xs text-gray-400">Найди шарик — выиграй до x4.75</div>
-        <div class="flex justify-center space-x-4 py-4" id="cups-row">
-          <button onclick="pickCup(0)" class="w-20 h-24 rounded-2xl bg-gradient-to-b from-amber-700/40 to-black border-2 border-amber-500/40 text-4xl flex items-center justify-center shadow-lg">🥛</button>
-          <button onclick="pickCup(1)" class="w-20 h-24 rounded-2xl bg-gradient-to-b from-amber-700/40 to-black border-2 border-amber-500/40 text-4xl flex items-center justify-center shadow-lg">🥛</button>
-          <button onclick="pickCup(2)" class="w-20 h-24 rounded-2xl bg-gradient-to-b from-amber-700/40 to-black border-2 border-amber-500/40 text-4xl flex items-center justify-center shadow-lg">🥛</button>
+      <div id="cups-card-box" class="glass-card p-4 space-y-4 shadow-2xl border-orange-500/25 bg-gradient-to-b from-orange-950/30 via-transparent to-amber-950/20">
+        <div class="text-center">
+          <div class="text-lg font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-rose-400">🥛 Стаканчики</div>
+          <div class="text-[11px] text-orange-200/60 mt-0.5">Найди шарик · до <b class="text-amber-300">x2.8</b></div>
         </div>
-        <input id="cups-bet" type="number" value="100" class="w-full bg-black/40 border border-white/10 rounded-2xl p-3.5 text-center font-extrabold text-sm outline-none text-white">
-        <div class="text-xs text-amber-400 font-bold" id="cups-status">Выберите стаканчик</div>
+        <div class="relative rounded-2xl bg-gradient-to-b from-[#1a1008] to-[#0a0604] border border-orange-500/20 p-5 overflow-hidden">
+          <div class="absolute inset-0 opacity-30 pointer-events-none" style="background:radial-gradient(ellipse at 50% 0%,rgba(251,146,60,0.25),transparent 60%)"></div>
+          <div class="flex justify-center gap-4 relative z-10" id="cups-row" style="perspective:600px">
+            <button onclick="pickCup(0)" data-cup="0" class="cup-btn group relative w-[76px] h-[100px] rounded-[18px] border-2 border-orange-400/40 bg-gradient-to-b from-orange-600/50 via-amber-800/40 to-[#1a0c04] shadow-[0_12px_28px_rgba(234,88,12,0.35),inset_0_1px_0_rgba(255,255,255,0.15)] flex items-end justify-center pb-3 active:scale-95 transition-transform">
+              <span class="cup-emoji text-4xl drop-shadow-lg">🥛</span>
+              <span class="absolute -top-1 left-1/2 -translate-x-1/2 w-10 h-2 rounded-full bg-orange-300/20 blur-[2px]"></span>
+            </button>
+            <button onclick="pickCup(1)" data-cup="1" class="cup-btn group relative w-[76px] h-[100px] rounded-[18px] border-2 border-orange-400/40 bg-gradient-to-b from-orange-600/50 via-amber-800/40 to-[#1a0c04] shadow-[0_12px_28px_rgba(234,88,12,0.35),inset_0_1px_0_rgba(255,255,255,0.15)] flex items-end justify-center pb-3 active:scale-95 transition-transform">
+              <span class="cup-emoji text-4xl drop-shadow-lg">🥛</span>
+              <span class="absolute -top-1 left-1/2 -translate-x-1/2 w-10 h-2 rounded-full bg-orange-300/20 blur-[2px]"></span>
+            </button>
+            <button onclick="pickCup(2)" data-cup="2" class="cup-btn group relative w-[76px] h-[100px] rounded-[18px] border-2 border-orange-400/40 bg-gradient-to-b from-orange-600/50 via-amber-800/40 to-[#1a0c04] shadow-[0_12px_28px_rgba(234,88,12,0.35),inset_0_1px_0_rgba(255,255,255,0.15)] flex items-end justify-center pb-3 active:scale-95 transition-transform">
+              <span class="cup-emoji text-4xl drop-shadow-lg">🥛</span>
+              <span class="absolute -top-1 left-1/2 -translate-x-1/2 w-10 h-2 rounded-full bg-orange-300/20 blur-[2px]"></span>
+            </button>
+          </div>
+        </div>
+        <input id="cups-bet" type="number" value="100" class="w-full bg-black/50 border border-orange-500/20 rounded-2xl p-3.5 text-center font-extrabold text-sm outline-none text-white focus:border-orange-400/50">
+        <div class="text-center text-xs font-extrabold tracking-wide" id="cups-status" style="color:#fdba74">Выберите стаканчик</div>
       </div>
     </div>
 
@@ -2098,6 +2547,211 @@
       </div>
     </div>
 
+    <!-- ============ NEW GAME: PLINKO ============ -->
+    <div id="screen-plinko" class="screen space-y-3">
+      <div class="flex justify-between items-center mb-1">
+        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад</span></button>
+        <button onclick="toggleFastMode('plinko')" id="fast-btn-plinko" class="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-[10px] font-extrabold text-gray-300">⚡ Быстро</button>
+      </div>
+      <div id="plinko-card-box" class="glass-card p-3 space-y-3 shadow-2xl border-violet-500/20">
+        <div class="flex items-center justify-between px-1">
+          <div class="font-extrabold text-sm text-white">🔮 Plinko</div>
+          <div class="text-[10px] font-bold text-violet-300" id="plinko-risk-label">Средний риск</div>
+        </div>
+        <canvas id="plinko-canvas" width="340" height="420" class="w-full rounded-2xl bg-black/60 border border-white/10" style="max-height:420px; touch-action:none;"></canvas>
+        <div class="grid grid-cols-3 gap-2">
+          <button onclick="setPlinkoRisk('low')" id="plinko-risk-low" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">Низкий</button>
+          <button onclick="setPlinkoRisk('mid')" id="plinko-risk-mid" class="py-2 rounded-xl bg-violet-500/25 border-2 border-violet-500 text-[10px] font-bold text-violet-200">Средний</button>
+          <button onclick="setPlinkoRisk('high')" id="plinko-risk-high" class="py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">Высокий</button>
+        </div>
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-[11px] text-gray-400 font-bold">Ряды</span>
+          <div class="flex gap-1">
+            <button onclick="setPlinkoRows(8)" id="plinko-rows-8" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">8</button>
+            <button onclick="setPlinkoRows(12)" id="plinko-rows-12" class="px-2.5 py-1 rounded-lg bg-violet-500/25 border border-violet-500 text-[10px] font-bold text-violet-200">12</button>
+            <button onclick="setPlinkoRows(16)" id="plinko-rows-16" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300">16</button>
+          </div>
+        </div>
+        <input id="plinko-bet" type="number" value="50" class="w-full bg-black/50 border border-white/10 rounded-2xl p-3 text-center font-extrabold text-base outline-none text-white">
+        <button onclick="dropPlinkoBall()" id="plinko-drop-btn" class="btn-primary w-full py-3.5 text-sm">🎯 Бросить шар</button>
+        <p class="text-[10px] text-gray-500 text-center">Физика отскоков · множители внизу зависят от риска и рядов</p>
+      </div>
+    </div>
+
+    <!-- ============ NEW GAME: WHEEL OF FORTUNE ============ -->
+    <div id="screen-wheel" class="screen space-y-3">
+      <div class="flex justify-between items-center mb-1">
+        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад</span></button>
+        <button onclick="toggleFastMode('wheel')" id="fast-btn-wheel" class="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-[10px] font-extrabold text-gray-300">⚡ Быстро</button>
+      </div>
+      <div id="wheel-card-box" class="glass-card p-4 space-y-4 shadow-2xl">
+        <div class="text-center font-extrabold text-lg text-white">🎡 Колесо Фортуны</div>
+        <div class="relative mx-auto" style="width:240px;height:240px;">
+          <div class="absolute top-0 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-[12px] border-r-[12px] border-t-[18px] border-l-transparent border-r-transparent border-t-amber-400" style="filter:drop-shadow(0 2px 6px rgba(0,0,0,0.8))"></div>
+          <canvas id="wheel-canvas" width="240" height="240" class="rounded-full"></canvas>
+        </div>
+        <div class="text-center text-sm font-bold text-amber-300" id="wheel-result-label">Крутите колесо</div>
+        <div class="grid grid-cols-4 gap-2 text-center text-[10px] font-bold">
+          <div class="py-1.5 rounded-lg bg-amber-900/40 border border-amber-700/40 text-amber-200">Bronze</div>
+          <div class="py-1.5 rounded-lg bg-gray-500/30 border border-gray-400/30 text-gray-200">Silver</div>
+          <div class="py-1.5 rounded-lg bg-yellow-600/30 border border-yellow-500/40 text-yellow-200">Gold</div>
+          <div class="py-1.5 rounded-lg bg-cyan-700/30 border border-cyan-400/40 text-cyan-200">Diamond</div>
+        </div>
+        <input id="wheel-bet" type="number" value="100" class="w-full bg-black/50 border border-white/10 rounded-2xl p-3 text-center font-extrabold text-base outline-none text-white">
+        <button onclick="spinFortuneWheel()" id="wheel-spin-btn" class="btn-primary w-full py-3.5 text-sm">🌀 Крутить</button>
+      </div>
+    </div>
+
+    <!-- ============ NEW GAME: TOWERS ============ -->
+    <div id="screen-towers" class="screen space-y-3">
+      <div class="flex justify-between items-center mb-1">
+        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад</span></button>
+        <div class="text-[10px] font-extrabold text-sky-300" id="towers-mult-label">x1.00</div>
+      </div>
+      <div id="towers-card-box" class="glass-card p-4 space-y-3 shadow-2xl border-sky-500/20">
+        <div class="font-extrabold text-sm text-white text-center">🏰 Башня удачи</div>
+        <div id="towers-board" class="space-y-1.5 min-h-[280px]"></div>
+        <div class="flex items-center justify-between text-[11px] font-bold text-gray-400">
+          <span id="towers-level-label">Этаж 0 / 8</span>
+          <span id="towers-profit-label">0 🪙</span>
+        </div>
+        <input id="towers-bet" type="number" value="100" class="w-full bg-black/50 border border-white/10 rounded-2xl p-3 text-center font-extrabold text-base outline-none text-white">
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="startTowers()" id="towers-start-btn" class="btn-primary py-3 text-xs">Начать подъём</button>
+          <button onclick="cashoutTowers()" id="towers-cashout-btn" class="py-3 rounded-2xl bg-emerald-600/80 border border-emerald-400/40 text-xs font-extrabold text-white opacity-50 cursor-not-allowed" disabled>Забрать</button>
+        </div>
+        <p class="text-[10px] text-gray-500 text-center">В каждом ряду 1 ловушка · выбирай плитку и поднимайся</p>
+      </div>
+    </div>
+
+    <!-- ============ NEW GAME: COIN RACE ============ -->
+    <div id="screen-coinrace" class="screen space-y-3">
+      <div class="flex justify-between items-center mb-1">
+        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад</span></button>
+        <span class="text-[10px] font-extrabold text-cyan-300 tracking-widest uppercase">1v1 Race</span>
+      </div>
+      <div id="coinrace-card-box" class="glass-card p-4 space-y-4 shadow-2xl border-cyan-500/20 bg-gradient-to-b from-cyan-950/30 via-transparent to-indigo-950/20">
+        <div class="text-center">
+          <div class="text-lg font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-400 to-indigo-400">🏁 Гонка Монет</div>
+          <div class="text-[11px] text-cyan-200/50 mt-0.5">Дуэль на скорость · банк <b class="text-cyan-300">x2</b></div>
+        </div>
+        <div class="relative h-44 rounded-2xl overflow-hidden border border-cyan-400/20 shadow-[inset_0_0_40px_rgba(34,211,238,0.08)]" style="background:linear-gradient(180deg,#04101a 0%,#02060c 100%)">
+          <div class="absolute inset-0 opacity-40 pointer-events-none" style="background-image:repeating-linear-gradient(90deg,transparent,transparent 28px,rgba(34,211,238,0.06) 28px,rgba(34,211,238,0.06) 29px)"></div>
+          <div class="absolute inset-x-0 top-0 h-1/2 border-b border-cyan-500/15 flex items-center px-2">
+            <div class="absolute left-2 top-2 text-[9px] font-extrabold text-amber-300/80 tracking-wider">LANE A · ВЫ</div>
+            <div id="race-you" class="absolute left-2 text-3xl transition-all duration-100 drop-shadow-[0_0_12px_rgba(251,191,36,0.7)]" style="top:55%;transform:translateY(-50%)">🪙</div>
+            <div class="absolute right-3 text-[10px] font-bold text-amber-300/90 px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-400/30">YOU</div>
+          </div>
+          <div class="absolute inset-x-0 bottom-0 h-1/2 flex items-center px-2">
+            <div class="absolute left-2 top-2 text-[9px] font-extrabold text-slate-400/80 tracking-wider">LANE B · BOT</div>
+            <div id="race-bot" class="absolute left-2 text-3xl transition-all duration-100 drop-shadow-[0_0_10px_rgba(148,163,184,0.5)]" style="top:55%;transform:translateY(-50%)">🤖</div>
+            <div class="absolute right-3 text-[10px] font-bold text-slate-300/90 px-2 py-0.5 rounded-full bg-white/5 border border-white/15">BOT</div>
+          </div>
+          <div class="absolute right-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-amber-300 via-orange-500 to-rose-500 shadow-[0_0_16px_rgba(251,191,36,0.6)]"></div>
+          <div class="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] font-extrabold text-amber-200/70 rotate-90 origin-center tracking-widest">FINISH</div>
+        </div>
+        <div class="text-center text-xs font-extrabold tracking-wide text-cyan-200/80" id="race-status">Готовы к старту</div>
+        <input id="coinrace-bet" type="number" value="100" class="w-full bg-black/50 border border-cyan-500/20 rounded-2xl p-3 text-center font-extrabold text-base outline-none text-white focus:border-cyan-400/50">
+        <button onclick="startCoinRace()" id="coinrace-btn" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 via-sky-500 to-indigo-500 text-white font-extrabold text-sm shadow-lg shadow-cyan-900/40 active:scale-95 transition-transform border border-cyan-300/30">🚀 СТАРТ</button>
+      </div>
+    </div>
+
+    <!-- ============ NEW GAME: KENO ============ -->
+    <div id="screen-keno" class="screen space-y-3">
+      <div class="flex justify-between items-center mb-1">
+        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад</span></button>
+        <div class="text-[10px] font-extrabold text-emerald-300 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30" id="keno-picks-label">Выбрано: 0 / 10</div>
+      </div>
+      <div id="keno-card-box" class="glass-card p-3 space-y-3 shadow-2xl border-emerald-500/25 bg-gradient-to-b from-emerald-950/35 via-transparent to-teal-950/20">
+        <div class="text-center">
+          <div class="text-lg font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-teal-300 to-cyan-300">🎱 Keno</div>
+          <div class="text-[11px] text-emerald-200/50 mt-0.5">20 шаров · выбери 1–10 чисел</div>
+        </div>
+        <div class="rounded-2xl p-2 border border-emerald-500/15 bg-gradient-to-b from-[#031a14] to-[#020c0a] shadow-[inset_0_0_30px_rgba(16,185,129,0.08)]">
+          <div id="keno-grid" class="grid grid-cols-8 gap-1.5"></div>
+        </div>
+        <div class="flex flex-wrap gap-1.5 min-h-[32px] justify-center px-1" id="keno-drawn"></div>
+        <div class="text-center text-xs font-extrabold tracking-wide text-emerald-200/80" id="keno-status">Выберите от 1 до 10 чисел</div>
+        <input id="keno-bet" type="number" value="50" class="w-full bg-black/50 border border-emerald-500/20 rounded-2xl p-3 text-center font-extrabold text-base outline-none text-white focus:border-emerald-400/50">
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="clearKenoPicks()" class="py-3 rounded-2xl bg-white/5 border border-emerald-500/20 text-xs font-bold text-emerald-100/80 hover:bg-white/10 transition">Сбросить</button>
+          <button onclick="playKeno()" id="keno-play-btn" class="py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-extrabold text-xs shadow-lg shadow-emerald-900/40 active:scale-95 transition-transform">Розыгрыш</button>
+        </div>
+        <p class="text-[10px] text-emerald-500/50 text-center">Больше совпадений — выше множитель</p>
+      </div>
+    </div>
+
+    <!-- ============ MINECRAFT MINE ============ -->
+    <div id="screen-minecraft" class="screen space-y-3">
+      <div class="flex justify-between items-center mb-1">
+        <button onclick="openScreen('games')" class="text-xs text-amber-400 font-bold flex items-center space-x-1"><span>←</span><span>Назад</span></button>
+        <div class="flex gap-1.5">
+          <button onclick="toggleMcTurbo()" id="mc-turbo-btn" class="px-2.5 py-1 rounded-xl bg-lime-500/10 border border-lime-500/30 text-[10px] font-extrabold text-lime-300">Турбо</button>
+          <button onclick="toggleMcAuto()" id="mc-auto-btn" class="px-2.5 py-1 rounded-xl bg-white/5 border border-white/10 text-[10px] font-extrabold text-gray-300">Авто</button>
+        </div>
+      </div>
+      <div id="mc-card-box" class="glass-card p-3 space-y-3 shadow-2xl border-lime-500/25 bg-gradient-to-b from-lime-950/30 via-transparent to-emerald-950/20">
+        <div class="flex items-center justify-between px-1">
+          <div class="text-base font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-lime-300 via-green-400 to-emerald-400">⛏️ Шахта</div>
+          <button onclick="showMcOreTable()" class="text-[10px] font-bold text-lime-300 border border-lime-500/40 px-2.5 py-1 rounded-lg bg-lime-500/10">Руда</button>
+        </div>
+
+        <div class="flex justify-center gap-2 py-1" id="mc-pick-slots">
+          <div class="mc-pick-slot w-12 h-12 rounded-xl bg-gradient-to-b from-lime-900/40 to-black/60 border border-lime-500/25 flex items-center justify-center text-xl shadow-inner" data-slot="0">?</div>
+          <div class="mc-pick-slot w-12 h-12 rounded-xl bg-gradient-to-b from-lime-900/40 to-black/60 border border-lime-500/25 flex items-center justify-center text-xl shadow-inner" data-slot="1">?</div>
+          <div class="mc-pick-slot w-12 h-12 rounded-xl bg-gradient-to-b from-lime-900/40 to-black/60 border border-lime-500/25 flex items-center justify-center text-xl shadow-inner" data-slot="2">?</div>
+          <div class="mc-pick-slot w-12 h-12 rounded-xl bg-gradient-to-b from-lime-900/40 to-black/60 border border-lime-500/25 flex items-center justify-center text-xl shadow-inner" data-slot="3">?</div>
+          <div class="mc-pick-slot w-12 h-12 rounded-xl bg-gradient-to-b from-lime-900/40 to-black/60 border border-lime-500/25 flex items-center justify-center text-xl shadow-inner" data-slot="4">?</div>
+        </div>
+
+        <div class="rounded-2xl overflow-hidden border border-lime-500/20 shadow-[0_0_30px_rgba(132,204,22,0.12)]" id="mc-field-wrap" style="background:linear-gradient(180deg,#0c1a08,#050a04)">
+          <div id="mc-field" class="grid grid-cols-5 gap-1 p-1.5" style="min-height:200px"></div>
+        </div>
+
+        <div class="text-center text-xs font-extrabold tracking-wide text-lime-300" id="mc-status">Бросьте кирки</div>
+        <div class="text-center text-[11px] font-extrabold text-amber-300" id="mc-win-label"></div>
+
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] text-lime-200/50 font-bold">СТАВКА</span>
+          <div class="flex space-x-1.5">
+            <button onclick="setMcBetHalf()" class="px-2.5 py-1 rounded-lg bg-lime-500/10 border border-lime-500/25 text-[10px] font-bold text-lime-200">1/2</button>
+            <button onclick="setMcBetDouble()" class="px-2.5 py-1 rounded-lg bg-lime-500/10 border border-lime-500/25 text-[10px] font-bold text-lime-200">2x</button>
+            <button onclick="setMcBetMax()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-500/30 text-[10px] font-bold text-amber-300">MAX</button>
+          </div>
+        </div>
+        <input id="mc-bet" type="number" value="50" class="w-full bg-black/50 border border-lime-500/20 rounded-2xl p-3 text-center font-extrabold text-base outline-none text-white focus:border-lime-400/50">
+        <div class="grid grid-cols-4 gap-2">
+          <button onclick="setMcBet(50)" class="py-2 rounded-xl bg-lime-500/10 border border-lime-500/20 text-xs font-bold text-lime-100">50</button>
+          <button onclick="setMcBet(100)" class="py-2 rounded-xl bg-lime-500/10 border border-lime-500/20 text-xs font-bold text-lime-100">100</button>
+          <button onclick="setMcBet(500)" class="py-2 rounded-xl bg-lime-500/10 border border-lime-500/20 text-xs font-bold text-lime-100">500</button>
+          <button onclick="setMcBet(1000)" class="py-2 rounded-xl bg-lime-500/10 border border-lime-500/20 text-xs font-bold text-lime-100">1K</button>
+        </div>
+        <button onclick="throwMcPicks()" id="mc-throw-btn" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-lime-400 via-green-500 to-emerald-500 text-black font-extrabold text-sm shadow-lg shadow-lime-900/50 active:scale-95 transition-transform border border-lime-300/40">
+          ⛏️ Бросить кирки
+        </button>
+      </div>
+
+      <div id="mc-ore-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 backdrop-blur-sm" style="display:none" onclick="hideMcOreTable()">
+        <div class="glass-card p-4 m-4 max-w-sm w-full space-y-2 border border-lime-500/30" onclick="event.stopPropagation()">
+          <div class="font-extrabold text-sm text-white">Таблица руд</div>
+          <div class="text-[11px] text-gray-300 space-y-1">
+            <div class="flex justify-between"><span>⬛ Земля</span><span>—</span></div>
+            <div class="flex justify-between"><span>🪨 Камень</span><span>—</span></div>
+            <div class="flex justify-between"><span>⬛ Уголь ×2</span><span>сразу после земли</span></div>
+            <div class="flex justify-between"><span>🟨 Золото ×5</span><span>глубина 2+</span></div>
+            <div class="flex justify-between"><span>💎 Алмаз ×9</span><span>глубина 3+</span></div>
+            <div class="flex justify-between"><span>🟣 Незерит ×25</span><span>глубина 7–8</span></div>
+          </div>
+          <div class="text-[10px] text-gray-500 pt-2 border-t border-white/10">Кирки: 🪵 дерево → 🪨 камень → ⚙️ железо → 💎 алмаз → 🟣 незерит</div>
+          <button onclick="hideMcOreTable()" class="btn-primary w-full py-2 text-xs mt-2">Закрыть</button>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
   </main>
 
   <!-- Нижняя навигация -->
@@ -2128,8 +2782,10 @@
   <!-- Скрипт логики приложения -->
   <script>
     let tg = null;
-    let currentUserId = 1612193166; 
+    let currentUserId = 1612193166;
+    let currentUsername = '';
     let adminUserIds = [1612193166];
+    let adminUsernames = []; // lowercase without @
 
     try {
       if (window.Telegram && window.Telegram.WebApp) {
@@ -2138,8 +2794,10 @@
         tg.expand();
         tg.setHeaderColor('#080b11');
         tg.setBackgroundColor('#080b11');
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
-          currentUserId = tg.initDataUnsafe.user.id;
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+          const u = tg.initDataUnsafe.user;
+          if (u.id) currentUserId = u.id;
+          if (u.username) currentUsername = String(u.username).toLowerCase().replace(/^@/, '');
         }
       }
     } catch (e) {}
@@ -2155,6 +2813,44 @@
       const savedAdmins = localStorage.getItem('case_lounge_global_admins');
       if (savedAdmins) adminUserIds = JSON.parse(savedAdmins);
     } catch(e) {}
+    try {
+      const savedAdminUsers = localStorage.getItem('case_lounge_global_admin_usernames');
+      if (savedAdminUsers) adminUsernames = JSON.parse(savedAdminUsers);
+    } catch(e) {}
+
+    // Global promo store (shared across users on same device / future API)
+    // { CODE: { reward, maxUses, usedCount, usedBy: [userId...] } }
+    const GLOBAL_PROMOS_KEY = 'case_lounge_global_promos_v2';
+    function loadGlobalPromos() {
+      try {
+        const raw = localStorage.getItem(GLOBAL_PROMOS_KEY);
+        if (!raw) {
+          const seed = {
+            "VIP2026": { reward: 2000, maxUses: 100, usedCount: 0, usedBy: [] },
+            "START": { reward: 1000, maxUses: 500, usedCount: 0, usedBy: [] }
+          };
+          localStorage.setItem(GLOBAL_PROMOS_KEY, JSON.stringify(seed));
+          return seed;
+        }
+        return JSON.parse(raw);
+      } catch (e) { return {}; }
+    }
+    function saveGlobalPromos(map) {
+      try { localStorage.setItem(GLOBAL_PROMOS_KEY, JSON.stringify(map || {})); } catch (e) {}
+    }
+    let globalPromos = loadGlobalPromos();
+
+    function isCurrentUserAdmin() {
+      if (adminUserIds.includes(Number(currentUserId))) return true;
+      if (currentUsername && adminUsernames.includes(currentUsername)) return true;
+      return false;
+    }
+    function persistAdmins() {
+      try {
+        localStorage.setItem('case_lounge_global_admins', JSON.stringify(adminUserIds));
+        localStorage.setItem('case_lounge_global_admin_usernames', JSON.stringify(adminUsernames));
+      } catch (e) {}
+    }
 
     let balance = typeof savedData.balance === 'number' ? savedData.balance : 5000;
     let gamesPlayed = typeof savedData.gamesPlayed === 'number' ? savedData.gamesPlayed : 0;
@@ -2183,9 +2879,12 @@
     let globalCombo = typeof savedData.globalCombo === 'number' ? savedData.globalCombo : 0;
     let playSeconds = typeof savedData.playSeconds === 'number' ? savedData.playSeconds : 0;
     let matchSecondsLeft = 180; 
-    let customPromos = savedData.customPromos || { "VIP2026": 2000, "START": 1000 };
+    // legacy per-user map no longer primary; use globalPromos
+    let customPromos = {};
+    let claimedPromoCodes = Array.isArray(savedData.claimedPromoCodes) ? savedData.claimedPromoCodes : [];
+
     let lastDailyClaim = typeof savedData.lastDailyClaim === 'number' ? savedData.lastDailyClaim : 0;
-    let adminLogs = savedData.adminLogs || ["[Система] Лог инициализирован."];
+    let adminLogs = Array.isArray(savedData.adminLogs) ? savedData.adminLogs : ["[Система] Лог инициализирован."];
     
     let globalLuck = typeof savedData.globalLuck === 'number' ? savedData.globalLuck : 1;
     let luckExpiresAt = typeof savedData.luckExpiresAt === 'number' ? savedData.luckExpiresAt : 0;
@@ -2196,7 +2895,8 @@
     let currentGodMinutes = 0;
 
     let fastModes = {
-      coinflip: false, dice: false, slots: false, mines: false, crash: false, upgrader: false, roulette: false, poker: false, hilo: false
+      coinflip: false, dice: false, slots: false, mines: false, crash: false, upgrader: false, roulette: false, poker: false, hilo: false,
+      plinko: false, wheel: false, towers: false, coinrace: false, keno: false
     };
 
     function logAdminAction(text) {
@@ -2233,7 +2933,7 @@
           crashQuestClaimed, casesQuestClaimed, hiloQuestClaimed, wonQuestClaimed, comboQuestClaimed,
           crashCashout5Done, casesOpened, maxHiloStreak, maxCombo,
           winStreak, globalCombo, playSeconds, 
-          customPromos, lastDailyClaim, globalLuck, luckExpiresAt, godMode, godExpiresAt, adminLogs
+          claimedPromoCodes, lastDailyClaim, globalLuck, luckExpiresAt, godMode, godExpiresAt, adminLogs
         };
         localStorage.setItem(storageKey, JSON.stringify(dataToSave));
         localStorage.setItem('case_lounge_global_admins', JSON.stringify(adminUserIds));
@@ -2332,9 +3032,23 @@
       try {
         const haptic = tg && tg.HapticFeedback;
         if (!haptic) return;
-        if (type === 'win') haptic.notificationOccurred('success');
-        else if (type === 'lose') haptic.notificationOccurred('error');
-        else if (type === 'click') haptic.impactOccurred('light');
+        if (type === 'win') {
+          haptic.notificationOccurred('success');
+          haptic.impactOccurred('heavy');
+        } else if (type === 'lose') {
+          haptic.notificationOccurred('error');
+          haptic.impactOccurred('medium');
+        } else if (type === 'click') {
+          haptic.impactOccurred('light');
+        } else if (type === 'medium') {
+          haptic.impactOccurred('medium');
+        } else if (type === 'heavy') {
+          haptic.impactOccurred('heavy');
+        } else if (type === 'soft') {
+          haptic.impactOccurred('soft');
+        } else if (type === 'selection') {
+          haptic.selectionChanged();
+        }
       } catch (e) {}
     }
 
@@ -2512,16 +3226,60 @@
 
     function checkAdminAccess() {
       const adminBtn = document.getElementById('nav-admin-btn');
-      if (adminUserIds.includes(Number(currentUserId))) {
+      if (isCurrentUserAdmin()) {
         adminBtn?.classList.remove('hidden');
       } else {
         adminBtn?.classList.add('hidden');
       }
       const adminListLabel = document.getElementById('admin-list-label');
       if (adminListLabel) {
-        adminListLabel.textContent = `Список ID админов: ${adminUserIds.join(', ')}`;
+        const ids = adminUserIds.join(', ') || '—';
+        const users = adminUsernames.map(u => '@' + u).join(', ') || '—';
+        adminListLabel.textContent = 'ID: ' + ids + ' | User: ' + users;
       }
+      renderAdminPromoList();
     }
+
+    function adminToggleAdminByUsername() {
+      playSound('click');
+      const input = document.getElementById('admin-new-username');
+      if (!input) return;
+      let name = (input.value || '').trim().toLowerCase().replace(/^@/, '');
+      if (!name) {
+        showFloatingPopup('Введите @username', false);
+        return;
+      }
+      const idx = adminUsernames.indexOf(name);
+      if (idx !== -1) {
+        adminUsernames.splice(idx, 1);
+        logAdminAction('Сняты права админа у @' + name);
+        showFloatingPopup('Админ снят: @' + name, false);
+      } else {
+        adminUsernames.push(name);
+        logAdminAction('Назначен админ @' + name);
+        showFloatingPopup('Админ выдан: @' + name, true);
+      }
+      persistAdmins();
+      checkAdminAccess();
+      input.value = '';
+    }
+
+    function renderAdminPromoList() {
+      const box = document.getElementById('admin-promo-list');
+      if (!box) return;
+      globalPromos = loadGlobalPromos();
+      const keys = Object.keys(globalPromos);
+      if (!keys.length) {
+        box.innerHTML = '<div>Промокодов пока нет</div>';
+        return;
+      }
+      box.innerHTML = keys.map(code => {
+        const p = globalPromos[code];
+        const left = Math.max(0, (p.maxUses || 0) - (p.usedCount || 0));
+        return '<div><b class="text-amber-300">' + code + '</b> · ' + (p.reward||0) + ' 🪙 · осталось ' + left + '/' + (p.maxUses||0) + '</div>';
+      }).join('');
+    }
+
 
     function updateLocalBalance(amountChange) {
       if (amountChange < 0) totalSpent += Math.abs(amountChange);
@@ -2576,6 +3334,12 @@
       if (id === 'hilo') initHiloCard();
       if (id === 'roulette') buildRouletteStrip();
       if (id === 'slots') initSbGrid();
+      if (id === 'plinko') initPlinkoBoard();
+      if (id === 'wheel') drawFortuneWheel();
+      if (id === 'towers') renderTowersBoard(true);
+      if (id === 'keno') initKenoGrid();
+      if (id === 'cases') initCasesCatalog();
+      if (id === 'minecraft') initMcField();
     }
 
     // ============= ТОПЫ (реальные игроки) =============
@@ -2724,13 +3488,14 @@
       const idx = adminUserIds.indexOf(targetId);
       if (idx !== -1) {
         adminUserIds.splice(idx, 1);
-        logAdminAction(`Сняты права админа у ID: ${targetId}`);
-        showFloatingPopup(`Права админа сняты с ${targetId}`, false);
+        logAdminAction('Сняты права админа у ID: ' + targetId);
+        showFloatingPopup('Права админа сняты с ' + targetId, false);
       } else {
         adminUserIds.push(targetId);
-        logAdminAction(`Назначен новый админ с ID: ${targetId}`);
-        showFloatingPopup(`Игрок ${targetId} назначен админом!`, true);
+        logAdminAction('Назначен новый админ с ID: ' + targetId);
+        showFloatingPopup('Игрок ' + targetId + ' назначен админом!', true);
       }
+      persistAdmins();
       saveGameData();
       checkAdminAccess();
       input.value = '';
@@ -2790,7 +3555,42 @@
       showFloatingPopup(godMode ? 'Режим бога ВКЛЮЧЕН' : 'Режим бога ВЫКЛЮЧЕН', true);
     }
 
+
+    function setRngPreset(mode) {
+      playSound('click');
+      if (mode === 'win') {
+        godMode = true; godExpiresAt = 0; globalLuck = 10; luckExpiresAt = 0;
+        logAdminAction('RNG: Always Win');
+        showFloatingPopup('RNG: всегда победа', true);
+      } else if (mode === 'lose') {
+        godMode = false; globalLuck = 0.15; luckExpiresAt = 0;
+        logAdminAction('RNG: Hard lose');
+        showFloatingPopup('RNG: жёсткий слив', false);
+      } else {
+        godMode = false; globalLuck = 1; luckExpiresAt = 0;
+        logAdminAction('RNG: Fair 50%');
+        showFloatingPopup('RNG: честный 50%', true);
+      }
+      saveGameData();
+      updateAdminPanelUI();
+    }
+
+    function setMcNetherWeight(w) {
+      playSound('click');
+      mcNetheriteWeight = w;
+      logAdminAction('Mine netherite pick weight = ' + w);
+      showFloatingPopup('Незерит кирка ~' + w + '%', true);
+    }
+
     function updateAdminPanelUI() {
+      const sp = document.getElementById('admin-stat-spins');
+      const to = document.getElementById('admin-stat-turnover');
+      const wo = document.getElementById('admin-stat-won');
+      const on = document.getElementById('admin-stat-online');
+      if (sp) sp.textContent = (gamesPlayed || 0).toLocaleString('ru');
+      if (to) to.textContent = (totalSpent || 0).toLocaleString('ru');
+      if (wo) wo.textContent = (totalWon || 0).toLocaleString('ru');
+      if (on) on.textContent = (onlinePlayersNow || '—');
       for (let v of [1, 2, 3, 10]) {
         const btn = document.getElementById(`luck-btn-${v}`);
         if (btn) {
@@ -2895,7 +3695,7 @@
       timeQuestClaimed = false;
       gamesQuestClaimed = false;
       playSeconds = 0;
-      customPromos = { "VIP2026": 2000, "START": 1000 };
+      claimedPromoCodes = []; globalPromos = loadGlobalPromos();
       adminLogs = ["[Система] Полный сброс выполнен."];
       globalLuck = 1;
       luckExpiresAt = 0;
@@ -2924,16 +3724,34 @@
       playSound('click');
       const codeInput = document.getElementById('admin-promo-code');
       const rewardInput = document.getElementById('admin-promo-reward');
+      const limitInput = document.getElementById('admin-promo-limit');
       if (!codeInput || !rewardInput) return;
       const code = codeInput.value.trim().toUpperCase();
       const reward = parseInt(rewardInput.value) || 0;
-      if (!code || reward <= 0) return;
-
-      customPromos[code] = reward;
-      saveGameData();
-      logAdminAction(`Создан промокод ${code} на ${reward} фишек`);
-      showFloatingPopup(`Промокод ${code} создан!`, true);
+      const maxUses = Math.max(1, parseInt(limitInput && limitInput.value) || 50);
+      if (!code || reward <= 0) {
+        showFloatingPopup('Укажите код и сумму', false);
+        return;
+      }
+      globalPromos = loadGlobalPromos();
+      globalPromos[code] = {
+        reward: reward,
+        maxUses: maxUses,
+        usedCount: (globalPromos[code] && globalPromos[code].usedCount) || 0,
+        usedBy: (globalPromos[code] && globalPromos[code].usedBy) || []
+      };
+      // if recreating fresh limit, reset uses when admin wants new code cycle
+      if (!(globalPromos[code].usedBy && globalPromos[code].usedBy.length)) {
+        globalPromos[code].usedCount = 0;
+        globalPromos[code].usedBy = [];
+      }
+      globalPromos[code].maxUses = maxUses;
+      globalPromos[code].reward = reward;
+      saveGlobalPromos(globalPromos);
+      logAdminAction('Промо ' + code + ' · ' + reward + ' · лимит ' + maxUses);
+      showFloatingPopup('Промокод ' + code + ' · лимит ' + maxUses, true);
       codeInput.value = '';
+      renderAdminPromoList();
     }
 
     function activatePromo() {
@@ -2941,19 +3759,49 @@
       const promoInput = document.getElementById('promo-input');
       if (!promoInput) return;
       const code = promoInput.value.trim().toUpperCase();
-      if (customPromos[code]) {
-        const rew = customPromos[code];
-        delete customPromos[code];
-        updateLocalBalance(rew);
-        addXp(100);
-        playSound('win');
-        showFloatingPopup(`+${rew} 🪙 Активировано!`, true);
-        promoInput.value = '';
-      } else {
+      if (!code) return;
+
+      globalPromos = loadGlobalPromos();
+      const promo = globalPromos[code];
+      if (!promo || typeof promo.reward !== 'number') {
         playSound('lose');
-        showFloatingPopup('Неверный или использованный промокод', false);
+        showFloatingPopup('Неверный промокод', false);
+        return;
       }
+
+      const uid = String(currentUserId);
+      const usedBy = Array.isArray(promo.usedBy) ? promo.usedBy.map(String) : [];
+      if (usedBy.includes(uid) || claimedPromoCodes.includes(code)) {
+        playSound('lose');
+        showFloatingPopup('Вы уже активировали этот код', false);
+        return;
+      }
+
+      const usedCount = promo.usedCount || 0;
+      const maxUses = promo.maxUses || 0;
+      if (maxUses > 0 && usedCount >= maxUses) {
+        playSound('lose');
+        showFloatingPopup('Лимит активаций исчерпан', false);
+        return;
+      }
+
+      // commit activation
+      promo.usedCount = usedCount + 1;
+      promo.usedBy = usedBy.concat([uid]);
+      globalPromos[code] = promo;
+      saveGlobalPromos(globalPromos);
+
+      claimedPromoCodes.push(code);
+      const rew = promo.reward;
+      updateLocalBalance(rew);
+      addXp(100);
+      saveGameData();
+      playSound('win');
+      showFloatingPopup('+' + rew + ' 🪙 Активировано!', true);
+      promoInput.value = '';
+      renderAdminPromoList();
     }
+
 
     function canClaimDailyBonus() {
       const now = Date.now();
@@ -4417,37 +5265,587 @@
       }, duration);
     }
 
-    function openCase() {
+
+    // ============= PREMIUM CASES (catalog + roulette strip) =============
+
+    // ============= PREMIUM CASES =============
+    // Базовые веса: x3.5 = 30%, x5 = 30%, x50 = 7%, остальное пусто/мелочь
+    const CASE_DROP_TEMPLATE = [
+      { emoji: '💨', name: 'Пусто', mult: 0, w: 18, rarity: 'common', rarityLabel: 'Обычный' },
+      { emoji: '🪨', name: 'Утешение', mult: 0.3, w: 10, rarity: 'common', rarityLabel: 'Обычный' },
+      { emoji: '📦', name: 'Мелочь', mult: 0.6, w: 5, rarity: 'common', rarityLabel: 'Обычный' },
+      { emoji: '💎', name: 'x3.5', mult: 3.5, w: 30, rarity: 'rare', rarityLabel: 'Редкий' },
+      { emoji: '👑', name: 'x5', mult: 5, w: 30, rarity: 'epic', rarityLabel: 'Эпический' },
+      { emoji: '🔥', name: 'x50 ДЖЕКПОТ', mult: 50, w: 7, rarity: 'mythic', rarityLabel: 'Легендарный' }
+    ];
+    const CASE_TIERS = [
+      { id: 'starter', name: 'Starter', price: 250, emoji: '📦', color: '#64748b' },
+      { id: 'bronze', name: 'Bronze', price: 500, emoji: '🧳', color: '#a16207' },
+      { id: 'silver', name: 'Silver', price: 1000, emoji: '🎁', color: '#94a3b8' },
+      { id: 'gold', name: 'Gold', price: 10000, emoji: '👑', color: '#f59e0b' },
+      { id: 'diamond', name: 'Diamond', price: 100000, emoji: '💠', color: '#22d3ee' },
+      { id: 'mythic', name: 'Mythic', price: 1000000, emoji: '🌟', color: '#c084fc' }
+    ].map(t => ({ ...t, drops: CASE_DROP_TEMPLATE.map(d => ({ ...d })) }));
+
+    let selectedCase = null;
+    let casesSpinning = false;
+    let casesJackpotForce = false;
+    let casesOnline = 640;
+    let casesOnlineTimer = null;
+
+    function toggleCasesJackpotForce() {
       playSound('click');
-      const bet = parseFloat(document.getElementById('case-bet')?.value) || 0;
-      if (bet <= 0 || bet > balance) return;
-      updateLocalBalance(-bet);
+      casesJackpotForce = !casesJackpotForce;
+      const btn = document.getElementById('cases-jackpot-force-btn');
+      if (btn) {
+        btn.textContent = casesJackpotForce ? 'СТАТУС: ВКЛ · x50' : 'СТАТУС: ВЫКЛ';
+        btn.style.color = casesJackpotForce ? '#f0abfc' : '#fff';
+        btn.style.borderColor = casesJackpotForce ? '#e879f9' : 'rgba(255,255,255,0.1)';
+        btn.style.background = casesJackpotForce ? 'rgba(192,132,252,0.2)' : '';
+      }
+      logAdminAction('Cases jackpot force: ' + (casesJackpotForce ? 'ON' : 'OFF'));
+      showFloatingPopup(casesJackpotForce ? 'Кейсы: принудительный x50 ВКЛ' : 'Кейсы: x50 выкл', casesJackpotForce);
+    }
+
+    function updateCasesOnline() {
+      // Плавный дрейф 420–1280
+      const delta = Math.floor((Math.random() - 0.48) * 40);
+      casesOnline = Math.max(420, Math.min(1280, casesOnline + delta));
+      const el = document.getElementById('cases-online-count');
+      if (el) el.textContent = casesOnline.toLocaleString('ru');
+    }
+    function startCasesOnlineTicker() {
+      updateCasesOnline();
+      if (casesOnlineTimer) clearInterval(casesOnlineTimer);
+      casesOnlineTimer = setInterval(updateCasesOnline, 3500 + Math.floor(Math.random() * 2000));
+    }
+
+    function initCasesCatalog() {
+      const grid = document.getElementById('cases-catalog-grid');
+      if (!grid) return;
+      document.getElementById('cases-catalog')?.classList.remove('hidden');
+      document.getElementById('cases-open-view')?.classList.add('hidden');
+      selectedCase = null;
+      startCasesOnlineTicker();
+      grid.innerHTML = CASE_TIERS.map(c => `
+        <div class="case-card" data-id="${c.id}" onclick="selectCase('${c.id}')" style="border-color:${c.color}44">
+          <div class="text-3xl mb-1">${c.emoji}</div>
+          <div class="text-xs font-extrabold text-white">${c.name}</div>
+          <div class="case-price">${c.price.toLocaleString('ru')} 🪙</div>
+        </div>
+      `).join('');
+      const lab = document.getElementById('cases-selected-label');
+      if (lab) lab.textContent = 'Выберите кейс';
+    }
+
+    function selectCase(id) {
+      playSound('click'); vibrate('selection');
+      selectedCase = CASE_TIERS.find(c => c.id === id);
+      if (!selectedCase) return;
+      document.querySelectorAll('.case-card').forEach(el => {
+        el.classList.toggle('selected', el.dataset.id === id);
+      });
+      const lab = document.getElementById('cases-selected-label');
+      if (lab) lab.textContent = selectedCase.name + ' · ' + selectedCase.price.toLocaleString('ru');
+      document.getElementById('cases-catalog')?.classList.add('hidden');
+      const ov = document.getElementById('cases-open-view');
+      if (ov) ov.classList.remove('hidden');
+      document.getElementById('cases-back-btn')?.classList.remove('hidden');
+      document.getElementById('cases-result-name').textContent = selectedCase.name;
+      document.getElementById('cases-result-mult').textContent = '';
+      const badge = document.getElementById('cases-rarity-badge');
+      if (badge) { badge.classList.add('hidden'); badge.textContent = ''; }
+      document.getElementById('cases-multi-results')?.classList.add('hidden');
+      const glow = document.getElementById('cases-glow-fx');
+      if (glow) glow.classList.remove('case-glow-gold', 'case-glow-jackpot');
+      buildCaseStrip();
+    }
+
+    function backToCasesCatalog() {
+      playSound('click');
+      initCasesCatalog();
+    }
+
+    function pickCaseDrop(tier) {
+      if (godMode || casesJackpotForce) {
+        return tier.drops.find(d => d.mult === 50) || tier.drops[tier.drops.length - 1];
+      }
+      const total = tier.drops.reduce((a, d) => a + d.w, 0);
+      let r = Math.random() * total;
+      for (const d of tier.drops) {
+        r -= d.w;
+        if (r <= 0) return { ...d };
+      }
+      return { ...tier.drops[0] };
+    }
+
+    function rarityClass(r) {
+      return ({
+        common: 'rarity-common',
+        rare: 'rarity-rare',
+        epic: 'rarity-epic',
+        legendary: 'rarity-legendary',
+        mythic: 'rarity-mythic'
+      })[r] || 'rarity-common';
+    }
+
+    function buildCaseStrip() {
+      const strip = document.getElementById('cases-strip');
+      if (!strip || !selectedCase) return;
+      const items = [];
+      for (let i = 0; i < 42; i++) {
+        items.push(pickCaseDrop(selectedCase));
+      }
+      strip.innerHTML = items.map((d) => `
+        <div class="case-strip-item" style="border-color:${selectedCase.color}55">
+          <span class="crarity ${rarityClass(d.rarity)}">${d.rarityLabel}</span>
+          <span>${d.emoji}</span>
+          <span class="csm" style="color:${d.mult>=50?'#f0abfc':d.mult>=5?'#fbbf24':d.mult>=3.5?'#7dd3fc':'#9ca3af'}">${d.mult ? 'x'+d.mult : '—'}</span>
+        </div>
+      `).join('');
+      strip.style.transition = 'none';
+      strip.style.transform = 'translateX(0)';
+      strip._items = items;
+    }
+
+    function spawnCasesConfetti() {
+      const layer = document.getElementById('cases-confetti-layer');
+      if (!layer) return;
+      layer.style.display = 'block';
+      layer.innerHTML = '';
+      const colors = ['#fbbf24','#f472b6','#a78bfa','#34d399','#38bdf8','#fb923c','#fff'];
+      for (let i = 0; i < 48; i++) {
+        const p = document.createElement('div');
+        p.className = 'case-confetti-piece';
+        p.style.left = (Math.random() * 100) + '%';
+        p.style.background = colors[i % colors.length];
+        p.style.animationDuration = (1.2 + Math.random() * 1.4) + 's';
+        p.style.animationDelay = (Math.random() * 0.35) + 's';
+        p.style.width = (6 + Math.random() * 6) + 'px';
+        p.style.height = (6 + Math.random() * 8) + 'px';
+        layer.appendChild(p);
+      }
+      setTimeout(() => { layer.style.display = 'none'; layer.innerHTML = ''; }, 2800);
+    }
+
+    function applyCaseWinFx(maxMult) {
+      const glow = document.getElementById('cases-glow-fx');
+      const ov = document.getElementById('cases-open-view');
+      if (glow) {
+        glow.classList.remove('case-glow-gold', 'case-glow-jackpot');
+        if (maxMult >= 50) glow.classList.add('case-glow-jackpot');
+        else if (maxMult >= 5) glow.classList.add('case-glow-gold');
+      }
+      if (ov && maxMult >= 5) {
+        ov.classList.remove('case-shake');
+        void ov.offsetWidth;
+        ov.classList.add('case-shake');
+      }
+      if (maxMult >= 3.5) spawnCasesConfetti();
+      if (maxMult >= 50) vibrate('heavy');
+      else if (maxMult >= 5) vibrate('medium');
+      else if (maxMult >= 3.5) vibrate('soft');
+    }
+
+    function showCaseResultUI(result, totalWin, multiList) {
+      document.getElementById('cases-result-name').textContent = result.name;
+      document.getElementById('cases-result-mult').textContent = result.mult
+        ? ('×' + result.mult + (totalWin ? (' · +' + totalWin.toLocaleString('ru') + ' 🪙') : ''))
+        : 'Пусто';
+      const badge = document.getElementById('cases-rarity-badge');
+      if (badge) {
+        badge.className = 'inline-block px-3 py-0.5 rounded-full text-[10px] font-extrabold tracking-wide ' + rarityClass(result.rarity);
+        badge.textContent = result.rarityLabel;
+        badge.classList.remove('hidden');
+      }
+      const multiBox = document.getElementById('cases-multi-results');
+      if (multiBox) {
+        if (multiList && multiList.length > 1) {
+          multiBox.classList.remove('hidden');
+          multiBox.innerHTML = multiList.map((r, i) =>
+            `<div class="flex items-center justify-between px-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-[11px]">
+              <span>#${i+1} ${r.emoji} ${r.name}</span>
+              <span class="font-extrabold ${r.mult>=50?'text-fuchsia-300':r.mult>=5?'text-amber-300':r.mult>=3.5?'text-sky-300':'text-gray-400'}">${r.mult?('x'+r.mult):'—'}</span>
+            </div>`
+          ).join('');
+        } else {
+          multiBox.classList.add('hidden');
+        }
+      }
+    }
+
+    function spinCaseRoulette(count) {
+      count = count === 3 ? 3 : 1;
+      if (casesSpinning || !selectedCase) return;
+      playSound('click');
+      const price = selectedCase.price * count;
+      if (price > balance) {
+        showFloatingPopup('Недостаточно фишек', false);
+        return;
+      }
+      updateLocalBalance(-price);
       recordGamePlay();
-      casesOpened++;
+      casesOpened += count;
       saveGameData();
       updateQuestsUI();
-      const el = document.getElementById('case-display');
-      el.textContent = '✨';
+      casesSpinning = true;
+      const btn = document.getElementById('cases-spin-btn');
+      const btnM = document.getElementById('cases-spin-multi-btn');
+      if (btn) { btn.disabled = true; btn.classList.add('opacity-50'); }
+      if (btnM) { btnM.disabled = true; btnM.classList.add('opacity-50'); }
+
+      const results = [];
+      for (let i = 0; i < count; i++) results.push(pickCaseDrop(selectedCase));
+      // Главный визуальный результат — лучший из серии
+      const best = results.reduce((a, b) => (b.mult > a.mult ? b : a), results[0]);
+
+      buildCaseStrip();
+      const strip = document.getElementById('cases-strip');
+      const items = strip._items || [];
+      const targetIdx = 28 + Math.floor(Math.random() * 4);
+      items[targetIdx] = best;
+      strip.innerHTML = items.map((d) => `
+        <div class="case-strip-item" style="border-color:${selectedCase.color}55">
+          <span class="crarity ${rarityClass(d.rarity)}">${d.rarityLabel || ''}</span>
+          <span>${d.emoji}</span>
+          <span class="csm" style="color:${d.mult>=50?'#f0abfc':d.mult>=5?'#fbbf24':d.mult>=3.5?'#7dd3fc':'#9ca3af'}">${d.mult ? 'x'+d.mult : '—'}</span>
+        </div>
+      `).join('');
+
+      const itemW = 80;
+      const centerOffset = (strip.parentElement?.offsetWidth || 300) / 2 - 36;
+      const targetX = -(targetIdx * itemW - centerOffset);
+      const dur = count > 1 ? 3200 : 3800;
+      strip.style.transition = `transform ${dur}ms cubic-bezier(0.12, 0.75, 0.12, 1)`;
+      requestAnimationFrame(() => {
+        strip.style.transform = `translateX(${targetX}px)`;
+      });
+
       setTimeout(() => {
-        const roll = Math.random() * 100;
-        let mult = 0, name = '';
-        if (roll < 5) { mult = 25; name = 'ЛЕГЕНДАРНЫЙ'; el.textContent = '👑'; }
-        else if (roll < 25) { mult = 5; name = 'Редкий'; el.textContent = '💎'; }
-        else if (roll < 60) { mult = 1.5; name = 'Обычный'; el.textContent = '📦'; }
-        else { mult = 0; name = 'Пусто'; el.textContent = '💨'; }
-        if (mult > 0) {
-          const win = Math.floor(bet * mult);
-          updateLocalBalance(win);
+        casesSpinning = false;
+        if (btn) { btn.disabled = false; btn.classList.remove('opacity-50'); }
+        if (btnM) { btnM.disabled = false; btnM.classList.remove('opacity-50'); }
+
+        let totalWin = 0;
+        results.forEach(r => {
+          if (r.mult > 0) totalWin += Math.floor(selectedCase.price * r.mult);
+        });
+        const maxMult = Math.max(...results.map(r => r.mult));
+
+        showCaseResultUI(best, totalWin, count > 1 ? results : null);
+        applyCaseWinFx(maxMult);
+
+        if (totalWin > 0) {
+          updateLocalBalance(totalWin);
           playSound('win');
-          showFloatingPopup(`+${win} 🪙 ${name}!`, true);
+          showFloatingPopup(
+            (count > 1 ? ('⚡ ×' + count + ' · ') : '') + best.emoji + ' +' + totalWin.toLocaleString('ru') + ' 🪙',
+            true
+          );
           recordWin(true);
         } else {
           playSound('lose');
-          showFloatingPopup('Пустой кейс', false);
+          showFloatingPopup(count > 1 ? 'Серия пустая' : 'Пустой кейс', false);
           recordWin(false);
         }
-        document.getElementById('case-status').textContent = name;
-      }, 800);
+      }, dur + 80);
+    }
+
+    // ============= MINECRAFT MINE =============
+    const MC_COLS = 5, MC_ROWS = 8;
+    // block types per depth
+    // layers: 0 dirt, 1-2 stone/coal, 3-4 gold chance, 5-6 diamond, 7 netherite
+    const MC_PICKS = [
+      { id: 'wood', emoji: '🪵', name: 'Дерево', w: 45, digDirt: 2, digStone: 1, digCoal: 0, digGold: 0, digDiamond: 0, digNether: 0 },
+      { id: 'stone', emoji: '🪨', name: 'Камень', w: 28, digDirt: 2, digStone: 1, digCoal: 2, digGold: 0, digDiamond: 0, digNether: 0 },
+      { id: 'iron', emoji: '⚙️', name: 'Железо', w: 15, digDirt: 2, digStone: 2, digCoal: 1, digGold: 0, digDiamond: 0, digNether: 0 },
+      { id: 'diamond', emoji: '💎', name: 'Алмаз', w: 9, digDirt: 2, digStone: 99, digCoal: 1, digGold: 1, digDiamond: 1, digNether: 0 },
+      { id: 'netherite', emoji: '🟣', name: 'Незерит', w: 3, digDirt: 99, digStone: 99, digCoal: 1, digGold: 1, digDiamond: 1, digNether: 1 }
+    ];
+    let mcField = []; // [row][col] = { type, broken, hits }
+    let mcBusy = false, mcTurbo = false, mcAuto = false;
+    // admin-tunable netherite pick weight
+    let mcNetheriteWeight = 3;
+
+    function setMcBet(v) {
+      playSound('click');
+      const el = document.getElementById('mc-bet');
+      if (el) el.value = Math.min(balance || v, v);
+    }
+    function setMcBetHalf() {
+      const el = document.getElementById('mc-bet');
+      if (el) el.value = Math.max(10, Math.floor((+el.value || 50) / 2));
+    }
+    function setMcBetDouble() {
+      const el = document.getElementById('mc-bet');
+      if (el) el.value = Math.min(balance, (+el.value || 50) * 2);
+    }
+    function setMcBetMax() {
+      const el = document.getElementById('mc-bet');
+      if (el) el.value = Math.max(10, balance);
+    }
+    function toggleMcTurbo() {
+      playSound('click');
+      mcTurbo = !mcTurbo;
+      const b = document.getElementById('mc-turbo-btn');
+      if (b) {
+        b.textContent = mcTurbo ? 'Турбо ON' : 'Турбо';
+        b.style.color = mcTurbo ? '#84cc16' : '';
+        b.style.borderColor = mcTurbo ? '#84cc16' : '';
+      }
+    }
+    function toggleMcAuto() {
+      playSound('click');
+      mcAuto = !mcAuto;
+      const b = document.getElementById('mc-auto-btn');
+      if (b) {
+        b.textContent = mcAuto ? 'Авто ON' : 'Авто';
+        b.style.color = mcAuto ? '#84cc16' : '';
+        b.style.borderColor = mcAuto ? '#84cc16' : '';
+      }
+      if (mcAuto && !mcBusy) throwMcPicks();
+    }
+    function showMcOreTable() {
+      const m = document.getElementById('mc-ore-modal');
+      if (m) { m.style.display = 'flex'; m.classList.remove('hidden'); }
+    }
+    function hideMcOreTable() {
+      const m = document.getElementById('mc-ore-modal');
+      if (m) { m.style.display = 'none'; m.classList.add('hidden'); }
+    }
+
+    function genMcBlock(row) {
+      // row 0 = top (dirt), row 7 = deepest
+      if (row === 0) return { type: 'dirt', emoji: '🟫', mult: 0 };
+      if (row === 1) {
+        return Math.random() < 0.35 ? { type: 'coal', emoji: '⬛', mult: 2 } : { type: 'stone', emoji: '🪨', mult: 0 };
+      }
+      if (row <= 3) {
+        const r = Math.random();
+        if (r < 0.12) return { type: 'gold', emoji: '🟨', mult: 5 };
+        if (r < 0.35) return { type: 'coal', emoji: '⬛', mult: 2 };
+        return { type: 'stone', emoji: '🪨', mult: 0 };
+      }
+      if (row <= 5) {
+        const r = Math.random();
+        if (r < 0.08) return { type: 'diamond', emoji: '💎', mult: 9 };
+        if (r < 0.2) return { type: 'gold', emoji: '🟨', mult: 5 };
+        if (r < 0.4) return { type: 'coal', emoji: '⬛', mult: 2 };
+        return { type: 'stone', emoji: '🪨', mult: 0 };
+      }
+      // deep 6-7
+      const r = Math.random();
+      if (r < 0.04) return { type: 'netherite', emoji: '🟣', mult: 25 };
+      if (r < 0.12) return { type: 'diamond', emoji: '💎', mult: 9 };
+      if (r < 0.25) return { type: 'gold', emoji: '🟨', mult: 5 };
+      return { type: 'stone', emoji: '🪨', mult: 0 };
+    }
+
+    function initMcField() {
+      const field = document.getElementById('mc-field');
+      if (!field) return;
+      mcField = [];
+      field.innerHTML = '';
+      for (let r = 0; r < MC_ROWS; r++) {
+        const row = [];
+        for (let c = 0; c < MC_COLS; c++) {
+          const b = genMcBlock(r);
+          b.broken = false;
+          b.hits = 0;
+          row.push(b);
+          const cell = document.createElement('div');
+          cell.className = 'mc-block';
+          cell.id = 'mc-b-' + r + '-' + c;
+          cell.textContent = b.emoji;
+          cell.style.background = blockBg(b.type);
+          field.appendChild(cell);
+        }
+        mcField.push(row);
+      }
+      document.querySelectorAll('.mc-pick-slot').forEach(s => {
+        s.textContent = '?';
+        s.classList.remove('reveal');
+      });
+      const st = document.getElementById('mc-status');
+      if (st) st.textContent = 'Бросьте кирки';
+      const wl = document.getElementById('mc-win-label');
+      if (wl) wl.textContent = '';
+    }
+
+    function blockBg(type) {
+      const map = {
+        dirt: '#5c4033', stone: '#6b7280', coal: '#1f2937',
+        gold: '#a16207', diamond: '#0e7490', netherite: '#4c1d95'
+      };
+      return map[type] || '#374151';
+    }
+
+    function rollMcPick() {
+      const picks = MC_PICKS.map(p => ({ ...p }));
+      const nIdx = picks.findIndex(p => p.id === 'netherite');
+      if (nIdx >= 0) picks[nIdx].w = mcNetheriteWeight;
+      if (godMode) return picks[picks.length - 1];
+      let total = picks.reduce((a, p) => a + p.w, 0);
+      let r = Math.random() * total;
+      if (globalLuck > 1) r = r / (1 + (globalLuck - 1) * 0.3);
+      for (const p of picks) {
+        r -= p.w;
+        if (r <= 0) return p;
+      }
+      return picks[0];
+    }
+
+    function canDig(pick, block) {
+      if (block.broken) return false;
+      const t = block.type;
+      if (t === 'dirt') return pick.digDirt > 0;
+      if (t === 'stone') return pick.digStone > 0;
+      if (t === 'coal') return pick.digCoal > 0;
+      if (t === 'gold') return pick.digGold > 0;
+      if (t === 'diamond') return pick.digDiamond > 0;
+      if (t === 'netherite') return pick.digNether > 0;
+      return false;
+    }
+
+    function hitsNeeded(block) {
+      if (block.type === 'coal') return 2;
+      if (block.type === 'stone') return 1;
+      return 1;
+    }
+
+    function throwMcPicks() {
+      if (mcBusy) return;
+      playSound('click');
+      const bet = parseFloat(document.getElementById('mc-bet')?.value) || 0;
+      if (bet <= 0 || bet > balance) return;
+      updateLocalBalance(-bet);
+      recordGamePlay();
+      mcBusy = true;
+      const btn = document.getElementById('mc-throw-btn');
+      if (btn) { btn.disabled = true; btn.classList.add('opacity-50'); }
+
+      initMcField();
+
+      // roll 1-5 picks (more wood often)
+      const count = 1 + Math.floor(Math.random() * 5);
+      const picks = [];
+      for (let i = 0; i < 5; i++) {
+        if (i < count) picks.push(rollMcPick());
+        else picks.push(null);
+      }
+      // prefer showing wood if many empties - already random
+
+      const slots = document.querySelectorAll('.mc-pick-slot');
+      let si = 0;
+      function revealPick() {
+        if (si >= 5) {
+          setTimeout(() => digWithPicks(picks.filter(Boolean), bet), mcTurbo ? 100 : 350);
+          return;
+        }
+        const slot = slots[si];
+        const p = picks[si];
+        if (slot) {
+          slot.textContent = p ? p.emoji : '—';
+          slot.classList.add('reveal');
+          if (p && p.id === 'netherite') vibrate('heavy');
+          else if (p) vibrate('soft');
+        }
+        si++;
+        setTimeout(revealPick, mcTurbo ? 50 : 180);
+      }
+      revealPick();
+    }
+
+    function digWithPicks(picks, bet) {
+      let totalMult = 0;
+      const delay = mcTurbo ? 40 : 120;
+      // each pick digs top-down in random columns
+      let actions = [];
+      picks.forEach(pick => {
+        let dirtLeft = pick.digDirt;
+        let stoneLeft = pick.digStone;
+        for (let r = 0; r < MC_ROWS; r++) {
+          for (let c = 0; c < MC_COLS; c++) {
+            const b = mcField[r][c];
+            if (!canDig(pick, b)) continue;
+            if (b.type === 'dirt' && dirtLeft <= 0) continue;
+            if (b.type === 'stone' && stoneLeft <= 0) continue;
+            actions.push({ r, c, pick, block: b });
+            if (b.type === 'dirt') dirtLeft--;
+            if (b.type === 'stone') stoneLeft--;
+            // ores: one dig attempt per qualifying pick
+            if (['coal','gold','diamond','netherite'].includes(b.type)) {
+              // only once
+            }
+          }
+        }
+      });
+      // shuffle for visual variety
+      for (let i = actions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [actions[i], actions[j]] = [actions[j], actions[i]];
+      }
+      // limit actions for speed
+      actions = actions.slice(0, 40);
+
+      let ai = 0;
+      function nextDig() {
+        if (ai >= actions.length) {
+          finishMcRound(bet, totalMult);
+          return;
+        }
+        const a = actions[ai++];
+        const b = mcField[a.r][a.c];
+        if (b.broken) { nextDig(); return; }
+        b.hits++;
+        const need = hitsNeeded(b);
+        const cell = document.getElementById('mc-b-' + a.r + '-' + a.c);
+        if (b.hits >= need && canDig(a.pick, b)) {
+          b.broken = true;
+          if (cell) {
+            cell.classList.add('broken');
+            if (b.mult > 0) {
+              cell.classList.add('ore-hit');
+              totalMult += b.mult;
+              vibrate('medium');
+              playSound('win');
+            }
+          }
+        } else if (cell) {
+          cell.style.filter = 'brightness(1.2)';
+          setTimeout(() => { if (cell) cell.style.filter = ''; }, 100);
+        }
+        setTimeout(nextDig, delay);
+      }
+      nextDig();
+    }
+
+    function finishMcRound(bet, totalMult) {
+      mcBusy = false;
+      const btn = document.getElementById('mc-throw-btn');
+      if (btn) { btn.disabled = false; btn.classList.remove('opacity-50'); }
+      const win = Math.floor(bet * totalMult);
+      const st = document.getElementById('mc-status');
+      const wl = document.getElementById('mc-win-label');
+      if (win > 0) {
+        updateLocalBalance(win);
+        playSound('win');
+        triggerCardEffect('mc-card-box', true);
+        showFloatingPopup('⛏️ +' + win.toLocaleString('ru') + ' 🪙 (x' + totalMult + ')', true);
+        if (st) st.textContent = 'Руда добыта!';
+        if (wl) wl.textContent = '+' + win.toLocaleString('ru') + ' · x' + totalMult;
+        recordWin(true);
+      } else {
+        playSound('lose');
+        triggerCardEffect('mc-card-box', false);
+        showFloatingPopup('Пустая шахта', false);
+        if (st) st.textContent = 'Ничего не добыто';
+        if (wl) wl.textContent = '';
+        recordWin(false);
+      }
+      if (mcAuto) {
+        setTimeout(() => { if (mcAuto && !mcBusy) throwMcPicks(); }, mcTurbo ? 400 : 900);
+      }
     }
 
     let cupsBall = 0, cupsLocked = false;
@@ -4460,31 +5858,853 @@
       recordGamePlay();
       cupsLocked = true;
       cupsBall = Math.floor(Math.random() * 3);
+
       const row = document.getElementById('cups-row');
-      const btns = row.querySelectorAll('button');
-      btns.forEach((b,i) => {
-        b.textContent = i === cupsBall ? '🟡' : '🥛';
+      const btns = Array.from(row.querySelectorAll('button'));
+      const status = document.getElementById('cups-status');
+      if (status) status.textContent = 'Перемешиваем...';
+      btns.forEach(b => {
         b.disabled = true;
+        b.classList.remove('cup-win', 'cup-lose', 'cup-shuffle', 'cup-lift', 'cup-spin');
+        const em = b.querySelector('.cup-emoji');
+        if (em) em.textContent = '🥛';
+        else b.childNodes[0] && (b.childNodes[0].textContent = '🥛');
       });
-      setTimeout(() => {
+
+      // Фаза 1: подъём и вращение
+      btns.forEach((b, i) => {
+        setTimeout(() => {
+          b.classList.add('cup-lift');
+          playSound('click');
+          vibrate('soft');
+        }, i * 80);
+      });
+
+      // Фаза 2: хаотичное перемешивание (swap-анимация)
+      let swaps = 0;
+      const maxSwaps = 6;
+      function doSwap() {
+        if (swaps >= maxSwaps) {
+          // Фаза 3: раскрытие
+          setTimeout(revealCups, 200);
+          return;
+        }
+        swaps++;
+        btns.forEach((b, i) => {
+          b.classList.remove('cup-shuffle', 'cup-spin', 'cup-lift');
+          void b.offsetWidth;
+          const dx = (i === 1 ? 0 : (i === 0 ? 50 : -50)) * (swaps % 2 === 0 ? 1 : -1);
+          b.style.setProperty('--cup-dx', dx + 'px');
+          b.style.setProperty('--cup-rot', ((i - 1) * 10) + 'deg');
+          b.classList.add(swaps % 2 === 0 ? 'cup-shuffle' : 'cup-spin');
+        });
+        vibrate('soft');
+        setTimeout(doSwap, 320);
+      }
+      setTimeout(doSwap, 500);
+
+      function revealCups() {
+        btns.forEach((b, i) => {
+          b.classList.remove('cup-shuffle', 'cup-spin', 'cup-lift');
+          const em = b.querySelector('.cup-emoji');
+          const isBall = i === cupsBall;
+          if (em) em.textContent = isBall ? '🟡' : '🥛';
+          else b.innerHTML = (isBall ? '🟡' : '🥛');
+          if (i === idx) b.classList.add(isBall ? 'cup-win' : 'cup-lose');
+          if (isBall && i !== idx) b.classList.add('cup-win');
+        });
+
         if (idx === cupsBall) {
           const win = Math.floor(bet * 2.8);
           updateLocalBalance(win);
           playSound('win');
-          showFloatingPopup(`+${win} 🪙 Нашёл!`, true);
-          document.getElementById('cups-status').textContent = 'Победа! x2.8';
+          triggerCardEffect('cups-card-box', true);
+          showFloatingPopup('+' + win + ' 🪙 Нашёл!', true);
+          if (status) status.textContent = 'Победа! x2.8';
+          recordWin(true);
         } else {
           playSound('lose');
+          triggerCardEffect('cups-card-box', false);
           showFloatingPopup('Мимо', false);
-          document.getElementById('cups-status').textContent = 'Шарик был в другом';
+          if (status) status.textContent = 'Шарик был в другом';
+          recordWin(false);
         }
+
         setTimeout(() => {
-          btns.forEach(b => { b.textContent = '🥛'; b.disabled = false; });
+          btns.forEach(b => {
+            b.disabled = false;
+            b.classList.remove('cup-win', 'cup-lose', 'cup-shuffle', 'cup-spin', 'cup-lift');
+            const em = b.querySelector('.cup-emoji');
+            if (em) em.textContent = '🥛';
+            else {
+              // restore structure if innerHTML was wiped
+              b.innerHTML = '<span class="cup-emoji text-4xl drop-shadow-lg">🥛</span><span class="absolute -top-1 left-1/2 -translate-x-1/2 w-10 h-2 rounded-full bg-orange-300/20 blur-[2px]"></span>';
+            }
+          });
           cupsLocked = false;
-          document.getElementById('cups-status').textContent = 'Выберите стаканчик';
-        }, 1500);
-      }, 600);
+          if (status) status.textContent = 'Выберите стаканчик';
+        }, 1600);
+      }
     }
+
+    
+// ============= PLINKO (Canvas physics) =============
+    let plinkoRisk = 'mid', plinkoRows = 12, plinkoBusy = false;
+    let plinkoPegs = [], plinkoSlots = [], plinkoBall = null, plinkoAnimId = null;
+    const PLINKO_MULTS = {
+      low:  { 8:[5.6,2.1,1.1,1,0.5,1,1.1,2.1,5.6], 12:[10,3,1.6,1.4,1.1,1,0.5,1,1.1,1.4,1.6,3,10], 16:[16,9,2,1.4,1.4,1.2,1.1,1,0.5,1,1.1,1.2,1.4,1.4,2,9,16] },
+      mid:  { 8:[13,3,1.3,0.7,0.4,0.7,1.3,3,13], 12:[33,11,4,2,1.1,0.6,0.3,0.6,1.1,2,4,11,33], 16:[110,41,10,5,3,1.5,1,0.5,0.3,0.5,1,1.5,3,5,10,41,110] },
+      high: { 8:[29,4,1.5,0.3,0.2,0.3,1.5,4,29], 12:[170,24,8.1,2,0.7,0.2,0.2,0.2,0.7,2,8.1,24,170], 16:[1000,130,26,9,4,2,0.2,0.2,0.2,0.2,0.2,2,4,9,26,130,1000] }
+    };
+
+    function setPlinkoRisk(r) {
+      playSound('click'); vibrate('selection');
+      plinkoRisk = r;
+      ['low','mid','high'].forEach(k => {
+        const b = document.getElementById('plinko-risk-'+k);
+        if (!b) return;
+        b.className = k===r ? 'py-2 rounded-xl bg-violet-500/25 border-2 border-violet-500 text-[10px] font-bold text-violet-200' : 'py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300';
+      });
+      const labels = {low:'Низкий риск', mid:'Средний риск', high:'Высокий риск'};
+      const el = document.getElementById('plinko-risk-label');
+      if (el) el.textContent = labels[r];
+      initPlinkoBoard();
+    }
+    function setPlinkoRows(n) {
+      playSound('click'); vibrate('selection');
+      plinkoRows = n;
+      [8,12,16].forEach(k => {
+        const b = document.getElementById('plinko-rows-'+k);
+        if (!b) return;
+        b.className = k===n ? 'px-2.5 py-1 rounded-lg bg-violet-500/25 border border-violet-500 text-[10px] font-bold text-violet-200' : 'px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-gray-300';
+      });
+      initPlinkoBoard();
+    }
+
+    function initPlinkoBoard() {
+      const canvas = document.getElementById('plinko-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      const padX = 28, topY = 36, bottomY = H - 48;
+      const rowH = (bottomY - topY) / (plinkoRows + 0.5);
+      plinkoPegs = [];
+      for (let r = 0; r < plinkoRows; r++) {
+        const count = r + 3;
+        const spacing = (W - padX * 2) / (count - 1);
+        for (let c = 0; c < count; c++) {
+          plinkoPegs.push({ x: padX + c * spacing, y: topY + r * rowH, r: 4.5 });
+        }
+      }
+      const mults = (PLINKO_MULTS[plinkoRisk] && PLINKO_MULTS[plinkoRisk][plinkoRows]) || PLINKO_MULTS.mid[12];
+      const slotCount = mults.length;
+      const slotW = (W - padX * 2) / slotCount;
+      plinkoSlots = mults.map((m, i) => ({
+        x: padX + i * slotW + slotW / 2,
+        w: slotW,
+        mult: m,
+        color: m >= 10 ? '#fbbf24' : m >= 2 ? '#34d399' : m >= 1 ? '#94a3b8' : '#f87171'
+      }));
+      drawPlinkoStatic(ctx, W, H);
+    }
+
+    function drawPlinkoStatic(ctx, W, H) {
+      ctx.clearRect(0, 0, W, H);
+      const g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, '#0f0a1a'); g.addColorStop(1, '#050308');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      plinkoPegs.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = '#e2e8f0';
+        ctx.shadowColor = 'rgba(192,132,252,0.6)';
+        ctx.shadowBlur = 6;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+      const slotY = H - 42;
+      plinkoSlots.forEach(s => {
+        ctx.fillStyle = s.color + '33';
+        ctx.fillRect(s.x - s.w/2 + 1, slotY, s.w - 2, 36);
+        ctx.strokeStyle = s.color;
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(s.x - s.w/2 + 1, slotY, s.w - 2, 36);
+        ctx.fillStyle = s.color;
+        ctx.font = 'bold 9px Plus Jakarta Sans, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(s.mult + 'x', s.x, slotY + 22);
+      });
+    }
+
+    function dropPlinkoBall() {
+      if (plinkoBusy) return;
+      playSound('click');
+      const bet = parseFloat(document.getElementById('plinko-bet')?.value) || 0;
+      if (bet <= 0 || bet > balance) return;
+      updateLocalBalance(-bet);
+      recordGamePlay();
+      plinkoBusy = true;
+      const btn = document.getElementById('plinko-drop-btn');
+      if (btn) { btn.disabled = true; btn.classList.add('opacity-50'); }
+
+      const canvas = document.getElementById('plinko-canvas');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      plinkoBall = {
+        x: W / 2 + (Math.random() - 0.5) * 20,
+        y: 18,
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: 0,
+        r: 7,
+        bet
+      };
+
+      const gravity = 0.28;
+      const restitution = 0.62;
+      const friction = 0.985;
+      const dt = fastModes.plinko ? 2.2 : 1;
+
+      function step() {
+        if (!plinkoBall) return;
+        plinkoBall.vy += gravity * dt;
+        plinkoBall.x += plinkoBall.vx * dt;
+        plinkoBall.y += plinkoBall.vy * dt;
+        plinkoBall.vx *= friction;
+
+        if (plinkoBall.x - plinkoBall.r < 8) { plinkoBall.x = 8 + plinkoBall.r; plinkoBall.vx = Math.abs(plinkoBall.vx) * restitution; vibrate('soft'); }
+        if (plinkoBall.x + plinkoBall.r > W - 8) { plinkoBall.x = W - 8 - plinkoBall.r; plinkoBall.vx = -Math.abs(plinkoBall.vx) * restitution; vibrate('soft'); }
+
+        for (const p of plinkoPegs) {
+          const dx = plinkoBall.x - p.x, dy = plinkoBall.y - p.y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          const minD = plinkoBall.r + p.r;
+          if (dist < minD && dist > 0) {
+            const nx = dx / dist, ny = dy / dist;
+            const overlap = minD - dist;
+            plinkoBall.x += nx * overlap;
+            plinkoBall.y += ny * overlap;
+            const vn = plinkoBall.vx * nx + plinkoBall.vy * ny;
+            if (vn < 0) {
+              plinkoBall.vx -= (1 + restitution) * vn * nx;
+              plinkoBall.vy -= (1 + restitution) * vn * ny;
+              plinkoBall.vx += (Math.random() - 0.5) * 0.8;
+              vibrate('soft');
+            }
+          }
+        }
+
+        drawPlinkoStatic(ctx, W, H);
+        ctx.beginPath();
+        ctx.arc(plinkoBall.x, plinkoBall.y, plinkoBall.r, 0, Math.PI * 2);
+        const bg = ctx.createRadialGradient(plinkoBall.x-2, plinkoBall.y-2, 1, plinkoBall.x, plinkoBall.y, plinkoBall.r);
+        bg.addColorStop(0, '#fde68a'); bg.addColorStop(1, '#f59e0b');
+        ctx.fillStyle = bg;
+        ctx.shadowColor = 'rgba(245,158,11,0.8)';
+        ctx.shadowBlur = 12;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        if (plinkoBall.y > H - 50) {
+          let best = 0, bestDist = Infinity;
+          plinkoSlots.forEach((s, i) => {
+            const d = Math.abs(plinkoBall.x - s.x);
+            if (d < bestDist) { bestDist = d; best = i; }
+          });
+          const slot = plinkoSlots[best];
+          const win = Math.floor(plinkoBall.bet * slot.mult);
+          cancelAnimationFrame(plinkoAnimId);
+          plinkoBall = null;
+          plinkoBusy = false;
+          if (btn) { btn.disabled = false; btn.classList.remove('opacity-50'); }
+          if (win > 0) {
+            updateLocalBalance(win);
+            playSound('win');
+            triggerCardEffect('plinko-card-box', true);
+            showFloatingPopup('Plinko +' + win + ' (' + slot.mult + 'x)', true);
+            recordWin(true);
+          } else {
+            playSound('lose');
+            triggerCardEffect('plinko-card-box', false);
+            showFloatingPopup('Plinko ' + slot.mult + 'x', false);
+            recordWin(false);
+          }
+          initPlinkoBoard();
+          return;
+        }
+        plinkoAnimId = requestAnimationFrame(step);
+      }
+      plinkoAnimId = requestAnimationFrame(step);
+    }
+
+    // ============= WHEEL OF FORTUNE =============
+    const WHEEL_SEGMENTS = [
+      { label: '2x', mult: 2, color: '#78350f', tier: 'Bronze' },
+      { label: '0', mult: 0, color: '#1f2937', tier: '' },
+      { label: '5x', mult: 5, color: '#9ca3af', tier: 'Silver' },
+      { label: '1.5x', mult: 1.5, color: '#78350f', tier: 'Bronze' },
+      { label: '10x', mult: 10, color: '#ca8a04', tier: 'Gold' },
+      { label: '0', mult: 0, color: '#1f2937', tier: '' },
+      { label: '3x', mult: 3, color: '#9ca3af', tier: 'Silver' },
+      { label: '25x', mult: 25, color: '#0891b2', tier: 'Diamond' },
+      { label: '2x', mult: 2, color: '#78350f', tier: 'Bronze' },
+      { label: '0', mult: 0, color: '#1f2937', tier: '' },
+      { label: '5x', mult: 5, color: '#9ca3af', tier: 'Silver' },
+      { label: '50x', mult: 50, color: '#0891b2', tier: 'Diamond' },
+      { label: '1.5x', mult: 1.5, color: '#78350f', tier: 'Bronze' },
+      { label: '0', mult: 0, color: '#1f2937', tier: '' },
+      { label: '8x', mult: 8, color: '#ca8a04', tier: 'Gold' },
+      { label: '100x', mult: 100, color: '#0891b2', tier: 'Diamond' }
+    ];
+    let wheelRotation = 0, wheelSpinning = false;
+
+    function drawFortuneWheel() {
+      const canvas = document.getElementById('wheel-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const cx = 120, cy = 120, R = 112;
+      const n = WHEEL_SEGMENTS.length;
+      const arc = (Math.PI * 2) / n;
+      ctx.clearRect(0, 0, 240, 240);
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(wheelRotation);
+      for (let i = 0; i < n; i++) {
+        const s = WHEEL_SEGMENTS[i];
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, R, i * arc - Math.PI/2, (i + 1) * arc - Math.PI/2);
+        ctx.closePath();
+        ctx.fillStyle = s.color;
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.save();
+        ctx.rotate(i * arc + arc / 2 - Math.PI/2);
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 11px Plus Jakarta Sans, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(s.label, R * 0.65, 4);
+        ctx.restore();
+      }
+      ctx.beginPath();
+      ctx.arc(0, 0, 22, 0, Math.PI * 2);
+      ctx.fillStyle = '#0a0712';
+      ctx.fill();
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function spinFortuneWheel() {
+      if (wheelSpinning) return;
+      playSound('click');
+      const bet = parseFloat(document.getElementById('wheel-bet')?.value) || 0;
+      if (bet <= 0 || bet > balance) return;
+      updateLocalBalance(-bet);
+      recordGamePlay();
+      wheelSpinning = true;
+      const btn = document.getElementById('wheel-spin-btn');
+      if (btn) { btn.disabled = true; btn.classList.add('opacity-50'); }
+
+      const weights = WHEEL_SEGMENTS.map(s => s.mult === 0 ? 18 : s.mult >= 50 ? 1 : s.mult >= 10 ? 3 : s.mult >= 5 ? 6 : 10);
+      const totalW = weights.reduce((a,b)=>a+b,0);
+      let r = Math.random() * totalW;
+      let idx = 0;
+      for (let i = 0; i < weights.length; i++) {
+        r -= weights[i];
+        if (r <= 0) { idx = i; break; }
+      }
+      if (godMode) {
+        idx = WHEEL_SEGMENTS.findIndex(s => s.mult >= 10);
+        if (idx < 0) idx = 0;
+      }
+
+      const n = WHEEL_SEGMENTS.length;
+      const arc = (Math.PI * 2) / n;
+      const targetAngle = (Math.PI * 2) - (idx * arc + arc / 2);
+      const spins = fastModes.wheel ? 3 : (5 + Math.random() * 3);
+      const finalRot = wheelRotation + spins * Math.PI * 2 + (targetAngle - (wheelRotation % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+
+      const start = performance.now();
+      const dur = fastModes.wheel ? 1200 : 4200;
+      const startRot = wheelRotation;
+
+      function anim(now) {
+        const t = Math.min(1, (now - start) / dur);
+        const ease = 1 - Math.pow(1 - t, 3);
+        wheelRotation = startRot + (finalRot - startRot) * ease;
+        drawFortuneWheel();
+        if (t < 1) {
+          requestAnimationFrame(anim);
+        } else {
+          wheelSpinning = false;
+          if (btn) { btn.disabled = false; btn.classList.remove('opacity-50'); }
+          const seg = WHEEL_SEGMENTS[idx];
+          const label = document.getElementById('wheel-result-label');
+          if (seg.mult > 0) {
+            const win = Math.floor(bet * seg.mult);
+            updateLocalBalance(win);
+            playSound('win');
+            triggerCardEffect('wheel-card-box', true);
+            showFloatingPopup('Wheel ' + seg.label + ' +' + win, true);
+            if (label) label.textContent = (seg.tier || '') + ' ' + seg.label + ' +' + win;
+            recordWin(true);
+          } else {
+            playSound('lose');
+            triggerCardEffect('wheel-card-box', false);
+            showFloatingPopup('Wheel empty', false);
+            if (label) label.textContent = 'Empty';
+            recordWin(false);
+          }
+        }
+      }
+      requestAnimationFrame(anim);
+    }
+
+    // ============= TOWERS =============
+    let towersActive = false, towersLevel = 0, towersBet = 0, towersMult = 1, towersTrap = [];
+    const TOWERS_ROWS = 8;
+    const TOWERS_COLS = 3;
+    const TOWERS_STEP = [1.45, 1.55, 1.65, 1.8, 2.0, 2.3, 2.7, 3.2];
+
+    function renderTowersBoard(reset) {
+      const board = document.getElementById('towers-board');
+      if (!board) return;
+      if (reset) {
+        towersActive = false;
+        towersLevel = 0;
+        towersMult = 1;
+        towersTrap = [];
+        board.innerHTML = '';
+        for (let r = TOWERS_ROWS - 1; r >= 0; r--) {
+          const row = document.createElement('div');
+          row.className = 'grid grid-cols-3 gap-1.5';
+          row.dataset.row = r;
+          for (let c = 0; c < TOWERS_COLS; c++) {
+            const cell = document.createElement('button');
+            cell.className = 'h-10 rounded-xl bg-white/5 border border-white/10 text-sm font-bold text-gray-500';
+            cell.textContent = '\\u00b7';
+            cell.disabled = true;
+            row.appendChild(cell);
+          }
+          board.appendChild(row);
+        }
+        const lvl = document.getElementById('towers-level-label');
+        const multEl = document.getElementById('towers-mult-label');
+        const profit = document.getElementById('towers-profit-label');
+        if (lvl) lvl.textContent = 'Floor 0 / 8';
+        if (multEl) multEl.textContent = 'x1.00';
+        if (profit) profit.textContent = '0';
+        const cash = document.getElementById('towers-cashout-btn');
+        if (cash) { cash.disabled = true; cash.classList.add('opacity-50', 'cursor-not-allowed'); }
+        const startBtn = document.getElementById('towers-start-btn');
+        if (startBtn) { startBtn.disabled = false; startBtn.classList.remove('opacity-50'); }
+      }
+    }
+
+    function startTowers() {
+      playSound('click');
+      towersBet = parseFloat(document.getElementById('towers-bet')?.value) || 0;
+      if (towersBet <= 0 || towersBet > balance) return;
+      updateLocalBalance(-towersBet);
+      recordGamePlay();
+      towersActive = true;
+      towersLevel = 0;
+      towersMult = 1;
+      towersTrap = Array.from({ length: TOWERS_ROWS }, () => Math.floor(Math.random() * TOWERS_COLS));
+      const board = document.getElementById('towers-board');
+      if (!board) return;
+      const rows = board.querySelectorAll('[data-row]');
+      rows.forEach((rowEl) => {
+        const r = parseInt(rowEl.dataset.row, 10);
+        const cells = rowEl.querySelectorAll('button');
+        cells.forEach((cell, c) => {
+          cell.disabled = r !== 0;
+          cell.textContent = r === 0 ? '?' : '\\u00b7';
+          cell.className = r === 0
+            ? 'h-10 rounded-xl bg-sky-500/20 border border-sky-400/40 text-sm font-bold text-sky-200 active:scale-95 transition-transform'
+            : 'h-10 rounded-xl bg-white/5 border border-white/10 text-sm font-bold text-gray-600';
+          cell.onclick = () => pickTowerTile(r, c, cell);
+        });
+      });
+      const startBtn = document.getElementById('towers-start-btn');
+      if (startBtn) { startBtn.disabled = true; startBtn.classList.add('opacity-50'); }
+      const cash = document.getElementById('towers-cashout-btn');
+      if (cash) { cash.disabled = true; cash.classList.add('opacity-50'); }
+    }
+
+    function pickTowerTile(row, col, cell) {
+      if (!towersActive || row !== towersLevel) return;
+      playSound('click'); vibrate('medium');
+      const isTrap = towersTrap[row] === col && !godMode && !checkWinCondition(72);
+      if (isTrap) {
+        cell.textContent = '\\u2620';
+        cell.className = 'h-10 rounded-xl bg-red-600/40 border border-red-400 text-sm font-bold';
+        const board = document.getElementById('towers-board');
+        board.querySelectorAll('[data-row]').forEach(rowEl => {
+          const r = parseInt(rowEl.dataset.row, 10);
+          rowEl.querySelectorAll('button').forEach((c, i) => {
+            if (towersTrap[r] === i && c !== cell) {
+              c.textContent = '\\u2620';
+              c.className = 'h-10 rounded-xl bg-red-900/30 border border-red-500/30 text-sm';
+            }
+          });
+        });
+        towersActive = false;
+        playSound('lose');
+        triggerCardEffect('towers-card-box', false);
+        showFloatingPopup('Tower collapsed!', false);
+        recordWin(false);
+        setTimeout(() => renderTowersBoard(true), 1400);
+        return;
+      }
+      cell.textContent = '\\uD83D\\uDC8E';
+      cell.className = 'h-10 rounded-xl bg-emerald-500/30 border border-emerald-400 text-sm font-bold';
+      towersMult = parseFloat((towersMult * TOWERS_STEP[row]).toFixed(2));
+      towersLevel++;
+      document.getElementById('towers-mult-label').textContent = 'x' + towersMult.toFixed(2);
+      document.getElementById('towers-level-label').textContent = 'Floor ' + towersLevel + ' / ' + TOWERS_ROWS;
+      document.getElementById('towers-profit-label').textContent = Math.floor(towersBet * towersMult) + '';
+      playSound('win');
+      vibrate('soft');
+
+      const board = document.getElementById('towers-board');
+      board.querySelectorAll('[data-row]').forEach(rowEl => {
+        const r = parseInt(rowEl.dataset.row, 10);
+        rowEl.querySelectorAll('button').forEach(c => {
+          if (r === row && c !== cell) {
+            c.disabled = true;
+            c.className = 'h-10 rounded-xl bg-white/5 border border-white/10 text-sm text-gray-600';
+          }
+          if (r === towersLevel) {
+            c.disabled = false;
+            c.textContent = '?';
+            c.className = 'h-10 rounded-xl bg-sky-500/20 border border-sky-400/40 text-sm font-bold text-sky-200 active:scale-95 transition-transform';
+          }
+        });
+      });
+
+      const cash = document.getElementById('towers-cashout-btn');
+      if (cash) { cash.disabled = false; cash.classList.remove('opacity-50', 'cursor-not-allowed'); }
+
+      if (towersLevel >= TOWERS_ROWS) {
+        cashoutTowers();
+      }
+    }
+
+    function cashoutTowers() {
+      if (!towersActive || towersLevel === 0) return;
+      const win = Math.floor(towersBet * towersMult);
+      updateLocalBalance(win);
+      playSound('win');
+      triggerCardEffect('towers-card-box', true);
+      showFloatingPopup('Tower +' + win + ' (x' + towersMult + ')', true);
+      recordWin(true);
+      towersActive = false;
+      setTimeout(() => renderTowersBoard(true), 900);
+    }
+
+    // ============= COIN RACE =============
+    let raceRunning = false;
+    function startCoinRace() {
+      if (raceRunning) return;
+      playSound('click');
+      const bet = parseFloat(document.getElementById('coinrace-bet')?.value) || 0;
+      if (bet <= 0 || bet > balance) return;
+      updateLocalBalance(-bet);
+      recordGamePlay();
+      raceRunning = true;
+      const btn = document.getElementById('coinrace-btn');
+      if (btn) { btn.disabled = true; btn.classList.add('opacity-50'); }
+      const you = document.getElementById('race-you');
+      const bot = document.getElementById('race-bot');
+      const status = document.getElementById('race-status');
+      if (status) status.textContent = 'Racing...';
+      let youX = 8, botX = 8;
+      const trackW = (document.getElementById('coinrace-card-box')?.offsetWidth || 300) - 60;
+      const youWins = checkWinCondition(48);
+
+      const interval = setInterval(() => {
+        const youBoost = (0.8 + Math.random() * 2.2) * (youWins ? 1.15 : 0.92);
+        const botBoost = (0.8 + Math.random() * 2.2) * (youWins ? 0.9 : 1.12);
+        youX += youBoost;
+        botX += botBoost;
+        if (you) you.style.left = Math.min(trackW, youX) + 'px';
+        if (bot) bot.style.left = Math.min(trackW, botX) + 'px';
+        vibrate('soft');
+
+        if (youX >= trackW || botX >= trackW) {
+          clearInterval(interval);
+          raceRunning = false;
+          if (btn) { btn.disabled = false; btn.classList.remove('opacity-50'); }
+          const winnerYou = youX >= botX;
+          if (winnerYou) {
+            const win = bet * 2;
+            updateLocalBalance(win);
+            playSound('win');
+            triggerCardEffect('coinrace-card-box', true);
+            showFloatingPopup('Race +' + win, true);
+            if (status) status.textContent = 'You win!';
+            recordWin(true);
+          } else {
+            playSound('lose');
+            triggerCardEffect('coinrace-card-box', false);
+            showFloatingPopup('Bot wins', false);
+            if (status) status.textContent = 'Bot wins';
+            recordWin(false);
+          }
+          setTimeout(() => {
+            if (you) you.style.left = '8px';
+            if (bot) bot.style.left = '8px';
+            if (status) status.textContent = 'Ready';
+          }, 1600);
+        }
+      }, fastModes.coinrace ? 40 : 70);
+    }
+
+    // ============= KENO =============
+    let kenoPicks = new Set();
+    const KENO_PAY = { 0:0, 1:0, 2:0, 3:1.2, 4:2.5, 5:6, 6:18, 7:50, 8:120, 9:250, 10:500 };
+
+    function initKenoGrid() {
+      const grid = document.getElementById('keno-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      kenoPicks.clear();
+      updateKenoPicksLabel();
+      for (let i = 1; i <= 40; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'aspect-square rounded-lg bg-emerald-950/40 border border-emerald-500/20 text-[11px] font-bold text-emerald-100/90 shadow-inner hover:border-emerald-400/40';
+        btn.textContent = i;
+        btn.onclick = () => toggleKenoPick(i, btn);
+        grid.appendChild(btn);
+      }
+      const drawn = document.getElementById('keno-drawn');
+      if (drawn) drawn.innerHTML = '';
+      const st = document.getElementById('keno-status');
+      if (st) st.textContent = 'Pick 1-10 numbers';
+    }
+
+    function toggleKenoPick(n, btn) {
+      playSound('click'); vibrate('selection');
+      if (kenoPicks.has(n)) {
+        kenoPicks.delete(n);
+        btn.className = 'aspect-square rounded-lg bg-emerald-950/40 border border-emerald-500/20 text-[11px] font-bold text-emerald-100/90 shadow-inner';
+      } else {
+        if (kenoPicks.size >= 10) {
+          showFloatingPopup('Max 10 numbers', false);
+          return;
+        }
+        kenoPicks.add(n);
+        btn.className = 'aspect-square rounded-lg bg-emerald-400/90 border-2 border-white text-[11px] font-extrabold text-black shadow-[0_0_12px_rgba(52,211,153,0.5)]';
+      }
+      updateKenoPicksLabel();
+    }
+
+    function updateKenoPicksLabel() {
+      const el = document.getElementById('keno-picks-label');
+      if (el) el.textContent = 'Picked: ' + kenoPicks.size + ' / 10';
+    }
+
+    function clearKenoPicks() {
+      playSound('click');
+      initKenoGrid();
+    }
+
+    function playKeno() {
+      if (kenoPicks.size < 1) {
+        showFloatingPopup('Pick at least 1', false);
+        return;
+      }
+      playSound('click');
+      const bet = parseFloat(document.getElementById('keno-bet')?.value) || 0;
+      if (bet <= 0 || bet > balance) return;
+      updateLocalBalance(-bet);
+      recordGamePlay();
+      const btn = document.getElementById('keno-play-btn');
+      if (btn) { btn.disabled = true; btn.classList.add('opacity-50'); }
+
+      const pool = Array.from({ length: 40 }, (_, i) => i + 1);
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      const drawn = pool.slice(0, 20);
+      const drawnBox = document.getElementById('keno-drawn');
+      if (drawnBox) drawnBox.innerHTML = '';
+      let i = 0;
+      const hitSet = new Set();
+
+      function revealNext() {
+        if (i >= drawn.length) {
+          const hits = [...kenoPicks].filter(n => hitSet.has(n)).length;
+          let mult = KENO_PAY[hits] || 0;
+          if (kenoPicks.size <= 3 && hits >= 2) mult = Math.max(mult, 2);
+          if (godMode && hits < 4) mult = 6;
+          const win = Math.floor(bet * mult);
+          if (btn) { btn.disabled = false; btn.classList.remove('opacity-50'); }
+          const st = document.getElementById('keno-status');
+          if (win > 0) {
+            updateLocalBalance(win);
+            playSound('win');
+            triggerCardEffect('keno-card-box', true);
+            showFloatingPopup('Keno ' + hits + ' hits +' + win, true);
+            if (st) st.textContent = hits + ' hits x' + mult;
+            recordWin(true);
+          } else {
+            playSound('lose');
+            triggerCardEffect('keno-card-box', false);
+            showFloatingPopup('Keno ' + hits + ' hits', false);
+            if (st) st.textContent = hits + ' hits';
+            recordWin(false);
+          }
+          return;
+        }
+        const num = drawn[i++];
+        hitSet.add(num);
+        const isPick = kenoPicks.has(num);
+        if (drawnBox) {
+          const chip = document.createElement('span');
+          chip.className = 'inline-flex items-center justify-center w-7 h-7 rounded-full text-[10px] font-extrabold ' + (isPick ? 'bg-emerald-500 text-white' : 'bg-white/10 text-gray-300');
+          chip.textContent = num;
+          drawnBox.appendChild(chip);
+        }
+        const grid = document.getElementById('keno-grid');
+        if (grid) {
+          const cells = grid.querySelectorAll('button');
+          const cell = cells[num - 1];
+          if (cell) {
+            if (isPick) {
+              cell.className = 'aspect-square rounded-lg bg-emerald-400 border-2 border-white text-[11px] font-extrabold text-black';
+            } else {
+              cell.className = 'aspect-square rounded-lg bg-white/15 border border-white/20 text-[11px] font-bold text-white';
+            }
+          }
+        }
+        if (isPick) vibrate('medium');
+        setTimeout(revealNext, fastModes.keno ? 60 : 140);
+      }
+      revealNext();
+    }
+
+
+
+    // ============= CASE LOUNGE: ADMIN SYSTEM =============
+    let maintenanceMode = false;
+    let betsFrozen = false;
+    let houseEdgePct = 3;
+    let fakeOnlineCount = 640;
+    let adminThemeIdx = 0;
+    const ADMIN_THEMES = ['', 'theme-cyber', 'theme-emerald'];
+
+    // ============= ADMIN EXTRA =============
+    function adminToggleMaintenance() {
+      playSound('click');
+      maintenanceMode = !maintenanceMode;
+      const btn = document.getElementById('admin-maint-btn');
+      if (btn) {
+        btn.textContent = maintenanceMode ? '🚧 Техработы: ВКЛ' : '🚧 Техработы: ВЫКЛ';
+        btn.style.color = maintenanceMode ? '#fbbf24' : '#fff';
+        btn.style.borderColor = maintenanceMode ? '#f59e0b' : 'rgba(255,255,255,0.1)';
+      }
+      logAdminAction('Maintenance: ' + (maintenanceMode ? 'ON' : 'OFF'));
+      showFloatingPopup(maintenanceMode ? 'Режим техработ ВКЛ' : 'Техработы выкл', !maintenanceMode);
+    }
+    function adminToggleFreezeBets() {
+      playSound('click');
+      betsFrozen = !betsFrozen;
+      const btn = document.getElementById('admin-freeze-btn');
+      if (btn) {
+        btn.textContent = betsFrozen ? '❄️ Ставки: СТОП' : '❄️ Ставки: ОК';
+        btn.style.color = betsFrozen ? '#38bdf8' : '#fff';
+        btn.style.borderColor = betsFrozen ? '#0ea5e9' : 'rgba(255,255,255,0.1)';
+      }
+      logAdminAction('Bets freeze: ' + (betsFrozen ? 'ON' : 'OFF'));
+      showFloatingPopup(betsFrozen ? 'Ставки заморожены' : 'Ставки снова активны', !betsFrozen);
+    }
+    function adminSetHouseEdge(v) {
+      houseEdgePct = Math.max(0, Math.min(25, parseFloat(v) || 0));
+      const lab = document.getElementById('admin-edge-label');
+      if (lab) lab.textContent = houseEdgePct + '%';
+      logAdminAction('House edge → ' + houseEdgePct + '%');
+    }
+    function adminSetFakeOnline(v) {
+      fakeOnlineCount = Math.max(50, Math.min(5000, parseInt(v, 10) || 640));
+      const lab = document.getElementById('admin-online-label');
+      if (lab) lab.textContent = fakeOnlineCount;
+      const el = document.getElementById('cases-online-count');
+      if (el) el.textContent = fakeOnlineCount.toLocaleString('ru');
+      const st = document.getElementById('admin-stat-online');
+      if (st) st.textContent = fakeOnlineCount;
+    }
+    function adminGrantDailyBonus() {
+      playSound('click');
+      updateLocalBalance(5000);
+      logAdminAction('Daily bonus +5000');
+      showFloatingPopup('+5 000 🪙 daily', true);
+    }
+    function adminResetAllQuests() {
+      playSound('click');
+      try {
+        // soft reset common quest flags if present
+        if (typeof gamesPlayed !== 'undefined') gamesPlayed = 0;
+        if (typeof winStreak !== 'undefined') winStreak = 0;
+        if (typeof casesOpened !== 'undefined') casesOpened = 0;
+        if (typeof maxHiloStreak !== 'undefined') maxHiloStreak = 0;
+        if (typeof totalSpent !== 'undefined') totalSpent = 0;
+        if (typeof totalWon !== 'undefined') totalWon = 0;
+        if (typeof crashCashout5Done !== 'undefined') crashCashout5Done = false;
+        if (typeof saveGameData === 'function') saveGameData();
+        if (typeof updateQuestsUI === 'function') updateQuestsUI();
+      } catch (e) {}
+      logAdminAction('Quests reset');
+      showFloatingPopup('Задания сброшены', true);
+    }
+    function adminForceLevel(lvl) {
+      playSound('click');
+      if (typeof userLevel !== 'undefined') {
+        userLevel = lvl;
+        if (typeof userXp !== 'undefined') userXp = 0;
+        if (typeof saveGameData === 'function') saveGameData();
+        if (typeof updateProfileUI === 'function') updateProfileUI();
+        else {
+          const b = document.getElementById('user-level-badge');
+          if (b) b.textContent = 'LVL ' + lvl;
+        }
+      }
+      logAdminAction('Force LVL ' + lvl);
+      showFloatingPopup('Уровень ' + lvl, true);
+    }
+    function adminExportSave() {
+      playSound('click');
+      try {
+        const data = localStorage.getItem('case_lounge_save') || localStorage.getItem('orel_oreshka_save') || '{}';
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(data).then(() => {
+            showFloatingPopup('Сейв скопирован', true);
+          }).catch(() => showFloatingPopup('Не удалось скопировать', false));
+        } else {
+          showFloatingPopup('Буфер недоступен', false);
+        }
+        logAdminAction('Export save');
+      } catch (e) {
+        showFloatingPopup('Ошибка экспорта', false);
+      }
+    }
+    function adminThemeCycle() {
+      playSound('click');
+      document.body.classList.remove('theme-cyber', 'theme-emerald');
+      adminThemeIdx = (adminThemeIdx + 1) % ADMIN_THEMES.length;
+      const t = ADMIN_THEMES[adminThemeIdx];
+      if (t) document.body.classList.add(t);
+      const names = ['Default', 'Cyber', 'Emerald'];
+      const btn = document.getElementById('admin-theme-btn');
+      if (btn) btn.textContent = '🎨 Тема: ' + names[adminThemeIdx];
+      logAdminAction('Theme → ' + names[adminThemeIdx]);
+    }
+
 
     window.onload = init;
   </script>
