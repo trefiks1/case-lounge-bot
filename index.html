@@ -3587,6 +3587,19 @@
 
       <div id="owner-panel-eco" class="owner-panel space-y-2">
         <div class="glass-card p-3 space-y-2">
+          <div class="text-[11px] font-bold text-fuchsia-300">💰 Выдача игрокам (по @username или ID)</div>
+          <div class="flex gap-1.5">
+            <input id="owner-give-user" type="text" placeholder="@username или ID" class="flex-1 bg-black/50 border border-white/10 rounded-xl px-2 py-2 text-[11px] text-white outline-none">
+            <input id="owner-give-amt" type="number" value="5000" class="w-24 bg-black/50 border border-white/10 rounded-xl px-2 py-2 text-[11px] text-white outline-none">
+          </div>
+          <div class="grid grid-cols-2 gap-1.5">
+            <button onclick="ownerGiveToUser()" class="py-2 rounded-xl bg-emerald-600/80 border border-emerald-400/40 text-[10px] font-extrabold text-white">Выдать игроку</button>
+            <button onclick="ownerTakeFromUser()" class="py-2 rounded-xl bg-red-700/80 border border-red-400/40 text-[10px] font-extrabold text-white">Забрать у игрока</button>
+            <button onclick="ownerGiveToAll()" class="py-2 rounded-xl bg-cyan-700/80 border border-cyan-400/40 text-[10px] font-extrabold text-white col-span-2">Выдать сумму ВСЕМ игрокам</button>
+          </div>
+          <div class="text-[10px] text-slate-500">Грант кладётся в общий bus. Каждый игрок получит при входе в приложение (на своём устройстве).</div>
+        </div>
+        <div class="glass-card p-3 space-y-2">
           <div class="text-[11px] font-bold text-fuchsia-300">💰 Экономика</div>
           <div class="grid grid-cols-2 gap-1.5" id="owner-eco-grid"></div>
         </div>
@@ -3747,6 +3760,22 @@
         }
       }, true);
     })();
+    // long-press balance = copy amount
+    (function(){
+      let t = null;
+      document.addEventListener('pointerdown', function(e) {
+        if (!e.target.closest || !e.target.closest('#balance')) return;
+        t = setTimeout(() => {
+          try {
+            navigator.clipboard && navigator.clipboard.writeText(String(balance));
+            showFloatingPopup('Баланс скопирован', true);
+            if (navigator.vibrate) navigator.vibrate(20);
+          } catch(err) {}
+        }, 550);
+      }, true);
+      document.addEventListener('pointerup', () => clearTimeout(t), true);
+      document.addEventListener('pointercancel', () => clearTimeout(t), true);
+    })();
     function persistAdmins() {
       try {
         localStorage.setItem('case_lounge_global_admins', JSON.stringify(adminUserIds));
@@ -3789,6 +3818,8 @@
     let adminLogs = Array.isArray(savedData.adminLogs) ? savedData.adminLogs : ["[Система] Лог инициализирован."];
     
     let disabledGames = {};
+    let dailyStreak = typeof savedData.dailyStreak === 'number' ? savedData.dailyStreak : 0;
+    let lastStreakDay = typeof savedData.lastStreakDay === 'string' ? savedData.lastStreakDay : '';
     let globalLuck = typeof savedData.globalLuck === 'number' ? savedData.globalLuck : 1;
     let luckExpiresAt = typeof savedData.luckExpiresAt === 'number' ? savedData.luckExpiresAt : 0;
     let currentLuckMinutes = 0;
@@ -3837,7 +3868,7 @@
           crashQuestClaimed, casesQuestClaimed, hiloQuestClaimed, wonQuestClaimed, comboQuestClaimed,
           crashCashout5Done, casesOpened, maxHiloStreak, maxCombo,
           winStreak, globalCombo, playSeconds, 
-          claimedPromoCodes, lastDailyClaim, globalLuck, luckExpiresAt, godMode, godExpiresAt, adminLogs
+          claimedPromoCodes, lastDailyClaim, dailyStreak, lastStreakDay, globalLuck, luckExpiresAt, godMode, godExpiresAt, adminLogs
         };
         localStorage.setItem(storageKey, JSON.stringify(dataToSave));
         localStorage.setItem('case_lounge_global_admins', JSON.stringify(adminUserIds));
@@ -4109,6 +4140,7 @@
 
 function init() {
       if (typeof updateGlobalLuckBanner === "function") updateGlobalLuckBanner();
+      if (typeof processGlobalBus === "function") processGlobalBus();
       try {
         if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
           const u = tg.initDataUnsafe.user;
@@ -4197,9 +4229,10 @@ function init() {
 
 
     function updateLocalBalance(amountChange) {
-      if (amountChange < 0) totalSpent += Math.abs(amountChange);
-      else if (amountChange > 0) totalWon += amountChange;
-      balance += amountChange;
+      const n = Number(amountChange) || 0;
+      if (n < 0) totalSpent += Math.abs(n);
+      else if (n > 0) totalWon += n;
+      balance = Math.max(0, (balance || 0) + n);
       saveGameData();
       updateUI();
     }
@@ -4487,6 +4520,95 @@ function init() {
     }
 
 
+
+    // ===== GLOBAL MULTI-PLAYER BUS (localStorage; each client applies) =====
+    const GLOBAL_BUS_KEY = 'case_lounge_global_bus_v1';
+    function readGlobalBus() {
+      try { return JSON.parse(localStorage.getItem(GLOBAL_BUS_KEY) || '{}'); } catch(e) { return {}; }
+    }
+    function writeGlobalBus(bus) {
+      try { localStorage.setItem(GLOBAL_BUS_KEY, JSON.stringify(bus)); } catch(e) {}
+    }
+    function myPlayerKey() {
+      const id = currentUserId ? String(currentUserId) : '';
+      const un = (currentUsername || '').toLowerCase().replace(/^@/, '');
+      return { id, un };
+    }
+    function publishGlobalLuck(val, mins) {
+      const bus = readGlobalBus();
+      bus.luck = Number(val) || 1;
+      bus.luckExpiresAt = mins > 0 ? Date.now() + mins * 60000 : 0;
+      bus.luckId = 'L' + Date.now();
+      writeGlobalBus(bus);
+      // apply locally immediately
+      globalLuck = bus.luck;
+      luckExpiresAt = bus.luckExpiresAt;
+      if (typeof updateGlobalLuckBanner === 'function') updateGlobalLuckBanner();
+      if (typeof saveGameData === 'function') saveGameData();
+    }
+    function publishGrant({ to, amount, reason }) {
+      // to: '*' all, or username without @, or numeric id string
+      const bus = readGlobalBus();
+      if (!bus.grants) bus.grants = [];
+      const g = {
+        id: 'G' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+        to: to === '*' ? '*' : String(to).toLowerCase().replace(/^@/, ''),
+        amount: Math.floor(Number(amount) || 0),
+        reason: reason || 'owner',
+        created: Date.now(),
+        claimed: {}
+      };
+      if (!g.amount) return null;
+      bus.grants.unshift(g);
+      // keep last 50
+      bus.grants = bus.grants.slice(0, 50);
+      writeGlobalBus(bus);
+      // try claim for self immediately
+      processGlobalBus();
+      return g.id;
+    }
+    function processGlobalBus() {
+      const bus = readGlobalBus();
+      let changed = false;
+      // luck
+      if (bus.luck != null) {
+        const exp = bus.luckExpiresAt || 0;
+        if (exp && Date.now() > exp) {
+          if (globalLuck !== 1) { globalLuck = 1; luckExpiresAt = 0; changed = true; }
+        } else if (bus.luck !== globalLuck || (exp && exp !== luckExpiresAt)) {
+          globalLuck = bus.luck;
+          luckExpiresAt = exp;
+          changed = true;
+        }
+      }
+      // grants
+      const me = myPlayerKey();
+      const claimedKey = me.id || me.un || presenceId();
+      if (Array.isArray(bus.grants)) {
+        bus.grants.forEach(g => {
+          if (!g || !g.amount || g.claimed && g.claimed[claimedKey]) return;
+          const target = g.to;
+          let match = false;
+          if (target === '*') match = true;
+          else if (me.id && target === me.id) match = true;
+          else if (me.un && target === me.un) match = true;
+          if (!match) return;
+          g.claimed = g.claimed || {};
+          g.claimed[claimedKey] = Date.now();
+          updateLocalBalance(g.amount);
+          showFloatingPopup('🎁 +' + g.amount.toLocaleString('ru') + ' 🪙 (' + (g.reason||'бонус') + ')', true);
+          changed = true;
+        });
+        writeGlobalBus(bus);
+      }
+      if (changed) {
+        if (typeof updateGlobalLuckBanner === 'function') updateGlobalLuckBanner();
+        if (typeof saveGameData === 'function') saveGameData();
+      }
+    }
+    setInterval(processGlobalBus, 3000);
+
+
     function updateGlobalLuckBanner() {
       const ban = document.getElementById('global-luck-banner');
       const tim = document.getElementById('global-luck-timer');
@@ -4519,6 +4641,7 @@ function init() {
       luckExpiresAt = mins > 0 ? Date.now() + mins * 60 * 1000 : 0;
       saveGameData();
       updateGlobalLuckBanner();
+      if (typeof publishGlobalLuck === "function") publishGlobalLuck(val, mins || 0);
       updateAdminPanelUI();
       logAdminAction(`Удача установлена на x${val} (${mins === 0 ? 'вечно' : mins + ' мин'})`);
       showFloatingPopup(`Включена удача x${val} (${mins === 0 ? '∞' : mins + ' мин'})`, true);
@@ -4816,17 +4939,27 @@ function init() {
 
     function claimDailyBonus() {
       playSound('click');
-      if (!canClaimDailyBonus()) {
-        showFloatingPopup('Бонус уже получен сегодня', false);
+      const today = new Date().toISOString().slice(0, 10);
+      if (lastDailyClaim === today) {
+        showFloatingPopup('Уже забрано сегодня', false);
         return;
       }
-      lastDailyClaim = Date.now();
-      updateLocalBalance(500);
-      addXp(50);
+      // streak
+      const y = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+      if (lastStreakDay === y) dailyStreak = (dailyStreak || 0) + 1;
+      else dailyStreak = 1;
+      lastStreakDay = today;
+      lastDailyClaim = today;
+      const base = 500;
+      const bonus = Math.min(2000, base + (dailyStreak - 1) * 150);
+      updateLocalBalance(bonus);
       saveGameData();
-      updateDailyBonusUI();
-      playSound('win');
-      showFloatingPopup('+500 🪙 Ежедневный бонус!', true);
+      showFloatingPopup('🔥 Daily x' + dailyStreak + ' · +' + bonus + ' 🪙', true);
+      if (typeof updateQuestsUI === 'function') updateQuestsUI();
+      const st = document.getElementById('daily-bonus-status');
+      if (st) st.textContent = 'Серия: ' + dailyStreak + ' дн. · завтра +' + Math.min(2000, base + dailyStreak * 150);
+      const btn = document.getElementById('daily-bonus-btn');
+      if (btn) { btn.disabled = true; btn.textContent = 'Забрано'; btn.classList.add('opacity-50'); }
     }
 
     function updateQuestsUI() {
@@ -5009,7 +5142,24 @@ function init() {
       updateQuestsUI();
     }
 
-    function recordWin(isWin) {
+
+    function pushLiveWin(game, mult, amount) {
+      try {
+        const name = (document.getElementById('user-name')?.textContent || 'Игрок').slice(0, 16);
+        const track = document.querySelector('.ticker-track') || document.getElementById('live-wins-track');
+        if (!track) return;
+        const el = document.createElement('span');
+        el.className = 'ticker-item';
+        el.innerHTML = '<b class="text-cyan-300">' + name + '</b> · ' + game + ' <span class="text-amber-300">x' + mult + '</span> +' + Number(amount).toLocaleString('ru') + ' 🪙';
+        track.insertBefore(el, track.firstChild);
+        while (track.children.length > 24) track.removeChild(track.lastChild);
+      } catch(e) {}
+    }
+
+    function recordWin(isWin, meta) {
+      if (isWin && meta && meta.amount >= 500 && typeof pushLiveWin === 'function') {
+        pushLiveWin(meta.game || 'Game', meta.mult || '?', meta.amount);
+      }
       if (isWin) {
         winStreak++;
         globalCombo++;
@@ -5793,38 +5943,45 @@ function init() {
 
     function selectUpgraderMult(mult) {
       playSound('click');
-      selectedUpgraderMult = mult;
-      [2, 10, 25, 50].forEach(m => {
-        const btn = document.getElementById('upg-btn-' + m);
-        if (!btn) return;
-        if (m === mult) {
-          btn.className = 'py-3 rounded-2xl bg-cyan-500/20 border-2 border-cyan-400 text-sm font-extrabold text-cyan-200 shadow-lg';
-        } else {
-          btn.className = 'py-3 rounded-2xl bg-white/5 border border-white/10 text-sm font-extrabold text-gray-300';
-        }
-      });
+      selectedUpgraderMult = Number(mult) || 2;
       recalcUpgrader();
     }
 
     function recalcUpgrader() {
       const bet = parseFloat(document.getElementById('upgrader-bet')?.value) || 100;
       const mult = selectedUpgraderMult || 2;
-      const chance = upgraderChances[mult] || 50;
+      const chance = upgraderChances[mult] != null ? upgraderChances[mult] : Math.max(1, Math.round(100 / mult));
       const target = Math.floor(bet * mult);
-      
-      document.getElementById('upg-from-val').textContent = bet + ' 🪙';
-      document.getElementById('upg-to-val').textContent = target + ' 🪙';
-      document.getElementById('upgrader-chance').textContent = chance + '%';
-      document.getElementById('upgrader-mult').textContent = 'x' + mult;
-      
-      const chanceLabel = document.getElementById('upgrader-chance-label');
-      if (chanceLabel) {
-        chanceLabel.textContent = 'x' + mult;
-        chanceLabel.className = 'text-[9px] text-amber-400 font-bold uppercase mt-0.5';
-      }
 
-      // Колесо: золотая часть = шанс выигрыша, темная = проигрыш
-      document.getElementById('upgrader-wheel').style.background = `conic-gradient(#22d3ee 0% ${chance}%, #0f172a ${chance}% 100%)`;
+      const fromEl = document.getElementById('upg-from-val');
+      const toEl = document.getElementById('upg-to-val');
+      const chEl = document.getElementById('upgrader-chance');
+      const multEl = document.getElementById('upgrader-mult');
+      const chanceLabel = document.getElementById('upgrader-chance-label');
+      const wheel = document.getElementById('upgrader-wheel');
+
+      if (fromEl) fromEl.textContent = bet + ' 🪙';
+      if (toEl) toEl.textContent = target + ' 🪙';
+      if (chEl) chEl.textContent = chance + '%';
+      if (multEl) multEl.textContent = 'x' + mult;
+      if (chanceLabel) {
+        chanceLabel.textContent = 'x' + mult + ' · ' + chance + '%';
+        chanceLabel.className = 'text-[9px] text-cyan-300 font-bold uppercase mt-0.5';
+      }
+      if (wheel) {
+        wheel.style.background = 'conic-gradient(#22d3ee 0% ' + chance + '%, #0f172a ' + chance + '% 100%)';
+      }
+      // update button sublabels
+      [2,10,25,50].forEach(m => {
+        const btn = document.getElementById('upg-btn-' + m);
+        if (!btn) return;
+        const pct = upgraderChances[m] != null ? upgraderChances[m] : Math.max(1, Math.round(100/m));
+        const active = m === mult;
+        btn.innerHTML = 'x' + m + '<br><span class="text-[10px] opacity-80">' + pct + '%</span>';
+        btn.className = active
+          ? 'py-3 rounded-2xl bg-cyan-500/20 border-2 border-cyan-400 text-sm font-extrabold text-cyan-200 shadow-lg'
+          : 'py-3 rounded-2xl bg-white/5 border border-white/10 text-sm font-extrabold text-gray-300';
+      });
       
       const rangeEl = document.getElementById('upgrader-range');
       if (rangeEl && Math.abs(parseFloat(rangeEl.value) - bet) > 0.1) {
@@ -5847,7 +6004,7 @@ function init() {
       playSound('click');
       const bet = parseFloat(document.getElementById('upgrader-bet')?.value) || 0;
       const mult = selectedUpgraderMult || 2;
-      const chance = upgraderChances[mult] || 50;
+      const chance = upgraderChances[mult] != null ? upgraderChances[mult] : Math.max(1, Math.round(100 / mult));
       const target = Math.floor(bet * mult);
       if (bet <= 0 || bet > balance) return;
       updateLocalBalance(-bet);
@@ -5912,7 +6069,7 @@ function init() {
           playSound('win');
           triggerCardEffect('upgrader-card-box', true);
           showFloatingPopup(`⚡️ +${target} 🪙 x${mult}!`, true);
-          recordWin(true);
+          recordWin(true, { game: 'Upg', mult: mult, amount: target });
         } else {
           playSound('lose');
           triggerCardEffect('upgrader-card-box', false);
@@ -6910,7 +7067,7 @@ function init() {
         showFloatingPopup('📦 x' + mult + ' → +' + win.toLocaleString('ru') + ' 🪙', true);
         if (st) st.textContent = 'Сундук x' + mult + ' открыт!';
         if (wl) wl.textContent = 'x' + mult + ' · +' + win.toLocaleString('ru');
-        recordWin(true);
+        recordWin(true, { game: 'Mine', mult: mult, amount: win });
       }
       if (mcAuto) {
         setTimeout(() => { if (mcAuto && !mcBusy) throwMcPicks(); }, mcTurbo ? 400 : 900);
@@ -7977,6 +8134,34 @@ function init() {
         document.querySelectorAll('.owner-panel').forEach(p => p.classList.remove('hidden'));
       }
     }
+
+    function ownerGiveToUser() {
+      playSound('click');
+      const u = (document.getElementById('owner-give-user')?.value || '').trim();
+      const amt = parseFloat(document.getElementById('owner-give-amt')?.value) || 0;
+      if (!u || !amt) { showFloatingPopup('Укажи игрока и сумму', false); return; }
+      const id = publishGrant({ to: u, amount: amt, reason: 'owner → ' + u });
+      ownerLog('Grant ' + amt + ' to ' + u + ' id=' + id);
+      showFloatingPopup('Выдано ' + amt + ' → ' + u, true);
+    }
+    function ownerTakeFromUser() {
+      playSound('click');
+      const u = (document.getElementById('owner-give-user')?.value || '').trim();
+      const amt = parseFloat(document.getElementById('owner-give-amt')?.value) || 0;
+      if (!u || !amt) return;
+      const id = publishGrant({ to: u, amount: -Math.abs(amt), reason: 'owner take' });
+      ownerLog('Take ' + amt + ' from ' + u);
+      showFloatingPopup('Списание ' + amt + ' → ' + u, true);
+    }
+    function ownerGiveToAll() {
+      playSound('click');
+      const amt = parseFloat(document.getElementById('owner-give-amt')?.value) || 0;
+      if (!amt) { showFloatingPopup('Укажи сумму', false); return; }
+      const id = publishGrant({ to: '*', amount: amt, reason: 'owner → ALL' });
+      ownerLog('Grant ALL ' + amt + ' id=' + id);
+      showFloatingPopup('Выдача всем: +' + amt, true);
+    }
+
     function ownerTab(id) {
       const s = document.getElementById('owner-search');
       if (s) { s.value = ''; ownerFilterSearch(''); }
