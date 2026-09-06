@@ -2123,6 +2123,28 @@
             <div class="text-[10px] text-gray-400 mt-0.5 truncate">Дуэль на скорость</div>
           </div>
         </div>
+        <div onclick="openGameScreen('blackjack')" class="game-banner-card">
+          <div class="relative">
+            <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="gbj-bg" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#0a1a14"/><stop offset="100%" stop-color="#040c08"/></radialGradient>
+              </defs>
+              <rect width="300" height="200" fill="url(#gbj-bg)"/>
+              <rect x="70" y="50" width="55" height="78" rx="8" fill="#f1f5f9" stroke="#94a3b8"/>
+              <text x="97" y="88" text-anchor="middle" font-size="22" font-weight="800" fill="#dc2626">A</text>
+              <text x="97" y="110" text-anchor="middle" font-size="18" fill="#dc2626">♥</text>
+              <rect x="140" y="55" width="55" height="78" rx="8" fill="#f1f5f9" stroke="#94a3b8"/>
+              <text x="167" y="93" text-anchor="middle" font-size="22" font-weight="800" fill="#0f172a">K</text>
+              <text x="167" y="115" text-anchor="middle" font-size="18" fill="#0f172a">♠</text>
+              <text x="150" y="175" text-anchor="middle" font-size="12" font-weight="800" fill="#34d399" font-family="system-ui" letter-spacing="2">BLACKJACK</text>
+            </svg>
+            <div class="game-tag">x2.5</div>
+          </div>
+          <div class="p-3">
+            <div class="font-bold text-sm text-white">Blackjack 21</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Дилер · Hit / Stand / Double</div>
+          </div>
+        </div>
         <div onclick="openGameScreen('keno')" class="game-banner-card">
           <div class="relative">
             <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -3176,6 +3198,54 @@
         <div class="space-y-3">
           <input id="poker-bet" type="number" value="200" class="w-full bg-black/40 border border-white/10 rounded-2xl p-3.5 text-center font-extrabold text-sm outline-none text-white">
           <button id="poker-btn" onclick="playPoker()" class="btn-primary w-full py-3.5 text-xs font-extrabold bg-gradient-to-r from-amber-600 to-yellow-600 shadow-amber-900/40">Раздать карты</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- BLACKJACK 21 -->
+    <div id="screen-blackjack" class="screen space-y-3">
+      <div class="flex items-center justify-between mb-1">
+        <button type="button" onclick="openScreen('games')" class="back-btn text-xs font-extrabold text-cyan-300">← Игры</button>
+        <div class="text-[10px] font-extrabold tracking-widest uppercase text-cyan-300">Blackjack 21</div>
+        <div class="w-12"></div>
+      </div>
+      <div id="bj-card-box" class="glass-card p-3 space-y-3" style="background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(16,185,129,0.12),transparent 60%),linear-gradient(180deg,#0a1210,#060a08)">
+        <!-- Dealer -->
+        <div class="rounded-2xl border border-white/8 bg-black/30 p-3">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-extrabold text-slate-400 tracking-widest uppercase">Дилер</span>
+            <span id="bj-dealer-score" class="text-sm font-extrabold text-white tabular-nums">—</span>
+          </div>
+          <div id="bj-dealer-cards" class="flex gap-2 justify-center min-h-[88px] items-center"></div>
+        </div>
+        <!-- Player -->
+        <div class="rounded-2xl border border-cyan-500/20 bg-cyan-950/20 p-3">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-extrabold text-cyan-400 tracking-widest uppercase">Вы</span>
+            <span id="bj-player-score" class="text-sm font-extrabold text-cyan-200 tabular-nums">—</span>
+          </div>
+          <div id="bj-player-cards" class="flex gap-2 justify-center min-h-[88px] items-center"></div>
+        </div>
+        <div id="bj-status" class="text-center text-[12px] font-bold text-slate-300 py-1">Сделайте ставку и нажмите Раздать</div>
+        <div class="flex items-center gap-2">
+          <input id="bj-bet" type="number" min="10" value="100" class="flex-1 rounded-xl px-3 py-2.5 text-sm font-bold bg-black/40 border border-white/10 text-white outline-none">
+          <button type="button" onclick="document.getElementById('bj-bet').value=Math.max(10,Math.floor((+document.getElementById('bj-bet').value||100)/2))" class="chip-btn px-3 py-2 text-[11px]">½</button>
+          <button type="button" onclick="document.getElementById('bj-bet').value=Math.min(balance,(+document.getElementById('bj-bet').value||100)*2)" class="chip-btn px-3 py-2 text-[11px]">×2</button>
+        </div>
+        <div class="flex gap-2">
+          <button type="button" onclick="document.getElementById('bj-bet').value=50" class="chip-btn flex-1 py-2 text-[11px]">50</button>
+          <button type="button" onclick="document.getElementById('bj-bet').value=100" class="chip-btn flex-1 py-2 text-[11px]">100</button>
+          <button type="button" onclick="document.getElementById('bj-bet').value=250" class="chip-btn flex-1 py-2 text-[11px]">250</button>
+          <button type="button" onclick="document.getElementById('bj-bet').value=Math.max(10,balance)" class="chip-btn flex-1 py-2 text-[11px]">MAX</button>
+        </div>
+        <div id="bj-actions-deal" class="grid grid-cols-1 gap-2">
+          <button id="bj-deal-btn" type="button" onclick="bjDeal()" class="btn-primary w-full py-3.5 text-sm font-extrabold">Раздать</button>
+        </div>
+        <div id="bj-actions-play" class="hidden grid grid-cols-3 gap-2">
+          <button type="button" onclick="bjHit()" class="py-3 rounded-xl font-extrabold text-xs bg-emerald-600/80 border border-emerald-400/40 text-white">Ещё</button>
+          <button type="button" onclick="bjStand()" class="py-3 rounded-xl font-extrabold text-xs bg-amber-600/80 border border-amber-400/40 text-white">Хватит</button>
+          <button type="button" onclick="bjDouble()" id="bj-double-btn" class="py-3 rounded-xl font-extrabold text-xs bg-violet-600/80 border border-violet-400/40 text-white">x2</button>
         </div>
       </div>
     </div>
@@ -4267,7 +4337,7 @@ function init() {
 
     const MAIN_NAV = new Set(['games','shop','quests','tops','support','admin','profile','owner','wallet']);
     const GAME_TITLES = {
-      minecraft:'Minecraft', crash:'Crash', cases:'Cases', upgrader:'Upgrader', plinko:'Plinko',
+      minecraft:'Minecraft', blackjack:'Blackjack 21', crash:'Crash', cases:'Cases', upgrader:'Upgrader', plinko:'Plinko',
       towers:'Towers', roulette:'Roulette', hilo:'Hi-Lo', cups:'Cups', dice:'Dice', poker:'Poker',
       keno:'Keno', slots:'Slots', coinflip:'Coinflip', mines:'Mines', astral:'Astral', shadow:'Shadow',
       duel:'Duel', eclipse:'Eclipse', coinrace:'Coin Race'
@@ -4314,6 +4384,7 @@ function init() {
       if (id === 'keno') initKenoGrid();
       if (id === 'cases') initCasesCatalog();
       if (id === 'minecraft') initMcField();
+      if (id === 'blackjack') { bjPlayer=[]; bjDealer=[]; bjActive=false; bjSetMode(false); document.getElementById('bj-status').textContent='Сделайте ставку и нажмите Раздать'; document.getElementById('bj-dealer-cards').innerHTML=''; document.getElementById('bj-player-cards').innerHTML=''; document.getElementById('bj-dealer-score').textContent='—'; document.getElementById('bj-player-score').textContent='—'; }
       if (id === 'upgrader') { if (typeof recalcUpgrader==='function') recalcUpgrader(); if (typeof renderUpgraderHistory==='function') renderUpgraderHistory(); }
     }
 
@@ -6706,17 +6777,18 @@ function init() {
 
     // ============= MINECRAFT MINE =============
     const MC_COLS = 4, MC_ROWS = 12; // grass, dirt, stone shaft, 4 chests
-    const MC_CHEST_MULTS = [1.5, 2, 2, 3, 3, 5, 10]; // weighted pool for chests
+    const MC_CHEST_MULTS = [0, 1.2, 1.5, 2, 2, 3, 5]; // more misses / lower mults
     const MC_CHEST_ROW = MC_ROWS - 1;
     // block types per depth
     // layers: 0 dirt, 1-2 stone/coal, 3-4 gold chance, 5-6 diamond, 7 netherite
     const MC_PICKS = [
-      // dig*: how many blocks of that type this pick can break this throw
-      { id: 'wood', emoji: '🪵', name: 'Дерево', w: 40, digDirt: 3, digStone: 1, digCoal: 0, digGold: 0, digDiamond: 0, digNether: 0 },
-      { id: 'stone', emoji: '🪨', name: 'Камень', w: 28, digDirt: 4, digStone: 3, digCoal: 2, digGold: 0, digDiamond: 0, digNether: 0 },
-      { id: 'iron', emoji: '⚙️', name: 'Железо', w: 16, digDirt: 5, digStone: 5, digCoal: 3, digGold: 2, digDiamond: 0, digNether: 0 },
-      { id: 'diamond', emoji: '💎', name: 'Алмаз', w: 11, digDirt: 99, digStone: 99, digCoal: 4, digGold: 3, digDiamond: 2, digNether: 0 },
-      { id: 'netherite', emoji: '🟣', name: 'Незерит', w: 5, digDirt: 99, digStone: 99, digCoal: 99, digGold: 4, digDiamond: 3, digNether: 1 }
+      // dig* = max blocks of that type this pick can fully break this throw
+      // wood/stone CANNOT open chests. Only iron+ can.
+      { id: 'wood', emoji: 'W', name: 'Дерево', w: 42, digDirt: 4, digStone: 0, digCoal: 0, digGold: 0, digDiamond: 0, digNether: 0, digChest: 0 },
+      { id: 'stone', emoji: 'S', name: 'Камень', w: 28, digDirt: 5, digStone: 3, digCoal: 1, digGold: 0, digDiamond: 0, digNether: 0, digChest: 0 },
+      { id: 'iron', emoji: 'I', name: 'Железо', w: 16, digDirt: 6, digStone: 5, digCoal: 2, digGold: 1, digDiamond: 0, digNether: 0, digChest: 1 },
+      { id: 'diamond', emoji: 'D', name: 'Алмаз', w: 10, digDirt: 99, digStone: 8, digCoal: 3, digGold: 2, digDiamond: 1, digNether: 0, digChest: 2 },
+      { id: 'netherite', emoji: 'N', name: 'Незерит', w: 4, digDirt: 99, digStone: 99, digCoal: 5, digGold: 3, digDiamond: 2, digNether: 1, digChest: 3 }
     ];
     let mcField = []; // [row][col] = { type, broken, hits }
     let mcBusy = false, mcTurbo = false, mcAuto = false;
@@ -6856,14 +6928,14 @@ function init() {
     function canDig(pick, block) {
       if (block.broken) return false;
       const t = block.type;
-      if (t === 'grass') return pick.digDirt > 0; // grass digs with dirt budget
-      if (t === 'dirt') return pick.digDirt > 0;
-      if (t === 'stone') return pick.digStone > 0;
-      if (t === 'coal') return pick.digCoal > 0;
-      if (t === 'gold') return pick.digGold > 0;
-      if (t === 'diamond') return pick.digDiamond > 0;
-      if (t === 'netherite') return pick.digNether > 0;
-      if (t === 'chest') return pick.digStone > 0 || pick.digNether > 0 || pick.digDiamond > 0; // need real pick power
+      if (t === 'grass') return (pick.digDirt || 0) > 0;
+      if (t === 'dirt') return (pick.digDirt || 0) > 0;
+      if (t === 'stone') return (pick.digStone || 0) > 0;
+      if (t === 'coal') return (pick.digCoal || 0) > 0;
+      if (t === 'gold') return (pick.digGold || 0) > 0;
+      if (t === 'diamond') return (pick.digDiamond || 0) > 0;
+      if (t === 'netherite') return (pick.digNether || 0) > 0;
+      if (t === 'chest') return (pick.digChest || 0) > 0; // ONLY iron+ with digChest
       return false;
     }
 
@@ -6924,25 +6996,26 @@ function init() {
       const budgets = picks.map(p => ({
         pick: p,
         left: {
-          grass: p.digDirt,
-          dirt: p.digDirt,
-          stone: p.digStone,
-          coal: p.digCoal,
-          gold: p.digGold,
-          diamond: p.digDiamond,
-          netherite: p.digNether,
-          chest: (p.digStone > 0 || p.digDiamond > 0 || p.digNether > 0) ? 2 : 0
+          grass: p.digDirt || 0,
+          dirt: p.digDirt || 0,
+          stone: p.digStone || 0,
+          coal: p.digCoal || 0,
+          gold: p.digGold || 0,
+          diamond: p.digDiamond || 0,
+          netherite: p.digNether || 0,
+          chest: p.digChest || 0
         }
       }));
 
-      // Strict top-down by layer (row 0 = surface)
+      // Layer lock: need >= 2 broken blocks in previous row before digging next (except row 0)
       const actions = [];
+      const brokenPerRow = Array(MC_ROWS).fill(0);
       for (let r = 0; r < MC_ROWS; r++) {
+        if (r > 0 && brokenPerRow[r - 1] < 2) break; // cannot go deeper
         const cols = Array.from({length: MC_COLS}, (_, i) => i).sort(() => Math.random() - 0.5);
         for (const c of cols) {
           const block = mcField[r][c];
           if (block.broken) continue;
-          // Assign one capable pick with remaining budget for this block type
           let assigned = null;
           for (const bgt of budgets) {
             if ((bgt.left[block.type] || 0) <= 0) continue;
@@ -6951,11 +7024,13 @@ function init() {
             break;
           }
           if (!assigned) continue;
-          assigned.left[block.type]--; // consume 1 block slot
+          assigned.left[block.type]--;
           const need = hitsNeeded(block);
           for (let h = 0; h < need; h++) {
             actions.push({ r, c, pick: assigned.pick, type: block.type });
           }
+          // pre-count for layer lock planning
+          brokenPerRow[r]++;
         }
       }
 
@@ -7046,10 +7121,19 @@ function init() {
         if (wl) wl.textContent = '0';
         recordWin(false);
       } else {
-        // Best chest multiplier among reached
         opened.sort((a, b) => b.mult - a.mult);
         const best = opened[0];
         const mult = best.mult;
+        if (mult <= 0) {
+          playSound('lose');
+          triggerCardEffect('mc-card-box', false);
+          showFloatingPopup('Пустой сундук', false);
+          if (st) st.textContent = 'Пустой сундук';
+          if (wl) wl.textContent = '0';
+          recordWin(false);
+          if (mcAuto) setTimeout(() => { if (mcAuto && !mcBusy) throwMcPicks(); }, mcTurbo ? 400 : 900);
+          return;
+        }
         const win = Math.floor(bet * mult);
         // Visual open
         opened.forEach(o => {
@@ -7073,6 +7157,167 @@ function init() {
         setTimeout(() => { if (mcAuto && !mcBusy) throwMcPicks(); }, mcTurbo ? 400 : 900);
       }
     }
+
+
+    // ============= BLACKJACK 21 =============
+    let bjDeck = [], bjPlayer = [], bjDealer = [], bjBet = 0, bjActive = false, bjDoubled = false;
+
+    function bjNewDeck() {
+      const ranks = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+      const suits = [
+        { s: '♠', c: 'black' }, { s: '♥', c: 'red' },
+        { s: '♦', c: 'red' }, { s: '♣', c: 'black' }
+      ];
+      const d = [];
+      for (const r of ranks) for (const s of suits) d.push({ rank: r, suit: s.s, color: s.c });
+      for (let i = d.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [d[i], d[j]] = [d[j], d[i]];
+      }
+      return d;
+    }
+    function bjValue(hand) {
+      let total = 0, aces = 0;
+      for (const c of hand) {
+        if (c.rank === 'A') { aces++; total += 11; }
+        else if ('JQK'.includes(c.rank)) total += 10;
+        else total += parseInt(c.rank, 10);
+      }
+      while (total > 21 && aces > 0) { total -= 10; aces--; }
+      return total;
+    }
+    function bjRenderCard(c, faceDown) {
+      if (faceDown) return '<div class="bj-card back"></div>';
+      return '<div class="bj-card ' + c.color + '"><div class="bj-rank">' + c.rank + '</div><div class="bj-suit">' + c.suit + '</div></div>';
+    }
+    function bjUpdateUI(hideDealer) {
+      const dEl = document.getElementById('bj-dealer-cards');
+      const pEl = document.getElementById('bj-player-cards');
+      if (dEl) dEl.innerHTML = bjDealer.map((c, i) => bjRenderCard(c, hideDealer && i === 0)).join('');
+      if (pEl) pEl.innerHTML = bjPlayer.map(c => bjRenderCard(c, false)).join('');
+      const ds = document.getElementById('bj-dealer-score');
+      const ps = document.getElementById('bj-player-score');
+      if (ps) ps.textContent = bjValue(bjPlayer);
+      if (ds) ds.textContent = hideDealer ? '?' : bjValue(bjDealer);
+    }
+    function bjSetMode(play) {
+      const deal = document.getElementById('bj-actions-deal');
+      const playEl = document.getElementById('bj-actions-play');
+      if (deal) deal.classList.toggle('hidden', play);
+      if (playEl) {
+        playEl.classList.toggle('hidden', !play);
+        if (play) playEl.classList.add('grid');
+      }
+    }
+    function bjDeal() {
+      if (bjActive) return;
+      playSound('click');
+      bjBet = parseFloat(document.getElementById('bj-bet')?.value) || 0;
+      if (bjBet <= 0 || bjBet > balance) return;
+      updateLocalBalance(-bjBet);
+      if (typeof recordGamePlay === 'function') recordGamePlay();
+      bjActive = true; bjDoubled = false;
+      bjDeck = bjNewDeck();
+      bjPlayer = [bjDeck.pop(), bjDeck.pop()];
+      bjDealer = [bjDeck.pop(), bjDeck.pop()];
+      bjUpdateUI(true);
+      bjSetMode(true);
+      const st = document.getElementById('bj-status');
+      const pv = bjValue(bjPlayer), dv = bjValue(bjDealer);
+      if (pv === 21) {
+        // natural
+        setTimeout(() => {
+          bjUpdateUI(false);
+          if (dv === 21) {
+            updateLocalBalance(bjBet);
+            if (st) st.textContent = 'Ничья — оба Blackjack';
+            if (typeof showFloatingPopup === 'function') showFloatingPopup('Ничья', true);
+            if (typeof recordWin === 'function') recordWin(true);
+          } else {
+            const win = Math.floor(bjBet * 2.5);
+            updateLocalBalance(win);
+            if (st) st.textContent = 'Blackjack! x2.5';
+            if (typeof playSound === 'function') playSound('win');
+            if (typeof showFloatingPopup === 'function') showFloatingPopup('Blackjack +' + win, true);
+            if (typeof recordWin === 'function') recordWin(true);
+          }
+          bjActive = false; bjSetMode(false);
+        }, 400);
+        return;
+      }
+      if (st) st.textContent = 'Ещё · Хватит · x2';
+    }
+    function bjHit() {
+      if (!bjActive) return;
+      playSound('click');
+      bjPlayer.push(bjDeck.pop());
+      bjUpdateUI(true);
+      const st = document.getElementById('bj-status');
+      const v = bjValue(bjPlayer);
+      if (v > 21) {
+        bjUpdateUI(false);
+        if (st) st.textContent = 'Перебор ' + v;
+        if (typeof playSound === 'function') playSound('lose');
+        if (typeof showFloatingPopup === 'function') showFloatingPopup('Перебор', false);
+        if (typeof recordWin === 'function') recordWin(false);
+        bjActive = false; bjSetMode(false);
+      } else if (v === 21) {
+        bjStand();
+      }
+    }
+    function bjStand() {
+      if (!bjActive) return;
+      playSound('click');
+      // dealer draws to 17
+      while (bjValue(bjDealer) < 17) bjDealer.push(bjDeck.pop());
+      bjUpdateUI(false);
+      const pv = bjValue(bjPlayer), dv = bjValue(bjDealer);
+      const st = document.getElementById('bj-status');
+      let result;
+      if (dv > 21) result = 'win';
+      else if (pv > dv) result = 'win';
+      else if (pv === dv) result = 'push';
+      else result = 'lose';
+      if (result === 'win') {
+        const win = bjBet * 2;
+        updateLocalBalance(win);
+        if (st) st.textContent = 'Победа ' + pv + ' vs ' + dv;
+        if (typeof playSound === 'function') playSound('win');
+        if (typeof showFloatingPopup === 'function') showFloatingPopup('+' + win, true);
+        if (typeof recordWin === 'function') recordWin(true);
+      } else if (result === 'push') {
+        updateLocalBalance(bjBet);
+        if (st) st.textContent = 'Ничья ' + pv;
+        if (typeof showFloatingPopup === 'function') showFloatingPopup('Ничья', true);
+      } else {
+        if (st) st.textContent = 'Проигрыш ' + pv + ' vs ' + dv;
+        if (typeof playSound === 'function') playSound('lose');
+        if (typeof showFloatingPopup === 'function') showFloatingPopup('Дилер сильнее', false);
+        if (typeof recordWin === 'function') recordWin(false);
+      }
+      bjActive = false; bjSetMode(false);
+    }
+    function bjDouble() {
+      if (!bjActive || bjPlayer.length !== 2 || bjDoubled) return;
+      if (bjBet > balance) return;
+      playSound('click');
+      updateLocalBalance(-bjBet);
+      bjBet *= 2; bjDoubled = true;
+      bjPlayer.push(bjDeck.pop());
+      bjUpdateUI(true);
+      if (bjValue(bjPlayer) > 21) {
+        bjUpdateUI(false);
+        const st = document.getElementById('bj-status');
+        if (st) st.textContent = 'Перебор на x2';
+        if (typeof playSound === 'function') playSound('lose');
+        if (typeof showFloatingPopup === 'function') showFloatingPopup('Перебор', false);
+        if (typeof recordWin === 'function') recordWin(false);
+        bjActive = false; bjSetMode(false);
+      } else {
+        bjStand();
+      }
+    }
+
 
     let cupsBall = 0, cupsLocked = false;
     function pickCup(idx) {
