@@ -2332,6 +2332,65 @@
     .game-banner-card .font-bold { letter-spacing: 0.02em; }
     main { padding-bottom: 6px; }
 
+
+    /* Minecraft Pro Visual */
+    #mc-card-box {
+      background: linear-gradient(180deg, #1a2e1a 0%, #0d1a0d 40%, #0a120a 100%) !important;
+      border: 2px solid rgba(132,204,22,0.35) !important;
+      border-radius: 18px !important;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06) !important;
+    }
+    .mc-sky-panel {
+      background: linear-gradient(180deg, #3b82f6 0%, #60a5fa 35%, #86efac 72%, #4d7c0f 100%) !important;
+      border-radius: 14px !important;
+      border: 1px solid rgba(255,255,255,0.15) !important;
+      box-shadow: inset 0 -12px 0 rgba(0,0,0,0.12) !important;
+    }
+    .mc-pick-slot {
+      width: 42px; height: 42px;
+      border-radius: 10px !important;
+      background: rgba(0,0,0,0.35) !important;
+      border: 1px solid rgba(255,255,255,0.12) !important;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08) !important;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .mc-pick-slot.reveal {
+      transform: scale(1.08);
+      box-shadow: 0 0 12px rgba(132,204,22,0.35) !important;
+      border-color: rgba(132,204,22,0.45) !important;
+    }
+    .mc-block[data-type="copper"] {
+      background: linear-gradient(160deg, #f0a070, #b45309) !important;
+      box-shadow: inset 0 1px 0 rgba(255,220,180,0.35), 0 0 6px rgba(234,88,12,0.25);
+    }
+    .mc-block[data-type="iron"] {
+      background: linear-gradient(160deg, #e2e8f0, #64748b) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+    }
+    .mc-block[data-type="lapis"] {
+      background: linear-gradient(160deg, #3b82f6, #1e3a8a) !important;
+      box-shadow: 0 0 8px rgba(59,130,246,0.35);
+    }
+    .mc-block[data-type="amethyst"] {
+      background: linear-gradient(160deg, #c084fc, #6b21a8) !important;
+      box-shadow: 0 0 10px rgba(168,85,247,0.4);
+    }
+    .mc-block[data-type="emerald"] {
+      background: linear-gradient(160deg, #6ee7b7, #047857) !important;
+      box-shadow: 0 0 8px rgba(16,185,129,0.35);
+    }
+    .mc-ore-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px; border-radius: 8px;
+      font-size: 10px; font-weight: 800;
+      background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.1);
+    }
+    #mc-loot-log {
+      display: flex; flex-wrap: wrap; gap: 4px; min-height: 22px;
+    }
+
   </style>
 </head>
 <body class="pb-32">
@@ -2367,7 +2426,7 @@
     </div>
     
     <div class="flex items-center space-x-2">
-      <div class="online-chip" title="Синхронизация аккаунта" id="sync-chip" onclick="pushCloudSave();showToast && showToast('Синк…',true)">
+      <div class="online-chip" title="Синхронизация аккаунта" id="sync-chip" onclick="forcePullCloud()">
         <span class="dot" id="sync-dot" style="background:#60a5fa;box-shadow:0 0 8px #60a5fa"></span>
         <span class="text-[9px] font-bold text-sky-300/80 uppercase tracking-wide">sync</span>
       </div>
@@ -4188,8 +4247,12 @@
         </div>
         <div class="mc-chest-row-label" style="color:#fbbf24;text-shadow:1px 1px 0 #000;font-family:Orbitron,sans-serif">▼ СУНДУКИ С МНОЖИТЕЛЯМИ ▼</div>
 
-        <div class="text-center text-[11px] font-extrabold text-[#1a1a1a] bg-[#8b8b8b] border-2 border-[#373737] py-1" id="mc-status" style="box-shadow:inset 1px 1px 0 #c6c6c6">Дойди до сундуков — иначе выигрыш 0</div>
-        <div class="text-center text-sm font-extrabold text-[#78350f]" id="mc-win-label"></div>
+        <div class="flex items-center justify-between gap-2 px-1">
+          <div id="mc-live-mult" class="text-lg font-extrabold text-lime-300" style="font-family:Orbitron,sans-serif">×0</div>
+          <div id="mc-status" class="flex-1 text-center text-[11px] font-bold text-slate-300">Кирки пачкой · руды + сундук</div>
+        </div>
+        <div id="mc-loot-log" class="px-1"></div>
+        <div class="text-center text-sm font-extrabold text-amber-300" id="mc-win-label"></div>
 
         <div class="flex items-center justify-between">
           <span class="text-[10px] text-slate-400 font-bold">СТАВКА</span>
@@ -4601,6 +4664,10 @@
   <script>
     let tg = null;
     let currentUserId = 1612193166;
+    try {
+      const lid = localStorage.getItem('case_lounge_last_tg_id');
+      if (lid) currentUserId = Number(lid) || currentUserId;
+    } catch(e) {}
     let currentUsername = '';
     let adminUserIds = [1612193166];
     let adminUsernames = []; // lowercase without @
@@ -4615,6 +4682,7 @@
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
           const u = tg.initDataUnsafe.user;
           if (u.id) currentUserId = u.id;
+          try { localStorage.setItem('case_lounge_last_tg_id', String(u.id)); } catch(e) {}
           if (u.username) currentUsername = String(u.username).toLowerCase().replace(/^@/, '');
         }
       }
@@ -4816,22 +4884,52 @@
     function pushCloudSave() {
       try {
         if (cloudApplyLock) return;
+        if (window._cloudPullPending) return; // wait for remote first
         const payload = buildSavePayload();
+        // keep the max ts monotonic
+        if (!payload.ts || payload.ts < cloudSaveTs) payload.ts = Date.now();
         cloudSaveTs = payload.ts;
         localStorage.setItem(storageKey, JSON.stringify(payload));
         if (typeof netPublish === 'function') {
           netPublish(netUserSaveTopic(), payload, true);
         }
+        setSyncDot(!!(mqttClient && mqttClient.connected));
       } catch (e) {}
+    }
+    function setSyncDot(on) {
+      try {
+        const d = document.getElementById('sync-dot');
+        if (!d) return;
+        d.style.background = on ? '#34d399' : '#f59e0b';
+        d.style.boxShadow = on ? '0 0 8px #34d399' : '0 0 8px #f59e0b';
+      } catch(e) {}
+    }
+    function forcePullCloud() {
+      window._cloudPullPending = true;
+      window._cloudGotRemote = false;
+      try {
+        if (mqttClient && mqttClient.connected) {
+          mqttClient.unsubscribe(netUserSaveTopic());
+          mqttClient.subscribe(netUserSaveTopic(), { qos: 0 });
+        }
+      } catch(e) {}
+      setTimeout(function() {
+        window._cloudPullPending = false;
+        pushCloudSave();
+        showToast && showToast(window._cloudGotRemote ? 'Баланс с облака' : 'Локальный баланс отправлен', true);
+      }, 2000);
     }
     function applyCloudSave(data) {
       try {
         if (!data || typeof data !== 'object') return;
         if (data.uid && currentUserId && String(data.uid) !== String(currentUserId)) return;
         const ts = Number(data.ts) || 0;
-        if (ts && ts <= cloudSaveTs) return; // local newer or same
+        // Ignore only if local is strictly newer
+        if (ts && cloudSaveTs && ts < cloudSaveTs) return;
+        if (ts && ts === cloudSaveTs && typeof data.balance === 'number' && data.balance === balance) return;
+        window._cloudGotRemote = true;
         cloudApplyLock = true;
-        cloudSaveTs = ts;
+        if (ts > cloudSaveTs) cloudSaveTs = ts;
         if (typeof data.balance === 'number') balance = data.balance;
         if (typeof data.gamesPlayed === 'number') gamesPlayed = data.gamesPlayed;
         if (typeof data.totalSpent === 'number') totalSpent = data.totalSpent;
@@ -4871,7 +4969,15 @@
         try { if (typeof updateProfileUI === 'function') updateProfileUI(); } catch(e) {}
         try { if (typeof updateQuestsUI === 'function') updateQuestsUI(); } catch(e) {}
         try { if (typeof refreshPromoStrip === 'function') refreshPromoStrip(); } catch(e) {}
+        try {
+          if (!window._cloudAppliedToast) {
+            window._cloudAppliedToast = true;
+            showToast && showToast('Синк: баланс ' + (typeof balance==='number'?balance.toLocaleString('ru'):'—'), true);
+            setTimeout(function(){ window._cloudAppliedToast = false; }, 5000);
+          }
+        } catch(e) {}
         cloudApplyLock = false;
+        setSyncDot(true);
       } catch (e) { cloudApplyLock = false; }
     }
 
@@ -5270,8 +5376,20 @@
               mqttClient.subscribe(netUserSaveTopic(), { qos: 0 });
               beatPresence();
               publishTopsSelf();
-              pushCloudSave(); // announce our state; retained remote will also arrive
-              // re-announce current arena (retained for late joiners)
+              // CRITICAL: do NOT push local immediately — it would overwrite newer cloud balance
+              window._cloudPullPending = true;
+              window._cloudGotRemote = false;
+              setTimeout(function() {
+                window._cloudPullPending = false;
+                // only push if nothing newer arrived from cloud
+                if (!window._cloudGotRemote) {
+                  pushCloudSave();
+                } else {
+                  // still heartbeat our (now merged) state
+                  pushCloudSave();
+                }
+                setSyncDot(true);
+              }, 2200);
               if (typeof arenaPublish === 'function') arenaPublish();
               if (!window._netHb) {
                 window._netHb = setInterval(() => {
@@ -5280,7 +5398,7 @@
                     if (typeof arenaPlayers !== 'undefined' && arenaPlayers && arenaPlayers.length) {
                       arenaPublish();
                     }
-                    pushCloudSave();
+                    if (!window._cloudPullPending) pushCloudSave();
                   } catch (e) {}
                 }, 4000);
               }
@@ -8006,23 +8124,27 @@ function init() {
     }
 
     // ============= MINECRAFT MINE =============
-    const MC_COLS = 6, MC_ROWS = 6; // 6x6: grass, dirt, stone, ores, chests
-    const MC_CHEST_MULTS = [0, 0, 1.5, 2, 3, 5, 8, 12]; // 6 chests, many empty
+    const MC_COLS = 6, MC_ROWS = 6;
+    // Ores add their mult into the chest total (stacking)
+    const MC_ORE_MULT = {
+      coal: 1.5, copper: 1.6, iron: 1.8, gold: 2.0,
+      lapis: 2.2, redstone: 2.5, diamond: 3.0, emerald: 3.5,
+      amethyst: 4.0, netherite: 5.0
+    };
+    const MC_CHEST_MULTS = [0, 1.2, 1.5, 2, 2.5, 3, 5, 8];
     const MC_CHEST_ROW = MC_ROWS - 1;
-    // block types per depth
-    // layers: 0 dirt, 1-2 stone/coal, 3-4 gold chance, 5-6 diamond, 7 netherite
+    // dig* = how many blocks of that type this pick can break (pool spent across the tunnel)
     const MC_PICKS = [
-      // dig* budgets for ONE vertical tunnel (6 rows). Only iron+ open chests.
-      { id: 'wood', emoji: '🪓', name: 'Дерево', w: 38, digDirt: 2, digStone: 0, digCoal: 0, digGold: 0, digDiamond: 0, digNether: 0, digChest: 0 },
-      { id: 'stone', emoji: '⛏', name: 'Камень', w: 30, digDirt: 2, digStone: 2, digCoal: 1, digGold: 0, digDiamond: 0, digNether: 0, digChest: 0 },
-      { id: 'iron', emoji: '⚒', name: 'Железо', w: 18, digDirt: 2, digStone: 3, digCoal: 2, digGold: 1, digDiamond: 0, digNether: 0, digChest: 1 },
-      { id: 'diamond', emoji: '💎', name: 'Алмаз', w: 10, digDirt: 2, digStone: 4, digCoal: 2, digGold: 2, digDiamond: 1, digNether: 0, digChest: 1 },
-      { id: 'netherite', emoji: '🔥', name: 'Незерит', w: 4, digDirt: 2, digStone: 5, digCoal: 3, digGold: 2, digDiamond: 2, digNether: 1, digChest: 1 }
+      { id: 'wood', emoji: '🪓', name: 'Дерево', w: 34, digDirt: 3, digStone: 0, digCoal: 0, digCopper: 0, digIron: 0, digGold: 0, digLapis: 0, digRedstone: 0, digDiamond: 0, digEmerald: 0, digAmethyst: 0, digNether: 0, digChest: 0 },
+      { id: 'stone', emoji: '⛏', name: 'Камень', w: 26, digDirt: 3, digStone: 3, digCoal: 1, digCopper: 1, digIron: 0, digGold: 0, digLapis: 0, digRedstone: 0, digDiamond: 0, digEmerald: 0, digAmethyst: 0, digNether: 0, digChest: 0 },
+      { id: 'iron', emoji: '⚒', name: 'Железо', w: 18, digDirt: 3, digStone: 4, digCoal: 2, digCopper: 2, digIron: 2, digGold: 1, digLapis: 1, digRedstone: 0, digDiamond: 0, digEmerald: 0, digAmethyst: 0, digNether: 0, digChest: 1 },
+      { id: 'diamond', emoji: '💎', name: 'Алмаз', w: 12, digDirt: 3, digStone: 5, digCoal: 2, digCopper: 2, digIron: 2, digGold: 2, digLapis: 2, digRedstone: 2, digDiamond: 2, digEmerald: 1, digAmethyst: 1, digNether: 0, digChest: 1 },
+      { id: 'netherite', emoji: '🔥', name: 'Незерит', w: 5, digDirt: 4, digStone: 6, digCoal: 3, digCopper: 3, digIron: 3, digGold: 3, digLapis: 2, digRedstone: 2, digDiamond: 2, digEmerald: 2, digAmethyst: 2, digNether: 2, digChest: 1 }
     ];
-    let mcField = []; // [row][col] = { type, broken, hits }
+    let mcField = [];
     let mcBusy = false, mcTurbo = false, mcAuto = false;
-    // admin-tunable netherite pick weight
     let mcNetheriteWeight = 5;
+    let mcLootLog = [];
 
     function setMcBet(v) {
       playSound('click');
@@ -8048,7 +8170,6 @@ function init() {
       if (b) {
         b.textContent = mcTurbo ? 'Турбо ON' : 'Турбо';
         b.style.color = mcTurbo ? '#84cc16' : '';
-        b.style.borderColor = mcTurbo ? '#84cc16' : '';
       }
     }
     function toggleMcAuto() {
@@ -8058,52 +8179,78 @@ function init() {
       if (b) {
         b.textContent = mcAuto ? 'Авто ON' : 'Авто';
         b.style.color = mcAuto ? '#84cc16' : '';
-        b.style.borderColor = mcAuto ? '#84cc16' : '';
       }
-      if (mcAuto && !mcBusy) throwMcPicks();
     }
     function showMcOreTable() {
-      const m = document.getElementById('mc-ore-modal');
-      if (m) { m.style.display = 'flex'; m.classList.remove('hidden'); }
+      const lines = Object.entries(MC_ORE_MULT).map(([k,v]) => k + ' ×' + v).join(' · ');
+      showFloatingPopup('Руды: ' + lines + ' · сундук складывается', true);
     }
-    function hideMcOreTable() {
-      const m = document.getElementById('mc-ore-modal');
-      if (m) { m.style.display = 'none'; m.classList.add('hidden'); }
+    function pushMcLoot(text, color) {
+      mcLootLog.push({ text, color });
+      const box = document.getElementById('mc-loot-log');
+      if (!box) return;
+      const el = document.createElement('span');
+      el.className = 'mc-ore-chip';
+      el.style.color = color || '#e2e8f0';
+      el.textContent = text;
+      box.appendChild(el);
     }
 
-    function genMcBlock(row) {
-      // 0 grass | 1 dirt | 2..MC_CHEST_ROW-1 stone shaft (ore spices) | last = chests
-      if (row === 0) return { type: 'grass', emoji: '🟩', mult: 0 };
-      if (row === 1) return { type: 'dirt', emoji: '🟫', mult: 0 };
-      if (row === MC_CHEST_ROW) {
-        // mult assigned in initMcField per column
-        return { type: 'chest', emoji: '📦', mult: 0, isChest: true };
+    function mcBlockAtDepth(r, c) {
+      // layer design
+      if (r === 0) return { type: 'grass', mult: 0 };
+      if (r === 1) return { type: 'dirt', mult: 0 };
+      if (r === MC_CHEST_ROW) return { type: 'chest', mult: 0, isChest: true };
+      // ore chances by depth
+      const roll = Math.random();
+      if (r === 2) {
+        if (roll < 0.12) return { type: 'coal', mult: MC_ORE_MULT.coal };
+        if (roll < 0.18) return { type: 'copper', mult: MC_ORE_MULT.copper };
+        return { type: 'stone', mult: 0 };
       }
-      // stone shaft with rare ore sparkles (visual only — payout is chests only)
-      const depth = row / MC_CHEST_ROW;
-      const r = Math.random();
-      if (depth > 0.55 && r < 0.06) return { type: 'diamond', emoji: '💎', mult: 0 };
-      if (depth > 0.35 && r < 0.10) return { type: 'gold', emoji: '🟨', mult: 0 };
-      if (r < 0.18) return { type: 'coal', emoji: '⬛', mult: 0 };
-      return { type: 'stone', emoji: '🪨', mult: 0 };
+      if (r === 3) {
+        if (roll < 0.1) return { type: 'iron', mult: MC_ORE_MULT.iron };
+        if (roll < 0.18) return { type: 'coal', mult: MC_ORE_MULT.coal };
+        if (roll < 0.24) return { type: 'copper', mult: MC_ORE_MULT.copper };
+        if (roll < 0.28) return { type: 'gold', mult: MC_ORE_MULT.gold };
+        return { type: 'stone', mult: 0 };
+      }
+      if (r === 4) {
+        if (roll < 0.08) return { type: 'gold', mult: MC_ORE_MULT.gold };
+        if (roll < 0.14) return { type: 'lapis', mult: MC_ORE_MULT.lapis };
+        if (roll < 0.2) return { type: 'redstone', mult: MC_ORE_MULT.redstone };
+        if (roll < 0.26) return { type: 'iron', mult: MC_ORE_MULT.iron };
+        if (roll < 0.3) return { type: 'diamond', mult: MC_ORE_MULT.diamond };
+        return { type: 'stone', mult: 0 };
+      }
+      // r === 5 is chest row handled above; if rows expand:
+      if (roll < 0.06) return { type: 'diamond', mult: MC_ORE_MULT.diamond };
+      if (roll < 0.1) return { type: 'emerald', mult: MC_ORE_MULT.emerald };
+      if (roll < 0.13) return { type: 'amethyst', mult: MC_ORE_MULT.amethyst };
+      if (roll < 0.15) return { type: 'netherite', mult: MC_ORE_MULT.netherite };
+      if (roll < 0.22) return { type: 'redstone', mult: MC_ORE_MULT.redstone };
+      return { type: 'stone', mult: 0 };
     }
 
     function initMcField() {
       const field = document.getElementById('mc-field');
       if (!field) return;
-      mcField = [];
       field.innerHTML = '';
-      // shuffle chest mults for this round (5 columns)
+      mcField = [];
+      mcLootLog = [];
+      const log = document.getElementById('mc-loot-log');
+      if (log) log.innerHTML = '';
+      // shuffle chest mults for 6 columns
       const pool = MC_CHEST_MULTS.slice().sort(() => Math.random() - 0.5);
       const chestMults = [];
       for (let i = 0; i < MC_COLS; i++) chestMults.push(pool[i % pool.length]);
-      // ensure variety
-      chestMults.sort(() => Math.random() - 0.5);
-
+      field.style.display = 'grid';
+      field.style.gridTemplateColumns = 'repeat(6, 1fr)';
+      field.style.gap = '4px';
       for (let r = 0; r < MC_ROWS; r++) {
         const row = [];
         for (let c = 0; c < MC_COLS; c++) {
-          const b = genMcBlock(r);
+          let b = mcBlockAtDepth(r, c);
           b.broken = false;
           b.hits = 0;
           if (b.type === 'chest') {
@@ -8115,62 +8262,111 @@ function init() {
           cell.className = 'mc-block';
           cell.id = 'mc-b-' + r + '-' + c;
           cell.dataset.type = b.type;
-          if (b.type === 'chest') cell.dataset.mult = 'x' + b.mult;
+          if (b.type === 'chest' && b.mult > 0) cell.dataset.mult = 'x' + b.mult;
+          if (b.mult > 0 && !b.isChest) cell.title = '×' + b.mult;
           field.appendChild(cell);
         }
         mcField.push(row);
       }
       document.querySelectorAll('.mc-pick-slot').forEach(s => {
-        const n = +s.dataset.slot;
-        s.textContent = (n >= 3 ? '·' : '?');
+        s.textContent = '·';
         s.classList.remove('reveal');
+        s.style.opacity = '0.4';
       });
       const st = document.getElementById('mc-status');
-      if (st) st.textContent = 'Одна жила · один сундук · кирки 1–3';
+      if (st) st.textContent = 'Кирки пачкой · руды + сундук = множитель';
       const wl = document.getElementById('mc-win-label');
       if (wl) wl.textContent = '';
-    }
-
-    function rollMcPick(type) {
-      const map = {
-        dirt: '#5c4033', stone: '#6b7280', coal: '#1f2937',
-        gold: '#a16207', diamond: '#0e7490', netherite: '#4c1d95'
-      };
-      return map[type] || '#374151';
+      const live = document.getElementById('mc-live-mult');
+      if (live) live.textContent = '×0';
     }
 
     function rollMcPick() {
       const picks = MC_PICKS.map(p => ({ ...p }));
       const nIdx = picks.findIndex(p => p.id === 'netherite');
       if (nIdx >= 0) picks[nIdx].w = mcNetheriteWeight;
-      if (godMode) return picks[picks.length - 1];
+      if (typeof godMode !== 'undefined' && godMode) return { ...picks[picks.length - 1] };
       let total = picks.reduce((a, p) => a + p.w, 0);
       let r = Math.random() * total;
-      if (globalLuck > 1) r = r / (1 + (globalLuck - 1) * 0.3);
+      if (typeof globalLuck === 'number' && globalLuck > 1) r = r / (1 + (globalLuck - 1) * 0.3);
       for (const p of picks) {
         r -= p.w;
-        if (r <= 0) return p;
+        if (r <= 0) return { ...p };
       }
-      return picks[0];
+      return { ...picks[0] };
+    }
+
+    // Drop a STACK of picks: e.g. 3 wood + 2 stone, total fill 1–6 slots
+    function rollMcPickStack() {
+      const stack = [];
+      // base count 2–5 tools
+      const want = 2 + Math.floor(Math.random() * 4);
+      // bias: often several of same tier
+      const primary = rollMcPick();
+      const primaryCount = 1 + Math.floor(Math.random() * 3); // 1–3 of same
+      for (let i = 0; i < primaryCount && stack.length < want; i++) stack.push({ ...primary });
+      while (stack.length < want) {
+        // 55% same as primary, else new roll
+        if (Math.random() < 0.55) stack.push({ ...primary });
+        else stack.push(rollMcPick());
+      }
+      // pad to 6 slots with nulls and shuffle
+      const slots = stack.slice(0, 6);
+      while (slots.length < 6) slots.push(null);
+      for (let i = slots.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [slots[i], slots[j]] = [slots[j], slots[i]];
+      }
+      return slots;
     }
 
     function canDig(pick, block) {
-      if (block.broken) return false;
+      if (!pick || !block || block.broken) return false;
       const t = block.type;
-      if (t === 'grass') return (pick.digDirt || 0) > 0;
-      if (t === 'dirt') return (pick.digDirt || 0) > 0;
+      if (t === 'grass' || t === 'dirt') return (pick.digDirt || 0) > 0;
       if (t === 'stone') return (pick.digStone || 0) > 0;
       if (t === 'coal') return (pick.digCoal || 0) > 0;
+      if (t === 'copper') return (pick.digCopper || 0) > 0;
+      if (t === 'iron') return (pick.digIron || 0) > 0;
       if (t === 'gold') return (pick.digGold || 0) > 0;
+      if (t === 'lapis') return (pick.digLapis || 0) > 0;
+      if (t === 'redstone') return (pick.digRedstone || 0) > 0;
       if (t === 'diamond') return (pick.digDiamond || 0) > 0;
+      if (t === 'emerald') return (pick.digEmerald || 0) > 0;
+      if (t === 'amethyst') return (pick.digAmethyst || 0) > 0;
       if (t === 'netherite') return (pick.digNether || 0) > 0;
-      if (t === 'chest') return (pick.digChest || 0) > 0; // ONLY iron+ with digChest
+      if (t === 'chest') return (pick.digChest || 0) > 0;
       return false;
     }
 
+    function spendDig(pick, block) {
+      const t = block.type;
+      if (t === 'grass' || t === 'dirt') pick.digDirt = Math.max(0, (pick.digDirt || 0) - 1);
+      else if (t === 'stone') pick.digStone = Math.max(0, (pick.digStone || 0) - 1);
+      else if (t === 'coal') pick.digCoal = Math.max(0, (pick.digCoal || 0) - 1);
+      else if (t === 'copper') pick.digCopper = Math.max(0, (pick.digCopper || 0) - 1);
+      else if (t === 'iron') pick.digIron = Math.max(0, (pick.digIron || 0) - 1);
+      else if (t === 'gold') pick.digGold = Math.max(0, (pick.digGold || 0) - 1);
+      else if (t === 'lapis') pick.digLapis = Math.max(0, (pick.digLapis || 0) - 1);
+      else if (t === 'redstone') pick.digRedstone = Math.max(0, (pick.digRedstone || 0) - 1);
+      else if (t === 'diamond') pick.digDiamond = Math.max(0, (pick.digDiamond || 0) - 1);
+      else if (t === 'emerald') pick.digEmerald = Math.max(0, (pick.digEmerald || 0) - 1);
+      else if (t === 'amethyst') pick.digAmethyst = Math.max(0, (pick.digAmethyst || 0) - 1);
+      else if (t === 'netherite') pick.digNether = Math.max(0, (pick.digNether || 0) - 1);
+      else if (t === 'chest') pick.digChest = Math.max(0, (pick.digChest || 0) - 1);
+    }
+
     function hitsNeeded(block) {
-      const map = { grass: 1, dirt: 1, stone: 1, coal: 2, gold: 2, diamond: 3, netherite: 4, chest: 2, emerald: 2, redstone: 2 };
+      const map = {
+        grass: 1, dirt: 1, stone: 1, coal: 2, copper: 2, iron: 2, gold: 2,
+        lapis: 2, redstone: 2, diamond: 3, emerald: 3, amethyst: 3, netherite: 4, chest: 2
+      };
       return map[block.type] || 1;
+    }
+
+    function pickScore(p) {
+      return (p.digChest||0)*12 + (p.digNether||0)*8 + (p.digAmethyst||0)*6 + (p.digEmerald||0)*5
+        + (p.digDiamond||0)*5 + (p.digGold||0)*3 + (p.digIron||0)*2 + (p.digStone||0);
     }
 
     function throwMcPicks() {
@@ -8186,18 +8382,8 @@ function init() {
 
       initMcField();
 
-      // 1–3 picks only, 6 slots wide (rest empty)
-      const count = 1 + Math.floor(Math.random() * 3); // 1..3
-      const picks = [];
-      for (let i = 0; i < 6; i++) {
-        if (i < count) picks.push(rollMcPick());
-        else picks.push(null);
-      }
-      // shuffle so filled slots are not always left-aligned
-      for (let i = picks.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [picks[i], picks[j]] = [picks[j], picks[i]];
-      }
+      // Stack drop: may get 2–3 wood + 1–2 stone etc. (up to 6 slots)
+      const picks = rollMcPickStack();
 
       const slots = Array.from(document.querySelectorAll('.mc-pick-slot[data-slot]'));
       let si = 0;
@@ -8225,11 +8411,23 @@ function init() {
       let totalMult = 0;
       const delay = mcTurbo ? 50 : 130;
 
-      // Best pick for this throw
-      const bestPick = picks.slice().sort((a, b) => {
-        const score = p => (p.digChest||0)*10 + (p.digDiamond||0)*5 + (p.digGold||0)*3 + (p.digStone||0);
-        return score(b) - score(a);
-      })[0] || picks[0];
+      // Merge dig power from ALL picks in the stack (3 wood + 2 stone etc.)
+      const merged = {
+        digDirt:0, digStone:0, digCoal:0, digCopper:0, digIron:0, digGold:0,
+        digLapis:0, digRedstone:0, digDiamond:0, digEmerald:0, digAmethyst:0, digNether:0, digChest:0,
+        emoji: '⛏', name: 'Стек'
+      };
+      picks.forEach(p => {
+        if (!p) return;
+        Object.keys(merged).forEach(k => {
+          if (k === 'emoji' || k === 'name') return;
+          merged[k] = (merged[k] || 0) + (p[k] || 0);
+        });
+      });
+      const bestPick = merged;
+      // summary in status
+      const st0 = document.getElementById('mc-status');
+      if (st0) st0.textContent = 'Стек: ' + picks.map(p => p.emoji).join('') + ' · копаем…';
 
       // ONE column only (one vertical line down to ONE chest)
       const col = Math.floor(Math.random() * MC_COLS);
@@ -8281,6 +8479,7 @@ function init() {
 
         if (b.hits >= need) {
           b.broken = true;
+          try { spendDig(bestPick, b); } catch(e) {}
           if (cell) {
             cell.classList.add('broken');
             cell.style.filter = '';
@@ -8288,7 +8487,7 @@ function init() {
             if (wrap) {
               const rect = cell.getBoundingClientRect();
               const wrect = wrap.getBoundingClientRect();
-              const colors = { gold:'#fbbf24', diamond:'#67e8f9', netherite:'#a78bfa', coal:'#6b7280', emerald:'#34d399', redstone:'#f87171', chest:'#fbbf24' };
+              const colors = { gold:'#fbbf24', diamond:'#67e8f9', netherite:'#a78bfa', coal:'#6b7280', emerald:'#34d399', redstone:'#f87171', chest:'#fbbf24', copper:'#ea580c', iron:'#94a3b8', lapis:'#3b82f6', amethyst:'#c084fc' };
               const colr = colors[b.type] || '#a8a29e';
               for (let pi = 0; pi < 6; pi++) {
                 const p = document.createElement('div');
@@ -8302,14 +8501,22 @@ function init() {
                 setTimeout(() => p.remove(), 600);
               }
             }
-            if (b.type === 'chest' && b.mult > 0) {
-              totalMult = b.mult;
+            if (b.type === 'chest') {
+              // chest mult ADDS to ores already collected
+              const chestAdd = b.mult || 0;
+              totalMult += chestAdd;
               cell.classList.add('ore-hit', 'opened');
+              pushMcLoot('сундук +×' + chestAdd, '#fbbf24');
+              const live = document.getElementById('mc-live-mult');
+              if (live) live.textContent = '×' + totalMult.toFixed(1);
               vibrate('medium');
               playSound('win');
             } else if (b.mult > 0) {
               totalMult += b.mult;
               cell.classList.add('ore-hit');
+              pushMcLoot(b.type + ' +×' + b.mult, '#86efac');
+              const live = document.getElementById('mc-live-mult');
+              if (live) live.textContent = '×' + totalMult.toFixed(1);
               vibrate('soft');
             }
           }
@@ -8348,12 +8555,13 @@ function init() {
         if (wl) wl.textContent = '0';
         recordWin(false);
       } else {
-        const mult = opened.mult;
+        // totalMult already = ores + chest (stacked). Fall back to chest-only if dig missed adds.
+        const mult = (totalMult > 0 ? totalMult : (opened.mult || 0));
         if (mult <= 0) {
           playSound('lose');
           triggerCardEffect('mc-card-box', false);
           showFloatingPopup('Пустой сундук', false);
-          if (st) st.textContent = 'Пустой сундук в этой жиле';
+          if (st) st.textContent = 'Пустой сундук / без руд';
           if (wl) wl.textContent = '0';
           recordWin(false);
         } else {
