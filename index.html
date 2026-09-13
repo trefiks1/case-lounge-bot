@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CASE LOUNGE</title>
+  <title>OBSIDIAN · CASE LOUNGE</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
 
     :root {
       --bg-color: #08080f;
@@ -40,7 +40,7 @@
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Inter', system-ui, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-main);
       overflow-x: hidden;
@@ -1451,7 +1451,7 @@
     }
     #mc-field {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 2px;
       padding: 4px;
       background: #0c0c0c;
@@ -1567,6 +1567,547 @@
     body.in-game #header-game-block { display: flex !important; }
     body:not(.in-game) #header-game-block { display: none !important; }
     body:not(.in-game) #header-profile-block { display: flex !important; }
+
+    /* ========== VOID FORGE 2026 — TOTAL VISUAL OVERHAUL ========== */
+    :root {
+      --bg-color: #050508 !important;
+      --card-bg: #0c0c12 !important;
+      --card-border: rgba(255, 140, 50, 0.18) !important;
+      --accent: #ff8c32 !important;
+      --accent-glow: rgba(255, 140, 50, 0.45) !important;
+      --text-main: #f8fafc !important;
+      --text-muted: #94a3b8 !important;
+      --brand-1: #ff6b2c !important;
+      --brand-2: #a3e635 !important;
+      --brand-3: #f43f5e !important;
+      --brand-glow: rgba(255, 107, 44, 0.4) !important;
+    }
+
+    body {
+      background-color: #050508 !important;
+      background-image:
+        radial-gradient(ellipse 100% 60% at 0% -20%, rgba(255,107,44,0.12), transparent 50%),
+        radial-gradient(ellipse 80% 50% at 100% 0%, rgba(163,230,53,0.08), transparent 45%),
+        radial-gradient(ellipse 70% 40% at 50% 120%, rgba(244,63,94,0.06), transparent 50%) !important;
+      color: #f8fafc !important;
+      font-family: 'Inter', system-ui, sans-serif !important;
+    }
+
+    .bg-fx .blob-1 { background: radial-gradient(circle, #ff6b2c 0%, transparent 70%) !important; opacity: 0.2 !important; }
+    .bg-fx .blob-2 { background: radial-gradient(circle, #a3e635 0%, transparent 70%) !important; opacity: 0.12 !important; }
+    .bg-fx .blob-3 { background: radial-gradient(circle, #f43f5e 0%, transparent 70%) !important; opacity: 0.1 !important; }
+
+    .brand-logo {
+      font-family: 'Orbitron', sans-serif !important;
+      font-weight: 800 !important;
+      letter-spacing: 1px !important;
+      background: linear-gradient(100deg, #ff8c32, #a3e635 50%, #f43f5e) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      color: transparent !important;
+      filter: drop-shadow(0 0 20px rgba(255,140,50,0.4)) !important;
+      text-transform: uppercase !important;
+      font-size: 1.6rem !important;
+    }
+    .brand-tagline {
+      color: #64748b !important;
+      letter-spacing: 3px !important;
+      font-size: 9px !important;
+      font-family: 'Orbitron', sans-serif !important;
+    }
+
+    .premium-header {
+      background: linear-gradient(180deg, rgba(8,8,12,0.97), rgba(5,5,8,0.9)) !important;
+      border-bottom: 1px solid rgba(255,140,50,0.12) !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6) !important;
+    }
+    .premium-header #user-avatar {
+      background: linear-gradient(135deg, #ff6b2c, #a3e635) !important;
+      border: 2px solid rgba(255,140,50,0.5) !important;
+      box-shadow: 0 0 16px rgba(255,107,44,0.35) !important;
+      color: #0a0a0c !important;
+      border-radius: 12px !important;
+    }
+
+    .premium-nav {
+      background: linear-gradient(180deg, rgba(14,14,20,0.98), rgba(8,8,12,0.98)) !important;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,140,50,0.12), 0 0 40px rgba(255,107,44,0.08) !important;
+      border-radius: 20px !important;
+      border: 1px solid rgba(255,140,50,0.1) !important;
+    }
+    .nav-item { color: #64748b !important; font-family: 'Orbitron', sans-serif !important; font-size: 9px !important; letter-spacing: 0.5px !important; }
+    .nav-item.active {
+      color: #ff8c32 !important;
+      text-shadow: 0 0 16px rgba(255,140,50,0.5) !important;
+    }
+    .nav-item.active::before {
+      background: #ff8c32 !important;
+      box-shadow: 0 0 14px rgba(255,140,50,0.7) !important;
+      width: 28px !important;
+      height: 3px !important;
+    }
+
+    .glass-card {
+      background: linear-gradient(165deg, rgba(255,140,50,0.06), rgba(12,12,18,0.92) 40%) !important;
+      border: 1px solid rgba(255,140,50,0.12) !important;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04) !important;
+      border-radius: 18px !important;
+    }
+    .glass-card::before {
+      background: linear-gradient(160deg, rgba(255,140,50,0.15), transparent 40%, transparent 70%, rgba(163,230,53,0.05)) !important;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff8c32 0%, #ff6b2c 50%, #e85d04 100%) !important;
+      box-shadow: 0 8px 28px rgba(255,107,44,0.4), inset 0 1px 0 rgba(255,255,255,0.3) !important;
+      color: #0a0502 !important;
+      border: 1px solid rgba(255,200,150,0.4) !important;
+      font-weight: 800 !important;
+      font-family: 'Orbitron', sans-serif !important;
+      letter-spacing: 0.5px !important;
+      border-radius: 14px !important;
+    }
+
+    .game-banner-card {
+      background: linear-gradient(180deg, #12121a 0%, #0a0a10 100%) !important;
+      border: 1px solid rgba(255,140,50,0.1) !important;
+      border-radius: 16px !important;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.55) !important;
+      overflow: hidden !important;
+    }
+    .game-banner-card:hover {
+      border-color: rgba(255,140,50,0.45) !important;
+      box-shadow: 0 18px 44px rgba(0,0,0,0.6), 0 0 32px rgba(255,107,44,0.15) !important;
+      transform: translateY(-4px) scale(1.02) !important;
+    }
+    .game-tag {
+      background: linear-gradient(90deg, #ff6b2c, #a3e635) !important;
+      box-shadow: 0 2px 12px rgba(255,107,44,0.45) !important;
+      font-family: 'Orbitron', sans-serif !important;
+      font-size: 8px !important;
+    }
+    .live-badge {
+      background: linear-gradient(135deg, #ef4444, #7f1d1d) !important;
+      font-family: 'Orbitron', sans-serif !important;
+    }
+
+    .promo-card.promo-violet { background: linear-gradient(135deg, #3d1a0a, #120808 65%) !important; border-color: rgba(255,140,50,0.35) !important; }
+    .promo-card.promo-pink   { background: linear-gradient(135deg, #3d0a1a, #120508 65%) !important; border-color: rgba(244,63,94,0.3) !important; }
+    .promo-card.promo-cyan   { background: linear-gradient(135deg, #1a2e0a, #081208 65%) !important; border-color: rgba(163,230,53,0.3) !important; }
+
+    .ticker-wrap {
+      border: 1px solid rgba(255,140,50,0.12) !important;
+      background: rgba(10,10,14,0.9) !important;
+      border-radius: 12px !important;
+    }
+    .ticker-item b { color: #a3e635 !important; }
+
+    .section-eyebrow .dot {
+      background: linear-gradient(135deg, #ff8c32, #a3e635) !important;
+      box-shadow: 0 0 10px rgba(255,140,50,0.6) !important;
+    }
+
+    #balance { color: #ff8c32 !important; font-family: 'Orbitron', sans-serif !important; }
+
+    .floating-popup {
+      background: linear-gradient(135deg, rgba(12,10,8,0.98), rgba(24,16,10,0.98)) !important;
+      border: 1px solid rgba(255,140,50,0.4) !important;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.75), 0 0 28px rgba(255,107,44,0.2) !important;
+      font-family: 'Orbitron', sans-serif !important;
+    }
+    .floating-popup.show.win-pop {
+      border-color: rgba(163,230,53,0.7) !important;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.75), 0 0 36px rgba(163,230,53,0.35) !important;
+    }
+
+    /* Minecraft authentic overhaul */
+    #mc-field-wrap {
+      background:
+        linear-gradient(180deg, #1a2e0f 0%, #0d1a08 30%, #0a0f08 100%) !important;
+      border: 4px solid #5a5a5a !important;
+      border-radius: 4px !important;
+      box-shadow:
+        inset 0 0 0 2px #2a2a2a,
+        inset 0 0 40px rgba(0,0,0,0.7),
+        0 0 0 1px #8b8b8b,
+        0 8px 24px rgba(0,0,0,0.6) !important;
+      image-rendering: pixelated !important;
+    }
+    #mc-field {
+      gap: 1px !important;
+      padding: 3px !important;
+      background: #1a1a1a !important;
+    }
+    .mc-block {
+      border-radius: 0 !important;
+      image-rendering: pixelated !important;
+      box-shadow:
+        inset -2px -2px 0 rgba(0,0,0,0.4),
+        inset 2px 2px 0 rgba(255,255,255,0.15) !important;
+    }
+    .mc-block[data-type="grass"] {
+      background:
+        linear-gradient(#5d9c3a 0 38%, transparent 38%),
+        repeating-linear-gradient(90deg, #8B5A2B 0 4px, #7a4f25 4px 8px) !important;
+    }
+    .mc-block[data-type="dirt"] {
+      background: #8B5A2B !important;
+      background-image:
+        radial-gradient(circle at 20% 30%, #6d4520 1.5px, transparent 1.5px),
+        radial-gradient(circle at 70% 60%, #6d4520 1px, transparent 1px),
+        linear-gradient(#8B5A2B, #7a4f25) !important;
+      background-size: 8px 8px, 10px 10px, 100% 100% !important;
+    }
+    .mc-block[data-type="stone"] {
+      background: #7a7a7a !important;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px) !important;
+      background-size: 5px 5px !important;
+    }
+    .mc-block[data-type="coal"] {
+      background: #2d2d2d !important;
+      box-shadow: inset -2px -2px 0 rgba(0,0,0,0.5), inset 2px 2px 0 rgba(255,255,255,0.05), 0 0 8px rgba(0,0,0,0.5) !important;
+    }
+    .mc-block[data-type="gold"] {
+      background: linear-gradient(135deg, #fcd34d, #b45309) !important;
+      box-shadow: inset -2px -2px 0 rgba(0,0,0,0.35), inset 2px 2px 0 rgba(255,255,200,0.35), 0 0 12px rgba(251,191,36,0.4) !important;
+    }
+    .mc-block[data-type="diamond"] {
+      background: linear-gradient(135deg, #67e8f9, #0e7490) !important;
+      box-shadow: inset -2px -2px 0 rgba(0,0,0,0.3), inset 2px 2px 0 rgba(200,255,255,0.4), 0 0 14px rgba(34,211,238,0.5) !important;
+    }
+    .mc-block[data-type="netherite"] {
+      background: linear-gradient(135deg, #a78bfa, #4c1d95) !important;
+      box-shadow: inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(220,200,255,0.2), 0 0 18px rgba(168,85,247,0.55) !important;
+    }
+    .mc-block[data-type="chest"] {
+      background: linear-gradient(180deg, #c4a35a 0%, #8b6914 35%, #5c4a1a 100%) !important;
+      border: 1px solid #3f2e0a !important;
+      box-shadow: inset 0 4px 0 #e8d48b, inset 0 -3px 0 #3f2e0a, 0 2px 8px rgba(0,0,0,0.5) !important;
+    }
+    .mc-pick-slot {
+      width: 44px !important; height: 44px !important;
+      background: linear-gradient(180deg, #c6c6c6, #8b8b8b) !important;
+      border: 2px solid #373737 !important;
+      border-radius: 2px !important;
+      box-shadow:
+        inset 2px 2px 0 #fff,
+        inset -2px -2px 0 #555,
+        0 2px 4px rgba(0,0,0,0.5) !important;
+      font-size: 22px !important;
+      image-rendering: pixelated !important;
+    }
+    .mc-pick-slot.reveal {
+      background: linear-gradient(180deg, #fff, #c6c6c6) !important;
+      box-shadow: inset 2px 2px 0 #fff, inset -2px -2px 0 #555, 0 0 16px rgba(163,230,53,0.5) !important;
+    }
+
+    /* Casino surfaces */
+    .casino-felt, .roulette-felt, .hilo-table {
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,140,50,0.06), transparent 70%), linear-gradient(180deg, #0e0c0a, #080706) !important;
+      border: 1px solid rgba(255,140,50,0.15) !important;
+    }
+    .roulette-wheel {
+      border: 4px solid #ff8c32 !important;
+      box-shadow: 0 0 40px rgba(255,140,50,0.3), inset 0 0 20px rgba(0,0,0,0.6) !important;
+    }
+    .roulette-wheel-pointer { border-top-color: #ff8c32 !important; }
+
+    .hilo-btn-up { background: linear-gradient(135deg, #65a30d, #365314) !important; color: #ecfccb !important; }
+    .hilo-btn-down { background: linear-gradient(135deg, #e11d48, #4c0519) !important; color: #fecdd3 !important; }
+
+    .sb-board {
+      background: linear-gradient(160deg, #3d1a0a 0%, #2a0f08 40%, #120808 100%) !important;
+      border: 2px solid rgba(255,140,50,0.4) !important;
+      box-shadow: 0 0 40px rgba(255,107,44,0.2), inset 0 0 40px rgba(0,0,0,0.4) !important;
+    }
+    .sb-spin-btn {
+      background: linear-gradient(180deg, #fde68a, #ff8c32) !important;
+      color: #1c1005 !important;
+      box-shadow: 0 6px 20px rgba(255,140,50,0.4) !important;
+    }
+
+    .case-card.selected {
+      border-color: rgba(255,140,50,0.55) !important;
+      box-shadow: 0 0 28px rgba(255,140,50,0.25) !important;
+    }
+    .case-price { color: #ff8c32 !important; }
+
+    .crash-graph-wrap {
+      background: radial-gradient(ellipse 90% 70% at 50% 100%, rgba(255,140,50,0.08), transparent 70%), #06050a !important;
+      border: 1px solid rgba(255,140,50,0.12) !important;
+    }
+
+    input[type=number], input[type=text], textarea {
+      background: rgba(0,0,0,0.5) !important;
+      border: 1px solid rgba(255,140,50,0.2) !important;
+      color: #f8fafc !important;
+      border-radius: 12px !important;
+    }
+    input[type=number]:focus, input[type=text]:focus, textarea:focus {
+      box-shadow: 0 0 0 3px rgba(255,140,50,0.2) !important;
+      border-color: rgba(255,140,50,0.5) !important;
+    }
+
+    .back-btn, .game-screen-title { color: #ff8c32 !important; }
+    .game-screen-title { font-family: 'Orbitron', sans-serif !important; letter-spacing: 2px !important; }
+
+    .chip-btn:hover {
+      background: rgba(255,140,50,0.15) !important;
+      border-color: rgba(255,140,50,0.4) !important;
+      color: #ffd4a8 !important;
+    }
+
+    /* Sharp geometric accents */
+    .gold-line {
+      height: 2px !important;
+      background: linear-gradient(90deg, transparent, rgba(255,140,50,0.5), rgba(163,230,53,0.4), transparent) !important;
+    }
+
+
+    /* VOID ambient scanlines */
+    body::after {
+      content: "";
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+      opacity: 0.4;
+    }
+    /* Corner frame accents */
+    .premium-header::before {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #ff8c32, #a3e635, transparent);
+      opacity: 0.7;
+    }
+
+
+    #mc-field {
+      display: grid !important;
+      grid-template-columns: repeat(6, 1fr) !important;
+      gap: 2px !important;
+      padding: 3px !important;
+      background: #0a0a0a !important;
+    }
+    .mc-pick-slot {
+      width: 40px !important;
+      height: 40px !important;
+      font-size: 18px !important;
+    }
+    .upg-history-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    #upgrader-history .upg-history-dot.win { background: #a3e635; box-shadow: 0 0 8px rgba(163,230,53,0.7); }
+    #upgrader-history .upg-history-dot.lose { background: #475569; }
+
+
+    #screen-cups, #screen-eclipse, #screen-coinrace,
+    #screen-astral, #screen-shadow, #screen-coinflip { display: none !important; }
+
+
+    /* ========== OBSIDIAN ARENA — TOTAL RESKIN ========== */
+    :root {
+      --bg-color: #03040a !important;
+      --card-bg: #0a0c14 !important;
+      --card-border: rgba(212, 175, 55, 0.18) !important;
+      --accent: #d4af37 !important;
+      --accent-glow: rgba(212, 175, 55, 0.4) !important;
+      --text-main: #f4f1ea !important;
+      --text-muted: #8b92a5 !important;
+      --brand-1: #d4af37 !important;
+      --brand-2: #60a5fa !important;
+      --brand-3: #e879f9 !important;
+      --brand-glow: rgba(212, 175, 55, 0.35) !important;
+    }
+    body {
+      background-color: #03040a !important;
+      background-image:
+        radial-gradient(ellipse 90% 55% at 10% -15%, rgba(96,165,250,0.14), transparent 50%),
+        radial-gradient(ellipse 70% 45% at 95% 5%, rgba(232,121,249,0.10), transparent 48%),
+        radial-gradient(ellipse 60% 40% at 50% 110%, rgba(212,175,55,0.08), transparent 55%) !important;
+      color: #f4f1ea !important;
+      font-family: 'Inter', system-ui, sans-serif !important;
+    }
+    .bg-fx .blob-1 { background: radial-gradient(circle, #60a5fa 0%, transparent 70%) !important; opacity: 0.18 !important; }
+    .bg-fx .blob-2 { background: radial-gradient(circle, #d4af37 0%, transparent 70%) !important; opacity: 0.12 !important; }
+    .bg-fx .blob-3 { background: radial-gradient(circle, #e879f9 0%, transparent 70%) !important; opacity: 0.1 !important; }
+
+    .brand-logo {
+      font-family: 'Orbitron', sans-serif !important;
+      background: linear-gradient(100deg, #f5e6a8, #d4af37 40%, #60a5fa 85%) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      color: transparent !important;
+      filter: drop-shadow(0 0 18px rgba(212,175,55,0.35)) !important;
+      letter-spacing: 2px !important;
+    }
+    .premium-header {
+      background: linear-gradient(180deg, rgba(6,8,14,0.98), rgba(3,4,10,0.92)) !important;
+      border-bottom: 1px solid rgba(212,175,55,0.12) !important;
+      backdrop-filter: blur(20px) !important;
+    }
+    .premium-header #user-avatar {
+      background: linear-gradient(135deg, #d4af37, #60a5fa) !important;
+      border: 2px solid rgba(245,230,168,0.45) !important;
+      color: #0a0a0c !important;
+      box-shadow: 0 0 16px rgba(212,175,55,0.3) !important;
+    }
+    .premium-nav {
+      background: linear-gradient(180deg, rgba(12,14,22,0.98), rgba(6,8,14,0.98)) !important;
+      border: 1px solid rgba(212,175,55,0.14) !important;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.75), 0 0 40px rgba(96,165,250,0.06) !important;
+      border-radius: 22px !important;
+    }
+    .nav-item { color: #6b7280 !important; font-family: 'Orbitron', sans-serif !important; font-size: 8px !important; }
+    .nav-item.active {
+      color: #d4af37 !important;
+      text-shadow: 0 0 14px rgba(212,175,55,0.55) !important;
+    }
+    .nav-item.active::before {
+      background: #d4af37 !important;
+      box-shadow: 0 0 12px rgba(212,175,55,0.7) !important;
+    }
+    .glass-card {
+      background: linear-gradient(165deg, rgba(255,255,255,0.05), rgba(10,12,20,0.9) 45%) !important;
+      border: 1px solid rgba(212,175,55,0.12) !important;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04) !important;
+      border-radius: 20px !important;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #e8c547 0%, #d4af37 45%, #a68b2c 100%) !important;
+      color: #1a1405 !important;
+      box-shadow: 0 8px 28px rgba(212,175,55,0.35), inset 0 1px 0 rgba(255,255,255,0.35) !important;
+      border: 1px solid rgba(255,240,180,0.35) !important;
+      font-family: 'Orbitron', sans-serif !important;
+    }
+    .game-banner-card {
+      background: linear-gradient(180deg, #10131c 0%, #080a10 100%) !important;
+      border: 1px solid rgba(212,175,55,0.1) !important;
+      border-radius: 18px !important;
+    }
+    .game-banner-card:hover {
+      border-color: rgba(212,175,55,0.45) !important;
+      box-shadow: 0 18px 44px rgba(0,0,0,0.6), 0 0 28px rgba(96,165,250,0.12) !important;
+    }
+    .game-tag {
+      background: linear-gradient(90deg, #d4af37, #60a5fa) !important;
+      box-shadow: 0 2px 12px rgba(212,175,55,0.4) !important;
+    }
+    #balance { color: #e8c547 !important; font-family: 'Orbitron', sans-serif !important; }
+    .floating-popup {
+      background: linear-gradient(135deg, rgba(10,12,18,0.98), rgba(16,14,24,0.98)) !important;
+      border: 1px solid rgba(212,175,55,0.4) !important;
+    }
+    .online-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 10px; border-radius: 999px;
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(52,211,153,0.35);
+      box-shadow: 0 0 16px rgba(16,185,129,0.12);
+    }
+    .online-chip .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 8px #34d399;
+      animation: pulseDot 1.4s infinite;
+    }
+    #header-online-count { color: #6ee7b7 !important; font-family: 'Orbitron', sans-serif !important; letter-spacing: 0.5px; }
+    .pulse-feed-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 12px; border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      margin-bottom: 8px;
+      animation: slideUpIn 0.35s ease both;
+    }
+    .nav-pulse-badge {
+      position: absolute; top: -2px; right: 8px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #34d399; box-shadow: 0 0 8px #34d399;
+    }
+
+
+    /* Blackjack premium table */
+    .bj-table {
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(16,185,129,0.08), transparent 70%),
+        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.03) 3px, rgba(0,0,0,0.03) 4px),
+        linear-gradient(180deg, #0d3d2a 0%, #0a2a1c 50%, #071f15 100%);
+      border: 1px solid rgba(52,211,153,0.2);
+      border-radius: 20px;
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.35), 0 12px 40px rgba(0,0,0,0.4);
+    }
+    .bj-card {
+      width: 58px; height: 82px;
+      border-radius: 10px;
+      background: linear-gradient(160deg, #1a1220, #0c0a12);
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+      position: relative;
+      animation: bjDealIn 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    .bj-card.red .bj-rank, .bj-card.red .bj-suit { color: #f43f5e; }
+    .bj-card.black .bj-rank, .bj-card.black .bj-suit { color: #f1f5f9; }
+    .bj-card .bj-rank { font-size: 18px; font-weight: 800; line-height: 1; }
+    .bj-card .bj-suit { font-size: 16px; margin-top: 2px; }
+    .bj-card.back {
+      background:
+        linear-gradient(135deg, rgba(212,175,55,0.15), transparent 50%),
+        repeating-linear-gradient(45deg, #1a1020 0 4px, #120c18 4px 8px);
+      border-color: rgba(212,175,55,0.35);
+    }
+    .bj-card.back::after {
+      content: "♠";
+      font-size: 22px;
+      color: rgba(212,175,55,0.45);
+    }
+    @keyframes bjDealIn {
+      from { opacity: 0; transform: translateY(-12px) scale(0.9); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .bj-pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 999px;
+      font-size: 10px; font-weight: 800;
+      background: rgba(16,185,129,0.15);
+      border: 1px solid rgba(52,211,153,0.35);
+      color: #6ee7b7;
+    }
+    .bj-btn-gold {
+      background: linear-gradient(180deg, #f5e6a8, #d4af37 55%, #a68b2c);
+      color: #1a1405; font-weight: 800;
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(212,175,55,0.35);
+      border: 1px solid rgba(255,240,180,0.4);
+    }
+    .bj-btn-dark {
+      background: linear-gradient(180deg, #1e293b, #0f172a);
+      color: #e2e8f0; font-weight: 800;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .bj-btn-green {
+      background: linear-gradient(180deg, #34d399, #059669);
+      color: #042f1a; font-weight: 800;
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(16,185,129,0.3);
+    }
+    .nav-ico {
+      width: 22px; height: 22px; display: block; margin: 0 auto 2px;
+    }
+
   </style>
 </head>
 <body class="pb-32">
@@ -1600,9 +2141,10 @@
     </div>
     
     <div class="flex items-center space-x-2">
-      <div class="glass-card px-2 py-1.5 flex items-center gap-1.5" title="Реальный онлайн">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400" style="animation:pulseDot 1.5s infinite"></span>
-        <span id="header-online-count" class="text-[11px] font-extrabold text-white">1</span>
+      <div class="online-chip" title="Реальный онлайн (presence)">
+        <span class="dot"></span>
+        <span class="text-[9px] font-bold text-emerald-300/80 uppercase tracking-wide">online</span>
+        <span id="header-online-count" class="text-[11px] font-extrabold">1</span>
       </div>
       <button onclick="toggleSoundMenu()" class="w-9 h-9 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-base" id="sound-menu-btn">🔊</button>
       <div class="glass-card px-3 py-1.5 flex items-center space-x-2 shadow-lg" onclick="openScreen('wallet')" style="cursor: pointer;">
@@ -1615,7 +2157,7 @@
 
   <!-- Глобальная удача баннер -->
   <div id="global-luck-banner" class="hidden fixed top-[60px] left-3 right-3 z-[45] mx-auto max-w-md">
-    <div class="rounded-2xl px-3 py-2 flex items-center justify-between border border-amber-400/40 bg-gradient-to-r from-amber-950/90 via-orange-950/80 to-violet-950/90 backdrop-blur-xl shadow-lg shadow-amber-900/30">
+    <div class="rounded-2xl px-3 py-2 flex items-center justify-between border border-orange-400/50 bg-gradient-to-r from-orange-950/95 via-amber-950/90 to-lime-950/90 backdrop-blur-xl shadow-lg shadow-amber-900/30">
       <div class="flex items-center gap-2">
         <span class="text-base">🔥</span>
         <span class="text-[11px] font-extrabold text-amber-200">Глобальная удача активна</span>
@@ -1625,12 +2167,24 @@
   </div>
 
   <!-- Меню звуков -->
-  <div id="sound-menu" class="fixed top-16 right-4 z-50 hidden glass-card p-4 w-64 space-y-3 shadow-2xl border border-cyan-500/20">
-    <div class="text-xs font-extrabold text-cyan-400 uppercase tracking-wide">🔊 Звуки</div>
-    <label class="flex items-center justify-between text-xs text-white"><span>Звук выигрыша</span><input type="checkbox" id="sfx-win" checked onchange="sfxSettings.win=this.checked" class="accent-cyan-500"></label>
-    <label class="flex items-center justify-between text-xs text-white"><span>Звук проигрыша</span><input type="checkbox" id="sfx-lose" checked onchange="sfxSettings.lose=this.checked" class="accent-cyan-500"></label>
-    <label class="flex items-center justify-between text-xs text-white"><span>Звук клика</span><input type="checkbox" id="sfx-click" checked onchange="sfxSettings.click=this.checked" class="accent-cyan-500"></label>
-    <label class="flex items-center justify-between text-xs text-white"><span>Все звуки</span><input type="checkbox" id="sfx-all" checked onchange="toggleAllSfx(this.checked)" class="accent-cyan-500"></label>
+  <div id="sound-menu" class="fixed top-16 right-4 z-50 hidden glass-card p-4 w-72 space-y-3 shadow-2xl border border-amber-500/25" style="background:linear-gradient(165deg,rgba(20,16,10,0.98),rgba(8,10,14,0.98))">
+    <div class="text-xs font-extrabold uppercase tracking-wide" style="color:#d4af37;font-family:Orbitron,sans-serif">🔊 Звуки</div>
+    <label class="flex items-center justify-between text-xs text-white"><span>Выигрыш</span><input type="checkbox" id="sfx-win" checked onchange="sfxSettings.win=this.checked;saveSfxSettings()" class="accent-amber-500"></label>
+    <label class="flex items-center justify-between text-xs text-white"><span>Проигрыш</span><input type="checkbox" id="sfx-lose" checked onchange="sfxSettings.lose=this.checked;saveSfxSettings()" class="accent-amber-500"></label>
+    <label class="flex items-center justify-between text-xs text-white"><span>Клик</span><input type="checkbox" id="sfx-click" checked onchange="sfxSettings.click=this.checked;saveSfxSettings()" class="accent-amber-500"></label>
+    <label class="flex items-center justify-between text-xs text-white"><span>Раздача карт</span><input type="checkbox" id="sfx-deal" checked onchange="sfxSettings.deal=this.checked;saveSfxSettings()" class="accent-amber-500"></label>
+    <label class="flex items-center justify-between text-xs text-white"><span>Ставка / вход</span><input type="checkbox" id="sfx-bet" checked onchange="sfxSettings.bet=this.checked;saveSfxSettings()" class="accent-amber-500"></label>
+    <label class="flex items-center justify-between text-xs text-white"><span>Вибрация</span><input type="checkbox" id="sfx-haptics" checked onchange="hapticsEnabled=this.checked;try{localStorage.setItem('case_lounge_haptics',this.checked?'1':'0')}catch(e){}" class="accent-amber-500"></label>
+    <label class="flex items-center justify-between text-xs text-white"><span>Все звуки</span><input type="checkbox" id="sfx-all" checked onchange="toggleAllSfx(this.checked)" class="accent-amber-500"></label>
+    <div class="pt-1 border-t border-white/10 space-y-1">
+      <div class="flex justify-between text-[10px] text-slate-400 font-bold"><span>Громкость</span><span id="sfx-vol-label">70%</span></div>
+      <input id="sfx-volume" type="range" min="0" max="100" value="70" class="w-full accent-amber-500" oninput="setSfxVolume(this.value)">
+    </div>
+    <div class="grid grid-cols-3 gap-1.5 pt-1">
+      <button type="button" onclick="previewSfx('click')" class="py-1.5 rounded-lg text-[10px] font-bold bg-white/5 border border-white/10">Клик</button>
+      <button type="button" onclick="previewSfx('win')" class="py-1.5 rounded-lg text-[10px] font-bold bg-white/5 border border-white/10">Win</button>
+      <button type="button" onclick="previewSfx('lose')" class="py-1.5 rounded-lg text-[10px] font-bold bg-white/5 border border-white/10">Lose</button>
+    </div>
   </div>
 
   <!-- Основной контент -->
@@ -1638,29 +2192,38 @@
 
     <!-- ГЛАВНАЯ (ИГРЫ) В НОВОМ СТИЛЕ С КАРТИНКАМИ -->
     <div id="screen-games" class="screen active space-y-4">
+    <!-- GAME OF THE DAY + QUICK BONUS -->
+    <div id="gotd-banner" class="rounded-2xl px-3 py-2.5 flex items-center justify-between border border-amber-500/25" style="background:linear-gradient(90deg,rgba(212,175,55,0.12),rgba(96,165,250,0.08))">
+      <div>
+        <div class="text-[9px] font-extrabold tracking-widest uppercase" style="color:#d4af37">Игра дня</div>
+        <div id="gotd-name" class="text-sm font-extrabold text-white">Блэкджек</div>
+      </div>
+      <button type="button" onclick="openGameOfDay()" class="px-3 py-1.5 rounded-xl text-[11px] font-extrabold border border-amber-400/40" style="background:rgba(212,175,55,0.15);color:#f5e6a8">Играть</button>
+    </div>
+
 
       <!-- Брендовый заголовок -->
       <div class="pt-1 pb-2">
-        <h1 class="text-2xl brand-logo leading-tight">CASE LOUNGE</h1>
-        <div class="text-[10px] font-extrabold brand-tagline uppercase">UP-X Style · Демо-фишки</div>
+        <h1 class="text-2xl brand-logo leading-tight">OBSIDIAN</h1>
+        <div class="text-[10px] font-extrabold brand-tagline uppercase">LIVE ARENA · Real presence online</div>
       </div>
 
       <!-- Промо-карусель -->
       <div class="promo-scroll no-scrollbar">
         <div class="promo-card promo-violet">
-          <div class="promo-title">🎁 Кейсы CASE LOUNGE</div>
-          <div class="promo-sub">Легендарные дропы до x50 · открой прямо сейчас</div>
-          <span class="promo-emoji">🎁</span>
+          <div class="promo-title">КЕЙСЫ OBSIDIAN</div>
+          <div class="promo-sub">Легендарные дропы до x50 · открой сейчас</div>
+          <span class="promo-emoji" style="font-size:42px;opacity:0.2">◆</span>
         </div>
         <div class="promo-card promo-pink">
-          <div class="promo-title">⚡ Апгрейдер x50</div>
-          <div class="promo-sub">Честные шансы — испытай удачу прямо сейчас</div>
-          <span class="promo-emoji">⚡</span>
+          <div class="promo-title">АПГРЕЙДЕР x50</div>
+          <div class="promo-sub">Честный риск · множители до x50</div>
+          <span class="promo-emoji" style="font-size:42px;opacity:0.2">▲</span>
         </div>
         <div class="promo-card promo-cyan">
-          <div class="promo-title">🚀 Краш до x100</div>
-          <div class="promo-sub">Забирай выигрыш до того, как всё рухнет</div>
-          <span class="promo-emoji">🚀</span>
+          <div class="promo-title">КРАШ ДО x100</div>
+          <div class="promo-sub">Забери куш до обвала графика</div>
+          <span class="promo-emoji" style="font-size:42px;opacity:0.2">◈</span>
         </div>
       </div>
 
@@ -1686,12 +2249,35 @@
       <div class="flex items-center justify-between pt-1 mb-2">
         <div class="section-eyebrow">
           <span class="dot"></span>
-          <h2 class="text-xs font-extrabold text-gray-300 uppercase tracking-widest">LIVE-ИГРЫ</h2>
+          <h2 class="text-xs font-extrabold text-gray-300 uppercase tracking-widest">АРЕНА LIVE</h2>
         </div>
-        <span class="text-[10px] text-gray-500 font-bold">общие для всех игроков</span>
+        <span class="text-[10px] text-gray-500 font-bold">синхрон для всех</span>
       </div>
 
       <div class="grid grid-cols-2 gap-3">
+        <div onclick="openGameScreen('arena')" class="game-banner-card">
+          <div class="relative">
+            <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="ga-bg" cx="50%" cy="45%" r="70%"><stop offset="0%" stop-color="#0d2818"/><stop offset="100%" stop-color="#050a08"/></radialGradient>
+                <linearGradient id="ga-gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f5e6a8"/><stop offset="100%" stop-color="#d4af37"/></linearGradient>
+              </defs>
+              <rect width="300" height="200" fill="url(#ga-bg)"/>
+              <ellipse cx="150" cy="100" rx="78" ry="78" fill="#0a1f14" stroke="url(#ga-gold)" stroke-width="4"/>
+              <ellipse cx="150" cy="100" rx="52" ry="52" fill="#06140e" stroke="#2d5a3d" stroke-width="2"/>
+              <circle cx="150" cy="100" r="28" fill="#0c1a12" stroke="#d4af37" stroke-width="1.5"/>
+              <text x="150" y="96" text-anchor="middle" font-size="11" font-weight="800" fill="#d4af37" font-family="system-ui">БАНК</text>
+              <text x="150" y="112" text-anchor="middle" font-size="14" font-weight="800" fill="#f5e6a8" font-family="system-ui">PvP</text>
+              <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#d4af37" font-family="system-ui" letter-spacing="2">ARENA</text>
+            </svg>
+            <div class="game-tag">PvP</div>
+            <div class="live-badge"><span class="live-dot"></span>LIVE</div>
+          </div>
+          <div class="p-3">
+            <div class="font-bold text-sm text-white">PvP Арена</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Общий банк · шанс = ставка</div>
+          </div>
+        </div>
         <div onclick="openGameScreen('roulette')" class="game-banner-card">
           <div class="relative">
             <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -1731,36 +2317,12 @@
             <div class="text-[10px] text-gray-400 mt-0.5 truncate">Красное · чёрное · zero x36</div>
           </div>
         </div>
-        <div onclick="openGameScreen('coinflip')" class="game-banner-card">
-          <div class="relative">
-            <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <radialGradient id="gc-bg" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#1a1520"/><stop offset="100%" stop-color="#0a0810"/></radialGradient>
-                <radialGradient id="gc-coin" cx="35%" cy="30%" r="60%"><stop offset="0%" stop-color="#fde68a"/><stop offset="40%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#78350f"/></radialGradient>
-                <linearGradient id="gc-shine" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fff" stop-opacity="0.55"/><stop offset="50%" stop-color="#fff" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="0.2"/></linearGradient>
-              </defs>
-              <rect width="300" height="200" fill="url(#gc-bg)"/>
-              <ellipse cx="150" cy="168" rx="55" ry="10" fill="#000" opacity="0.4"/>
-              <circle cx="150" cy="92" r="58" fill="url(#gc-coin)" stroke="#fde68a" stroke-width="2"/>
-              <circle cx="150" cy="92" r="48" fill="none" stroke="#b45309" stroke-width="1.5" stroke-opacity="0.6"/>
-              <circle cx="150" cy="92" r="58" fill="url(#gc-shine)"/>
-              <text x="150" y="100" text-anchor="middle" font-size="36" font-weight="800" fill="#78350f" font-family="system-ui">₽</text>
-              <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#fbbf24" font-family="system-ui" letter-spacing="2">COINFLIP</text>
-            </svg>
-            <div class="game-tag">x2</div>
-            <div class="live-badge"><span class="live-dot"></span>LIVE</div>
-          </div>
-          <div class="p-3">
-            <div class="font-bold text-sm text-white">Орёл — Решка</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Честный x2 · мгновенно</div>
-          </div>
         </div>
-      </div>
 
       <div class="flex items-center justify-between pt-4 mb-2">
         <div class="section-eyebrow">
           <span class="dot"></span>
-          <h2 class="text-xs font-extrabold text-gray-300 uppercase tracking-widest">БЫСТРЫЕ ИГРЫ</h2>
+          <h2 class="text-xs font-extrabold text-gray-300 uppercase tracking-widest">БЫСТРЫЙ РЕЖИМ</h2>
         </div>
       </div>
 
@@ -1847,8 +2409,8 @@
             
           </div>
           <div class="p-3">
-            <div class="font-bold text-sm text-white">Sweet Bonanza</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Кластеры · сочные фрукты</div>
+            <div class="font-bold text-sm text-white">Фруктовый слот</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Кластеры · тумбл · бомбы</div>
           </div>
         </div>
         <div onclick="openGameScreen('cases')" class="game-banner-card">
@@ -1922,10 +2484,32 @@
             
           </div>
           <div class="p-3">
-            <div class="font-bold text-sm text-white">Шахта Minecraft</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Кирки · руды · до x25</div>
+            <div class="font-bold text-sm text-white">Minecraft · Шахта</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Пиксельная шахта · сундуки · x25</div>
           </div>
         </div>
+        
+        <div onclick="openGameScreen('blackjack')" class="game-banner-card">
+          <div class="relative">
+            <svg class="game-banner-img" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="gbj" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#0d2818"/><stop offset="100%" stop-color="#050a08"/></radialGradient>
+              </defs>
+              <rect width="300" height="200" fill="url(#gbj)"/>
+              <rect x="90" y="50" width="52" height="74" rx="8" fill="#1a1220" stroke="#f43f5e" stroke-width="1.5"/>
+              <text x="116" y="95" text-anchor="middle" font-size="22" fill="#f43f5e" font-weight="800">A</text>
+              <rect x="155" y="55" width="52" height="74" rx="8" fill="#1a1220" stroke="#e2e8f0" stroke-width="1.5"/>
+              <text x="181" y="100" text-anchor="middle" font-size="22" fill="#e2e8f0" font-weight="800">K</text>
+              <text x="150" y="180" text-anchor="middle" font-size="12" font-weight="800" fill="#d4af37" letter-spacing="2">BLACKJACK</text>
+            </svg>
+            <div class="game-tag">x2.5</div>
+          </div>
+          <div class="p-3">
+            <div class="font-bold text-sm text-white">Блэкджек</div>
+            <div class="text-[10px] text-gray-400 mt-0.5 truncate">21 · дилер · удвоение</div>
+          </div>
+        </div>
+
         <div onclick="openGameScreen('upgrader')" class="game-banner-card">
           <div class="relative">
             <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -1946,27 +2530,6 @@
           <div class="p-3">
             <div class="font-bold text-sm text-white">Апгрейдер</div>
             <div class="text-[10px] text-gray-400 mt-0.5 truncate">Крути колесо · умножай</div>
-          </div>
-        </div>
-        <div onclick="openGameScreen('cups')" class="game-banner-card">
-          <div class="relative">
-            <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <radialGradient id="g-cups-bg" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#2a1505"/><stop offset="100%" stop-color="#0a0603"/></radialGradient>
-                <linearGradient id="g-cups-acc" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fb923c" stop-opacity="0.9"/><stop offset="100%" stop-color="#fb923c" stop-opacity="0.3"/></linearGradient>
-              </defs>
-              <rect width="300" height="200" fill="url(#g-cups-bg)"/>
-              <circle cx="150" cy="90" r="50" fill="none" stroke="#fb923c" stroke-width="2" stroke-opacity="0.25"/>
-              <circle cx="150" cy="90" r="36" fill="url(#g-cups-acc)" opacity="0.35"/>
-              <circle cx="150" cy="90" r="22" fill="#fb923c" opacity="0.2"/>
-              <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#fb923c" font-family="system-ui" letter-spacing="1.5">CUPS</text>
-            </svg>
-            <div class="game-tag">x4.75</div>
-            
-          </div>
-          <div class="p-3">
-            <div class="font-bold text-sm text-white">Стаканчики</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Найди шарик · до x4.75</div>
           </div>
         </div>
         <div onclick="openGameScreen('dice')" class="game-banner-card">
@@ -2061,26 +2624,6 @@
             <div class="text-[10px] text-gray-400 mt-0.5 truncate">Падение шара · до x1000</div>
           </div>
         </div>
-        <div onclick="openGameScreen('eclipse')" class="game-banner-card">
-          <div class="relative">
-            <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <radialGradient id="g-eclipse-bg" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#1a1408"/><stop offset="100%" stop-color="#0a0804"/></radialGradient>
-                <linearGradient id="g-eclipse-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#fbbf24" stop-opacity="0.2"/></linearGradient>
-              </defs>
-              <rect width="300" height="200" fill="url(#g-eclipse-bg)"/>
-              <circle cx="150" cy="88" r="48" fill="none" stroke="#fbbf24" stroke-width="2" opacity="0.3"/>
-              <circle cx="150" cy="88" r="32" fill="url(#g-eclipse-a)" opacity="0.4"/>
-              <circle cx="150" cy="88" r="14" fill="#fbbf24" opacity="0.5"/>
-              <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#fbbf24" font-family="system-ui" letter-spacing="1.5">ECLIPSE</text>
-            </svg>
-            <div class="game-tag">x12</div>
-          </div>
-          <div class="p-3">
-            <div class="font-bold text-sm text-white">Eclipse</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Затмение · 3 пути судьбы</div>
-          </div>
-        </div>
         <div onclick="openGameScreen('towers')" class="game-banner-card">
           <div class="relative">
             <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -2102,49 +2645,6 @@
             <div class="text-[10px] text-gray-400 mt-0.5 truncate">Этаж за этажом</div>
           </div>
         </div>
-        <div onclick="openGameScreen('coinrace')" class="game-banner-card">
-          <div class="relative">
-            <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <radialGradient id="g-race-bg" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#2a1505"/><stop offset="100%" stop-color="#0a0603"/></radialGradient>
-                <linearGradient id="g-race-acc" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fb923c" stop-opacity="0.9"/><stop offset="100%" stop-color="#fb923c" stop-opacity="0.3"/></linearGradient>
-              </defs>
-              <rect width="300" height="200" fill="url(#g-race-bg)"/>
-              <circle cx="150" cy="90" r="50" fill="none" stroke="#fb923c" stroke-width="2" stroke-opacity="0.25"/>
-              <circle cx="150" cy="90" r="36" fill="url(#g-race-acc)" opacity="0.35"/>
-              <circle cx="150" cy="90" r="22" fill="#fb923c" opacity="0.2"/>
-              <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#fb923c" font-family="system-ui" letter-spacing="1.5">RACE</text>
-            </svg>
-            <div class="game-tag">1v1</div>
-            
-          </div>
-          <div class="p-3">
-            <div class="font-bold text-sm text-white">Гонка Монет</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Дуэль на скорость</div>
-          </div>
-        </div>
-        <div onclick="openGameScreen('blackjack')" class="game-banner-card">
-          <div class="relative">
-            <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <radialGradient id="gbj-bg" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#0a1a14"/><stop offset="100%" stop-color="#040c08"/></radialGradient>
-              </defs>
-              <rect width="300" height="200" fill="url(#gbj-bg)"/>
-              <rect x="70" y="50" width="55" height="78" rx="8" fill="#f1f5f9" stroke="#94a3b8"/>
-              <text x="97" y="88" text-anchor="middle" font-size="22" font-weight="800" fill="#dc2626">A</text>
-              <text x="97" y="110" text-anchor="middle" font-size="18" fill="#dc2626">♥</text>
-              <rect x="140" y="55" width="55" height="78" rx="8" fill="#f1f5f9" stroke="#94a3b8"/>
-              <text x="167" y="93" text-anchor="middle" font-size="22" font-weight="800" fill="#0f172a">K</text>
-              <text x="167" y="115" text-anchor="middle" font-size="18" fill="#0f172a">♠</text>
-              <text x="150" y="175" text-anchor="middle" font-size="12" font-weight="800" fill="#34d399" font-family="system-ui" letter-spacing="2">BLACKJACK</text>
-            </svg>
-            <div class="game-tag">x2.5</div>
-          </div>
-          <div class="p-3">
-            <div class="font-bold text-sm text-white">Blackjack 21</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Дилер · Hit / Stand / Double</div>
-          </div>
-        </div>
         <div onclick="openGameScreen('keno')" class="game-banner-card">
           <div class="relative">
             <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -2164,46 +2664,6 @@
           <div class="p-3">
             <div class="font-bold text-sm text-white">Keno</div>
             <div class="text-[10px] text-gray-400 mt-0.5 truncate">Выбери числа · лототрон</div>
-          </div>
-        </div>
-        <div onclick="openGameScreen('astral')" class="game-banner-card">
-          <div class="relative">
-            <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <radialGradient id="g-astral-bg" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#0f172a"/><stop offset="100%" stop-color="#020617"/></radialGradient>
-                <linearGradient id="g-astral-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#818cf8"/><stop offset="100%" stop-color="#818cf8" stop-opacity="0.2"/></linearGradient>
-              </defs>
-              <rect width="300" height="200" fill="url(#g-astral-bg)"/>
-              <circle cx="150" cy="88" r="48" fill="none" stroke="#818cf8" stroke-width="2" opacity="0.3"/>
-              <circle cx="150" cy="88" r="32" fill="url(#g-astral-a)" opacity="0.4"/>
-              <circle cx="150" cy="88" r="14" fill="#818cf8" opacity="0.5"/>
-              <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#818cf8" font-family="system-ui" letter-spacing="1.5">ASTRAL</text>
-            </svg>
-            <div class="game-tag">x500</div>
-          </div>
-          <div class="p-3">
-            <div class="font-bold text-sm text-white">Astral</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Космический множитель · до x500</div>
-          </div>
-        </div>
-        <div onclick="openGameScreen('shadow')" class="game-banner-card">
-          <div class="relative">
-            <svg class="game-banner-img" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <radialGradient id="g-shadow-bg" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#1a0a2a"/><stop offset="100%" stop-color="#0a0412"/></radialGradient>
-                <linearGradient id="g-shadow-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#a78bfa" stop-opacity="0.2"/></linearGradient>
-              </defs>
-              <rect width="300" height="200" fill="url(#g-shadow-bg)"/>
-              <circle cx="150" cy="88" r="48" fill="none" stroke="#a78bfa" stroke-width="2" opacity="0.3"/>
-              <circle cx="150" cy="88" r="32" fill="url(#g-shadow-a)" opacity="0.4"/>
-              <circle cx="150" cy="88" r="14" fill="#a78bfa" opacity="0.5"/>
-              <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="800" fill="#a78bfa" font-family="system-ui" letter-spacing="1.5">SHADOW</text>
-            </svg>
-            <div class="game-tag">x4</div>
-          </div>
-          <div class="p-3">
-            <div class="font-bold text-sm text-white">Shadow Cards</div>
-            <div class="text-[10px] text-gray-400 mt-0.5 truncate">Тёмные карты · угадай масть</div>
           </div>
         </div>
         <div onclick="openGameScreen('duel')" class="game-banner-card">
@@ -2253,6 +2713,7 @@
 
     <!-- МАГАЗИН -->
     <div id="screen-shop" class="screen space-y-4">
+      <div class="rounded-2xl px-3 py-2 text-[10px] font-bold border border-orange-500/25" style="background:rgba(255,140,50,0.08);color:#ffd4a8">VOID MARKET · демо-товары · без реальных платежей</div>
       <div class="glass-card p-5 bg-gradient-to-r from-amber-950/30 to-transparent space-y-3">
         <h1 class="text-xl font-extrabold mb-1">Пополнение баланса</h1>
         <p class="text-xs text-gray-300">Покупка фишек через Звезды в приложении отключена. Вы можете договориться о пополнении напрямую через Telegram.</p>
@@ -2272,7 +2733,7 @@
         <div class="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-lg">🎯</div>
       </div>
 
-      <h1 class="text-xl font-extrabold mb-1">Ежедневные задания</h1>
+      <h1 class="text-xl font-extrabold mb-1" style="font-family:Orbitron,sans-serif">Задания OBSIDIAN</h1>
       <p class="text-xs text-gray-400 mb-2">Выполняйте задачи и забирайте ценные бонусы.</p>
 
       <div class="space-y-3">
@@ -2376,6 +2837,7 @@
 
     <!-- ТОПЫ -->
     <div id="screen-tops" class="screen space-y-4">
+      <div class="rounded-2xl px-3 py-2 text-[10px] font-bold border border-lime-500/20" style="background:rgba(163,230,53,0.08);color:#bef264">VOID LEADERBOARD · локальный рейтинг сессии</div>
       <div class="pt-1">
         <h1 class="text-xl font-extrabold text-white">🏆 Топы мира</h1>
         <p class="text-[11px] text-gray-400 mt-0.5">Рейтинг игроков арены</p>
@@ -2404,6 +2866,7 @@
 
     <!-- ТЕХНИЧЕСКАЯ ПОДДЕРЖКА -->
     <div id="screen-support" class="screen space-y-4">
+      <div class="rounded-2xl px-3 py-2 text-[10px] font-bold border border-white/10" style="background:rgba(255,255,255,0.04);color:#94a3b8">VOID SUPPORT · демо-чат · ответы симулируются</div>
       <div class="glass-card p-5 bg-gradient-to-br from-blue-950/40 via-transparent to-transparent space-y-3">
         <div class="flex items-center space-x-2 text-sky-400 font-extrabold text-base">
           <span>🎧</span> <span>Центр поддержки</span>
@@ -2631,80 +3094,59 @@
 
     <!-- ПРОФИЛЬ -->
     <div id="screen-profile" class="screen space-y-4">
-      <div class="glass-card p-6 text-center space-y-3 bg-gradient-to-b from-amber-950/40 via-transparent to-transparent shadow-xl relative overflow-hidden">
-        <div class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-amber-600 to-yellow-500 border-2 border-amber-400/50 mx-auto flex items-center justify-center text-3xl font-extrabold text-white shadow-xl" id="profile-avatar">T</div>
-        <div>
-          <h2 id="profile-name" class="font-extrabold text-lg text-white">Игрок</h2>
-          <div class="inline-block mt-1 px-3 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-xs font-extrabold border border-amber-500/30" id="profile-level-title">Уровень 1 • Новичок</div>
-          <div class="text-xs text-amber-400 font-extrabold mt-1" id="profile-balance">5000 🪙</div>
+      <div class="relative overflow-hidden rounded-3xl p-5 space-y-4" style="background:linear-gradient(160deg,#1a120c 0%,#0c0a10 50%,#08060a 100%);border:1px solid rgba(255,140,50,0.25);box-shadow:0 20px 50px rgba(0,0,0,0.55)">
+        <div class="absolute -top-20 -right-10 w-48 h-48 rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(255,140,50,0.22),transparent 70%);filter:blur(20px)"></div>
+        <div class="relative flex items-center gap-4">
+          <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-extrabold text-black shadow-xl" id="profile-avatar" style="background:linear-gradient(135deg,#ff8c32,#a3e635);font-family:Orbitron,sans-serif">T</div>
+          <div class="flex-1 min-w-0">
+            <h2 id="profile-name" class="font-extrabold text-lg text-white truncate" style="font-family:Orbitron,sans-serif">Игрок</h2>
+            <div class="inline-flex items-center gap-1.5 mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold border" id="profile-level-title" style="background:rgba(255,140,50,0.15);border-color:rgba(255,140,50,0.35);color:#ffd4a8">LVL 1 · Новичок</div>
+            <div class="text-sm font-extrabold mt-1" id="profile-balance" style="color:#ff8c32;font-family:Orbitron,sans-serif">5000 🪙</div>
+          </div>
+          <button type="button" onclick="openScreen('wallet')" class="px-3 py-2 rounded-xl text-[10px] font-extrabold border" style="background:rgba(255,140,50,0.12);border-color:rgba(255,140,50,0.35);color:#ffd4a8">Кошелёк</button>
         </div>
-
-        <div class="space-y-1.5 pt-2 border-t border-white/10 text-left">
-          <div class="flex justify-between text-[11px] font-bold">
-            <span class="text-gray-400">Прогресс уровня</span>
-            <span id="profile-xp-text" class="text-amber-300">0 / 500 XP</span>
+        <div class="relative space-y-1.5">
+          <div class="flex justify-between text-[10px] font-bold">
+            <span class="text-slate-400">Прогресс уровня</span>
+            <span id="profile-xp-text" style="color:#a3e635">0 / 500 XP</span>
           </div>
-          <div class="w-full h-2.5 bg-black/50 rounded-full overflow-hidden p-0.5 border border-white/10">
-            <div id="profile-xp-bar" class="h-full bg-gradient-to-r from-amber-500 to-yellow-500 rounded-full transition-all duration-500" style="width: 0%;"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Онлайн на арене -->
-      <div class="glass-card p-4 flex items-center justify-between border border-emerald-500/20 bg-gradient-to-r from-emerald-950/30 to-transparent">
-        <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center relative">
-            <span class="text-lg">👥</span>
-            <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" style="animation: pulseDot 1.5s infinite;"></span>
-          </div>
-          <div>
-            <div class="text-[10px] text-emerald-400 font-extrabold uppercase tracking-wide">Сейчас на арене</div>
-            <div class="text-lg font-extrabold text-white leading-tight"><span id="online-players-count">—</span> <span class="text-xs text-gray-400 font-bold">игроков</span></div>
+          <div class="h-2.5 rounded-full overflow-hidden" style="background:rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.08)">
+            <div id="profile-xp-bar" class="h-full rounded-full transition-all duration-500" style="width:0%;background:linear-gradient(90deg,#ff8c32,#a3e635)"></div>
           </div>
         </div>
-        <div class="text-right">
-          <div class="text-[10px] text-gray-500 font-bold" id="online-players-hint">обновляется</div>
-          <div class="text-[10px] text-emerald-400/80 font-bold mt-0.5" id="online-peak-label">пик сегодня: —</div>
-        </div>
-      </div>
-
-      <div class="glass-card p-4 space-y-3">
-        <div class="text-sm font-bold text-gray-300">Статистика игрока</div>
-        <div class="flex justify-between text-xs py-2 border-b border-white/5"><span class="text-gray-400">Сыграно игр:</span><span id="games-played" class="font-bold text-white">0</span></div>
-        <div class="flex justify-between text-xs py-2 border-b border-white/5"><span class="text-gray-400">Потрачено фишек:</span><span id="stat-spent" class="font-bold text-white">0 🪙</span></div>
-        <div class="flex justify-between text-xs py-2"><span class="text-gray-400">Выиграно фишек:</span><span id="stat-won" class="font-bold text-emerald-400">0 🪙</span></div>
-      </div>
-
-      <div class="glass-card p-4 space-y-3 bg-gradient-to-r from-violet-950/40 to-transparent border border-violet-500/20">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-sm font-bold text-white">🎁 Ежедневный бонус</div>
-            <div class="text-[11px] text-gray-400 mt-0.5" id="daily-bonus-status">Забери 500 🪙 раз в сутки</div>
+        <div class="relative grid grid-cols-3 gap-2">
+          <div class="rounded-2xl p-2.5 text-center" style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08)">
+            <div class="text-[9px] text-slate-500 font-bold">ИГР</div>
+            <div id="profile-games" class="text-sm font-extrabold text-white">0</div>
           </div>
-          <button id="daily-bonus-btn" onclick="claimDailyBonus()" class="btn-primary px-4 py-2.5 text-xs bg-gradient-to-r from-violet-600 to-fuchsia-600 shadow-violet-900/40">Забрать</button>
+          <div class="rounded-2xl p-2.5 text-center" style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08)">
+            <div class="text-[9px] text-slate-500 font-bold">ПОБЕД</div>
+            <div id="profile-wins" class="text-sm font-extrabold" style="color:#a3e635">0</div>
+          </div>
+          <div class="rounded-2xl p-2.5 text-center" style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08)">
+            <div class="text-[9px] text-slate-500 font-bold">СЕРИЯ</div>
+            <div id="profile-streak" class="text-sm font-extrabold" style="color:#ff8c32">0</div>
+          </div>
         </div>
-      </div>
-
-      <div class="glass-card p-4 space-y-3">
-        <div class="text-sm font-bold text-gray-300">Активировать промокод</div>
-        <div class="flex space-x-2">
-          <input id="promo-input" type="text" placeholder="Введите промокод" class="bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-xs w-full outline-none uppercase font-bold text-white">
-          <button onclick="activatePromo()" class="btn-primary px-5 py-2.5 text-xs">ОК</button>
+        <div class="relative rounded-2xl p-3 space-y-2" style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,140,50,0.12)">
+          <div class="text-[10px] font-extrabold tracking-widest uppercase" style="color:rgba(255,140,50,0.7);font-family:Orbitron,sans-serif">VOID PASSPORT</div>
+          <div class="grid grid-cols-2 gap-2 text-[11px]">
+            <div class="flex justify-between"><span class="text-slate-500">Потрачено</span><span id="profile-spent" class="font-bold text-slate-300">0</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Выиграно</span><span id="profile-won" class="font-bold text-slate-300">0</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Кейсы</span><span id="profile-cases" class="font-bold text-slate-300">0</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Удача</span><span id="profile-luck" class="font-bold" style="color:#a3e635">x1</span></div>
+          </div>
         </div>
-      </div>
-
-      <div class="glass-card p-4 space-y-3">
-        <div class="text-sm font-bold text-gray-300">Визуальная тема</div>
-        <div class="grid grid-cols-3 gap-2">
-          <button onclick="setTheme('default')" class="p-2.5 rounded-xl bg-[#080b11] border border-amber-500/50 text-xs font-bold text-white shadow-md">Классика</button>
-          <button onclick="setTheme('cyber')" class="p-2.5 rounded-xl bg-[#020617] border border-sky-500/50 text-xs font-bold text-white shadow-md">Кибер</button>
-          <button onclick="setTheme('emerald')" class="p-2.5 rounded-xl bg-[#022c22] border border-emerald-500/50 text-xs font-bold text-white shadow-md">Изумруд</button>
+        <div class="relative flex gap-2">
+          <button type="button" onclick="openScreen('quests')" class="flex-1 py-2.5 rounded-xl text-[11px] font-extrabold border" style="background:rgba(163,230,53,0.1);border-color:rgba(163,230,53,0.3);color:#bef264">Задания</button>
+          <button type="button" onclick="openScreen('tops')" class="flex-1 py-2.5 rounded-xl text-[11px] font-extrabold border" style="background:rgba(255,140,50,0.1);border-color:rgba(255,140,50,0.3);color:#ffd4a8">Топы</button>
+          <button type="button" onclick="openScreen('support')" class="flex-1 py-2.5 rounded-xl text-[11px] font-extrabold border" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.1);color:#cbd5e1">Поддержка</button>
         </div>
+        <div class="relative text-center text-[9px] text-slate-600 font-bold tracking-wide">VOID FORGE · DEMO · LOCAL SAVE</div>
       </div>
     </div>
 
-    <!-- КОШЕЛЕК -->
-    <div id="screen-wallet" class="screen space-y-4">
+    <div id="screen-wallet" class="screen space-y-4" data-void="vault">
       <div class="glass-card p-6 text-center space-y-3 bg-gradient-to-b from-amber-950/30 to-transparent shadow-xl">
         <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 mx-auto flex items-center justify-center text-2xl shadow-inner">🪙</div>
         <div class="text-xs text-gray-400 font-medium">Ваш текущий баланс</div>
@@ -2974,54 +3416,78 @@
         <div id="screen-upgrader" class="screen space-y-3">
       <div class="flex justify-between items-center mb-1">
         <button onclick="openScreen('games')" class="back-btn flex items-center space-x-1"><span>←</span><span>Назад</span></button>
-        <span class="game-screen-title">Upgrader</span>
-        <button onclick="toggleFastMode('upgrader')" id="fast-btn-upgrader" class="px-3 py-1 rounded-xl bg-cyan-500/10 border border-cyan-400/30 text-[10px] font-extrabold text-cyan-300">⚡ Быстро</button>
+        <span class="game-screen-title" style="font-family:Orbitron,sans-serif;letter-spacing:2px;color:#ff8c32">UPGRADER</span>
+        <button onclick="toggleFastMode('upgrader')" id="fast-btn-upgrader" class="px-3 py-1 rounded-xl bg-orange-500/15 border border-orange-400/35 text-[10px] font-extrabold text-orange-300">⚡ Быстро</button>
       </div>
-      <div id="upgrader-card-box" class="glass-card p-4 space-y-4 shadow-2xl casino-rail relative overflow-hidden">
-        <div class="absolute inset-0 pointer-events-none opacity-40" style="background:radial-gradient(ellipse at 50% 20%,rgba(34,211,238,0.15),transparent 55%)"></div>
+
+      <div id="upgrader-card-box" class="relative overflow-hidden rounded-3xl p-4 space-y-4 shadow-2xl" style="background:linear-gradient(165deg,#1a1008 0%,#0c0a0e 40%,#08060a 100%);border:1px solid rgba(255,140,50,0.25);box-shadow:0 20px 60px rgba(0,0,0,0.6),0 0 40px rgba(255,107,44,0.08),inset 0 1px 0 rgba(255,200,120,0.08)">
+        <!-- ambient orbs -->
+        <div class="absolute -top-16 -right-10 w-40 h-40 rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(255,140,50,0.25),transparent 70%);filter:blur(20px)"></div>
+        <div class="absolute -bottom-20 -left-10 w-44 h-44 rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(163,230,53,0.12),transparent 70%);filter:blur(24px)"></div>
+
         <div class="relative text-center">
-          <div class="text-[9px] font-extrabold tracking-[0.3em] text-cyan-400/70 uppercase">Risk · Reward</div>
-          <h2 class="text-lg font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-violet-300">Апгрейдер</h2>
+          <div class="text-[9px] font-extrabold tracking-[0.35em] uppercase" style="color:rgba(255,140,50,0.65);font-family:Orbitron,sans-serif">Risk · Reward</div>
+          <h2 class="text-xl font-extrabold mt-0.5" style="font-family:Orbitron,sans-serif;background:linear-gradient(90deg,#ffd4a8,#ff8c32,#a3e635);-webkit-background-clip:text;background-clip:text;color:transparent">Апгрейдер</h2>
+          <div class="text-[10px] text-slate-400 mt-1">Поставь · выбери множитель · крути удачу</div>
         </div>
-        <div class="relative flex flex-col items-center py-2">
-          <div id="upgrader-arrow" class="z-30 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[16px] border-t-cyan-300" style="filter:drop-shadow(0 0 8px rgba(34,211,238,0.8))"></div>
-          <div class="relative w-48 h-48 mt-1">
-            <div class="absolute inset-0 rounded-full" style="background:conic-gradient(from 0deg,#22d3ee,#a855f7,#22d3ee);padding:3px;opacity:0.5;filter:blur(8px)"></div>
-            <div class="upgrader-ring-glow absolute inset-[3px] rounded-full overflow-hidden border border-white/10" style="box-shadow:0 0 40px rgba(34,211,238,0.2),inset 0 0 30px rgba(0,0,0,0.6)">
-              <div id="upgrader-wheel" class="absolute inset-0 wheel-spinning" style="background:conic-gradient(#22d3ee 0% 50%, #0f172a 50% 100%)"></div>
-              <div class="absolute inset-8 rounded-full bg-[#0a0a12]/95 flex flex-col items-center justify-center z-10 border border-white/10 shadow-2xl">
-                <div id="upgrader-chance" class="text-2xl font-extrabold text-cyan-300">50%</div>
-                <div class="text-[9px] text-slate-400 font-bold uppercase mt-0.5" id="upgrader-chance-label">x2</div>
+
+        <!-- WHEEL -->
+        <div class="relative flex flex-col items-center py-3">
+          <div id="upgrader-arrow" class="z-30 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[18px]" style="border-top-color:#ff8c32;filter:drop-shadow(0 0 10px rgba(255,140,50,0.9))"></div>
+
+          <div class="relative w-52 h-52 mt-1">
+            <!-- outer glow ring -->
+            <div class="absolute -inset-2 rounded-full pointer-events-none" style="background:conic-gradient(from 0deg,#ff8c32,#a3e635,#ff6b2c,#ff8c32);opacity:0.35;filter:blur(12px)"></div>
+            <!-- metal rim -->
+            <div class="absolute inset-0 rounded-full" style="background:linear-gradient(145deg,#3a2a1a,#1a120c);padding:4px;box-shadow:0 0 0 1px rgba(255,180,100,0.35),0 12px 40px rgba(0,0,0,0.55)">
+              <div class="upgrader-ring-glow absolute inset-[4px] rounded-full overflow-hidden" style="border:1px solid rgba(255,200,120,0.2);box-shadow:0 0 50px rgba(255,140,50,0.25),inset 0 0 40px rgba(0,0,0,0.65)">
+                <div id="upgrader-wheel" class="absolute inset-0 wheel-spinning" style="background:conic-gradient(#ff8c32 0% 50%, #111018 50% 100%)"></div>
+                <!-- center hub -->
+                <div class="absolute inset-10 rounded-full flex flex-col items-center justify-center z-10" style="background:radial-gradient(circle at 35% 30%,#2a1e14,#0a080c 70%);border:2px solid rgba(255,160,80,0.45);box-shadow:0 0 24px rgba(0,0,0,0.7),inset 0 1px 0 rgba(255,220,180,0.15)">
+                  <div id="upgrader-chance" class="text-3xl font-extrabold tracking-tight" style="font-family:Orbitron,sans-serif;color:#ffd4a8;text-shadow:0 0 18px rgba(255,140,50,0.5)">50%</div>
+                  <div class="text-[9px] font-bold uppercase mt-0.5 tracking-widest" style="color:#a3e635" id="upgrader-chance-label">x2</div>
+                </div>
               </div>
             </div>
+            <!-- tick marks decoration -->
+            <div class="absolute inset-0 rounded-full pointer-events-none" style="background:repeating-conic-gradient(from 0deg, transparent 0deg 8deg, rgba(255,200,120,0.12) 8deg 9deg)"></div>
           </div>
-          <div id="upgrader-history" class="flex gap-1.5 mt-3 justify-center min-h-[12px]"></div>
+
+          <div id="upgrader-history" class="flex gap-1.5 mt-4 justify-center min-h-[12px] items-center"></div>
+          <div class="text-[9px] text-slate-500 mt-1 font-bold tracking-wide">история раундов</div>
         </div>
-        <div class="relative grid grid-cols-2 gap-2">
-          <div class="rounded-2xl bg-black/40 border border-white/10 p-3 text-center">
-            <div class="text-[9px] text-slate-500 font-bold uppercase">Ставка</div>
-            <div id="upg-from-val" class="font-extrabold text-sm text-white">100 🪙</div>
-          </div>
-          <div class="rounded-2xl bg-black/40 border border-cyan-500/20 p-3 text-center">
-            <div class="text-[9px] text-cyan-500/80 font-bold uppercase">Выигрыш</div>
-            <div id="upg-to-val" class="font-extrabold text-sm text-cyan-300">200 🪙</div>
-          </div>
-        </div>
+
+        <!-- MULT SELECT -->
         <div class="relative space-y-2">
-          <input id="upgrader-bet" type="number" value="100" oninput="recalcUpgrader()" class="w-full bg-black/50 border border-cyan-500/20 rounded-2xl p-3 text-center font-extrabold text-sm outline-none text-white">
-          <input id="upgrader-range" type="range" min="10" max="5000" value="100" oninput="onUpgraderRangeInput()" class="w-full accent-cyan-400">
-          <div class="grid grid-cols-4 gap-2">
-            <button id="upg-btn-2" onclick="selectUpgraderMult(2)" class="py-3 rounded-2xl bg-cyan-500/20 border-2 border-cyan-400 text-sm font-extrabold text-cyan-200 shadow-lg">x2<br><span class="text-[10px] opacity-80">50%</span></button>
-            <button id="upg-btn-10" onclick="selectUpgraderMult(10)" class="py-3 rounded-2xl bg-white/5 border border-white/10 text-sm font-extrabold text-gray-300">x10<br><span class="text-[10px] opacity-70">25%</span></button>
-            <button id="upg-btn-25" onclick="selectUpgraderMult(25)" class="py-3 rounded-2xl bg-white/5 border border-white/10 text-sm font-extrabold text-gray-300">x25<br><span class="text-[10px] opacity-70">15%</span></button>
-            <button id="upg-btn-50" onclick="selectUpgraderMult(50)" class="py-3 rounded-2xl bg-white/5 border border-white/10 text-sm font-extrabold text-gray-300">x50<br><span class="text-[10px] opacity-70">5%</span></button>
+          <div class="text-[10px] font-extrabold tracking-widest uppercase text-center" style="color:rgba(255,140,50,0.7);font-family:Orbitron,sans-serif">Множитель</div>
+          <div class="grid grid-cols-4 gap-2" id="upgrader-mult-btns">
+            <button type="button" onclick="selectUpgraderMult(2)" data-upg-mult="2" class="upg-mult-btn py-2.5 rounded-2xl text-xs font-extrabold border transition-all" style="background:linear-gradient(180deg,rgba(255,140,50,0.25),rgba(255,140,50,0.08));border-color:rgba(255,140,50,0.55);color:#ffd4a8;box-shadow:0 0 16px rgba(255,140,50,0.2)">x2<br><span class="text-[9px] opacity-70">50%</span></button>
+            <button type="button" onclick="selectUpgraderMult(10)" data-upg-mult="10" class="upg-mult-btn py-2.5 rounded-2xl text-xs font-extrabold border transition-all" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.1);color:#e2e8f0">x10<br><span class="text-[9px] opacity-70">25%</span></button>
+            <button type="button" onclick="selectUpgraderMult(25)" data-upg-mult="25" class="upg-mult-btn py-2.5 rounded-2xl text-xs font-extrabold border transition-all" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.1);color:#e2e8f0">x25<br><span class="text-[9px] opacity-70">15%</span></button>
+            <button type="button" onclick="selectUpgraderMult(50)" data-upg-mult="50" class="upg-mult-btn py-2.5 rounded-2xl text-xs font-extrabold border transition-all" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.1);color:#e2e8f0">x50<br><span class="text-[9px] opacity-70">5%</span></button>
           </div>
-          <button id="upgrader-btn" onclick="startUpgrader()" class="btn-primary w-full py-3.5 text-xs font-extrabold shadow-lg">Улучшить</button>
+        </div>
+
+        <!-- BET -->
+        <div class="relative space-y-2">
+          <div class="flex items-center justify-between px-1">
+            <span class="text-[10px] font-extrabold tracking-widest uppercase text-slate-400">Ставка</span>
+            <span id="upgrader-mult" class="text-[11px] font-extrabold" style="color:#a3e635;font-family:Orbitron,sans-serif">→ x2</span>
+          </div>
+          <input id="upgrader-bet" type="number" value="100" oninput="recalcUpgrader()" class="w-full rounded-2xl p-3.5 text-center font-extrabold text-base outline-none" style="background:rgba(0,0,0,0.45);border:1px solid rgba(255,140,50,0.25);color:#fff;font-family:Orbitron,sans-serif">
+          <input id="upgrader-range" type="range" min="10" max="5000" value="100" oninput="onUpgraderRangeInput()" class="w-full accent-orange-400">
+          <div class="grid grid-cols-4 gap-2">
+            <button type="button" onclick="document.getElementById('upgrader-bet').value=50;recalcUpgrader()" class="chip-btn py-2 text-[11px] font-bold">50</button>
+            <button type="button" onclick="document.getElementById('upgrader-bet').value=100;recalcUpgrader()" class="chip-btn py-2 text-[11px] font-bold">100</button>
+            <button type="button" onclick="document.getElementById('upgrader-bet').value=500;recalcUpgrader()" class="chip-btn py-2 text-[11px] font-bold">500</button>
+            <button type="button" onclick="document.getElementById('upgrader-bet').value=Math.max(10,balance);recalcUpgrader()" class="chip-btn py-2 text-[11px] font-bold" style="color:#ff8c32">MAX</button>
+          </div>
+          <div class="text-center text-[11px] text-slate-400">Выигрыш при успехе: <b id="upgrader-slider-val" class="text-orange-300">200</b> 🪙</div>
+          <button id="upgrader-btn" onclick="startUpgrader()" class="btn-primary w-full py-4 text-sm font-extrabold shadow-lg" style="font-family:Orbitron,sans-serif;letter-spacing:1px">УЛУЧШИТЬ</button>
         </div>
       </div>
     </div>
 
-    <!-- РЕЖИМ: РУЛЕТКА (LIVE РУЛЕТКА) — ПРЕМИУМ -->
     <div id="screen-roulette" class="screen space-y-3">
       <div class="flex justify-between items-center mb-1">
         <button onclick="openScreen('games')" class="back-btn flex items-center space-x-1"><span>←</span><span>Назад</span></button>
@@ -3206,46 +3672,63 @@
     <!-- BLACKJACK 21 -->
     <div id="screen-blackjack" class="screen space-y-3">
       <div class="flex items-center justify-between mb-1">
-        <button type="button" onclick="openScreen('games')" class="back-btn text-xs font-extrabold text-cyan-300">← Игры</button>
-        <div class="text-[10px] font-extrabold tracking-widest uppercase text-cyan-300">Blackjack 21</div>
+        <button type="button" onclick="openScreen('games')" class="back-btn text-xs font-extrabold">← Арена</button>
+        <div class="text-[11px] font-extrabold tracking-widest uppercase" style="color:#d4af37;font-family:Orbitron,sans-serif">Блэкджек</div>
         <div class="w-12"></div>
       </div>
-      <div id="bj-card-box" class="glass-card p-3 space-y-3" style="background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(16,185,129,0.12),transparent 60%),linear-gradient(180deg,#0a1210,#060a08)">
-        <!-- Dealer -->
-        <div class="rounded-2xl border border-white/8 bg-black/30 p-3">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-[10px] font-extrabold text-slate-400 tracking-widest uppercase">Дилер</span>
-            <span id="bj-dealer-score" class="text-sm font-extrabold text-white tabular-nums">—</span>
+
+      <div id="bj-result-pills" class="flex gap-1.5 min-h-[22px] flex-wrap"></div>
+
+      <div id="bj-card-box" class="bj-table p-3 space-y-3 relative overflow-hidden">
+        <div id="bj-idle-hint" class="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <div class="text-[12px] font-bold text-emerald-200/50 text-center px-4">Сделайте ставку — дилер ждёт</div>
+        </div>
+
+        <div class="relative z-[1] space-y-3">
+          <div class="flex items-center justify-between px-1">
+            <span class="text-[10px] font-extrabold tracking-widest text-emerald-300/80 uppercase">Дилер</span>
+            <span id="bj-dealer-score" class="bj-pill tabular-nums">—</span>
           </div>
-          <div id="bj-dealer-cards" class="flex gap-2 justify-center min-h-[88px] items-center"></div>
-        </div>
-        <!-- Player -->
-        <div class="rounded-2xl border border-cyan-500/20 bg-cyan-950/20 p-3">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-[10px] font-extrabold text-cyan-400 tracking-widest uppercase">Вы</span>
-            <span id="bj-player-score" class="text-sm font-extrabold text-cyan-200 tabular-nums">—</span>
+          <div id="bj-dealer-cards" class="flex gap-2 justify-center min-h-[90px] items-center flex-wrap"></div>
+
+          <div class="h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent"></div>
+
+          <div class="flex items-center justify-between px-1">
+            <span class="text-[10px] font-extrabold tracking-widest text-emerald-200/90 uppercase">Вы <span id="bj-player-score-inline" class="text-emerald-300"></span></span>
+            <span id="bj-player-score" class="bj-pill tabular-nums">—</span>
           </div>
-          <div id="bj-player-cards" class="flex gap-2 justify-center min-h-[88px] items-center"></div>
+          <div id="bj-player-cards" class="flex gap-2 justify-center min-h-[90px] items-center flex-wrap"></div>
         </div>
-        <div id="bj-status" class="text-center text-[12px] font-bold text-slate-300 py-1">Сделайте ставку и нажмите Раздать</div>
-        <div class="flex items-center gap-2">
-          <input id="bj-bet" type="number" min="10" value="100" class="flex-1 rounded-xl px-3 py-2.5 text-sm font-bold bg-black/40 border border-white/10 text-white outline-none">
-          <button type="button" onclick="document.getElementById('bj-bet').value=Math.max(10,Math.floor((+document.getElementById('bj-bet').value||100)/2))" class="chip-btn px-3 py-2 text-[11px]">½</button>
-          <button type="button" onclick="document.getElementById('bj-bet').value=Math.min(balance,(+document.getElementById('bj-bet').value||100)*2)" class="chip-btn px-3 py-2 text-[11px]">×2</button>
+
+        <div id="bj-status" class="relative z-[1] text-center text-[12px] font-bold text-emerald-100/80 py-1">Сделайте ставку</div>
+
+        <div id="bj-actions-deal" class="relative z-[1] space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-extrabold text-slate-400 tracking-widest">СТАВКА</span>
+            <input id="bj-bet" type="number" min="10" value="50" class="flex-1 rounded-xl px-3 py-2.5 text-sm font-extrabold outline-none text-center" style="background:rgba(0,0,0,0.4);border:1px solid rgba(212,175,55,0.3);color:#f5e6a8;font-family:Orbitron,sans-serif">
+            <button type="button" onclick="document.getElementById('bj-bet').value=Math.max(10,Math.floor((+document.getElementById('bj-bet').value||50)/2))" class="chip-btn px-3 py-2 text-[11px]">1/2</button>
+            <button type="button" onclick="document.getElementById('bj-bet').value=Math.min(balance,(+document.getElementById('bj-bet').value||50)*2)" class="chip-btn px-3 py-2 text-[11px]">2x</button>
+            <button type="button" onclick="document.getElementById('bj-bet').value=Math.max(10,balance)" class="chip-btn px-3 py-2 text-[11px] text-amber-300">MAX</button>
+          </div>
+          <div class="grid grid-cols-4 gap-2">
+            <button type="button" onclick="document.getElementById('bj-bet').value=50" class="chip-btn py-2 text-[11px] font-bold">50</button>
+            <button type="button" onclick="document.getElementById('bj-bet').value=100" class="chip-btn py-2 text-[11px] font-bold">100</button>
+            <button type="button" onclick="document.getElementById('bj-bet').value=500" class="chip-btn py-2 text-[11px] font-bold">500</button>
+            <button type="button" onclick="document.getElementById('bj-bet').value=1000" class="chip-btn py-2 text-[11px] font-bold">1K</button>
+          </div>
+          <button id="bj-deal-btn" type="button" onclick="bjDeal()" class="bj-btn-gold w-full py-3.5 text-sm">🃏 Раздать</button>
         </div>
-        <div class="flex gap-2">
-          <button type="button" onclick="document.getElementById('bj-bet').value=50" class="chip-btn flex-1 py-2 text-[11px]">50</button>
-          <button type="button" onclick="document.getElementById('bj-bet').value=100" class="chip-btn flex-1 py-2 text-[11px]">100</button>
-          <button type="button" onclick="document.getElementById('bj-bet').value=250" class="chip-btn flex-1 py-2 text-[11px]">250</button>
-          <button type="button" onclick="document.getElementById('bj-bet').value=Math.max(10,balance)" class="chip-btn flex-1 py-2 text-[11px]">MAX</button>
+
+        <div id="bj-actions-play" class="relative z-[1] hidden space-y-2">
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="bjHit()" class="bj-btn-gold py-3.5 text-sm">Ещё</button>
+            <button type="button" onclick="bjStand()" class="bj-btn-dark py-3.5 text-sm">Хватит</button>
+          </div>
+          <button type="button" onclick="bjDouble()" id="bj-double-btn" class="bj-btn-green w-full py-3 text-sm">Удвоить</button>
         </div>
-        <div id="bj-actions-deal" class="grid grid-cols-1 gap-2">
-          <button id="bj-deal-btn" type="button" onclick="bjDeal()" class="btn-primary w-full py-3.5 text-sm font-extrabold">Раздать</button>
-        </div>
-        <div id="bj-actions-play" class="hidden grid grid-cols-3 gap-2">
-          <button type="button" onclick="bjHit()" class="py-3 rounded-xl font-extrabold text-xs bg-emerald-600/80 border border-emerald-400/40 text-white">Ещё</button>
-          <button type="button" onclick="bjStand()" class="py-3 rounded-xl font-extrabold text-xs bg-amber-600/80 border border-amber-400/40 text-white">Хватит</button>
-          <button type="button" onclick="bjDouble()" id="bj-double-btn" class="py-3 rounded-xl font-extrabold text-xs bg-violet-600/80 border border-violet-400/40 text-white">x2</button>
+
+        <div class="relative z-[1] text-[10px] text-emerald-200/40 font-bold text-center leading-relaxed px-2">
+          1 колода · дилер на 17 · блэкджек 3:2 (x2.5) · удвоение на первых двух картах
         </div>
       </div>
     </div>
@@ -3450,45 +3933,42 @@
         <div id="screen-minecraft" class="screen space-y-3">
       <div class="flex justify-between items-center mb-1">
         <button onclick="openScreen('games')" class="back-btn flex items-center space-x-1"><span>←</span><span>Назад</span></button>
-        <span class="game-screen-title">Minecraft Mine</span>
+        <span class="game-screen-title" style="font-family:Orbitron,sans-serif;color:#84cc16">MINECRAFT</span>
         <div class="flex gap-1.5">
-          <button onclick="toggleMcTurbo()" id="mc-turbo-btn" class="px-2.5 py-1 rounded-xl bg-lime-500/10 border border-lime-500/30 text-[10px] font-extrabold text-lime-300">Турбо</button>
-          <button onclick="toggleMcAuto()" id="mc-auto-btn" class="px-2.5 py-1 rounded-xl bg-white/5 border border-white/10 text-[10px] font-extrabold text-gray-300">Авто</button>
+          <button onclick="toggleMcTurbo()" id="mc-turbo-btn" class="px-2.5 py-1 rounded-none bg-[#373737] border-2 border-[#8b8b8b] text-[10px] font-extrabold text-[#e0e0e0]" style="image-rendering:pixelated;box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 #555">Турбо</button>
+          <button onclick="toggleMcAuto()" id="mc-auto-btn" class="px-2.5 py-1 rounded-none bg-[#373737] border-2 border-[#8b8b8b] text-[10px] font-extrabold text-[#e0e0e0]" style="image-rendering:pixelated;box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 #555">Авто</button>
         </div>
       </div>
-      <div id="mc-card-box" class="glass-card p-3 space-y-2 shadow-2xl border-lime-500/20">
-        <div class="flex items-center justify-between px-0.5">
-          <div class="text-sm font-extrabold text-lime-300">Шахта</div>
-          <button onclick="showMcOreTable()" class="text-[10px] font-bold text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-lg bg-amber-500/10">Сундуки ×</button>
+      <div id="mc-card-box" class="p-2 space-y-2 shadow-2xl" style="background:#c6c6c6;border:3px solid #373737;border-radius:0;box-shadow:inset 2px 2px 0 #fff,inset -2px -2px 0 #8b8b8b,0 8px 24px rgba(0,0,0,0.5)">
+        <div class="flex items-center justify-between px-1" style="background:#8b8b8b;border:2px solid #373737;box-shadow:inset 1px 1px 0 #c6c6c6">
+          <div class="text-sm font-extrabold text-[#1a1a1a] px-2 py-1" style="font-family:Orbitron,sans-serif;letter-spacing:1px">ШАХТА</div>
+          <button onclick="showMcOreTable()" class="text-[10px] font-bold text-[#1a1a1a] px-2 py-0.5" style="background:#fbbf24;border:2px solid #78350f;box-shadow:inset 1px 1px 0 #fde68a">Сундуки ×</button>
         </div>
 
-        <!-- Инвентарь кирок на фоне неба -->
-        <div class="mc-sky-panel rounded-xl p-2 mb-1" style="background:linear-gradient(180deg,#7dd3fc 0%,#38bdf8 55%,#0ea5e9 100%);border:2px solid #bae6fd;box-shadow:inset 0 -8px 0 rgba(255,255,255,0.15)">
+        <!-- Hotbar-style pick inventory -->
+        <div class="mc-sky-panel p-2 mb-1" style="background:linear-gradient(180deg,#78a7ff 0%,#5a9cf5 40%,#8eb971 70%,#5a8f3a 100%);border:3px solid #373737;box-shadow:inset 0 -10px 0 rgba(0,0,0,0.15)">
           <div class="relative">
-            <div class="absolute right-2 top-0 text-white/80 text-lg leading-none">☁</div>
-            <div id="mc-pick-slots" class="grid grid-cols-5 gap-1.5 justify-items-center max-w-[260px] mx-auto">
+            <div class="absolute right-3 top-1 text-white/70 text-sm" style="text-shadow:1px 1px 0 #000">☁ ☁</div>
+            <div class="text-center text-[9px] font-bold text-white mb-1" style="text-shadow:1px 1px 0 #000;font-family:Orbitron,sans-serif">ИНВЕНТАРЬ КИРОК</div>
+            <div id="mc-pick-slots" class="grid grid-cols-6 gap-1.5 justify-items-center max-w-[300px] mx-auto">
               <div class="mc-pick-slot" data-slot="0">?</div>
               <div class="mc-pick-slot" data-slot="1">?</div>
               <div class="mc-pick-slot" data-slot="2">?</div>
-              <div class="mc-pick-slot" data-slot="3">?</div>
-              <div class="mc-pick-slot" data-slot="4">?</div>
-              <div class="mc-pick-slot opacity-40" data-slot="5">·</div>
-              <div class="mc-pick-slot opacity-40" data-slot="6">·</div>
-              <div class="mc-pick-slot opacity-40" data-slot="7">·</div>
-              <div class="mc-pick-slot opacity-40" data-slot="8">·</div>
-              <div class="mc-pick-slot opacity-40" data-slot="9">·</div>
+              <div class="mc-pick-slot opacity-35" data-slot="3">·</div>
+              <div class="mc-pick-slot opacity-35" data-slot="4">·</div>
+              <div class="mc-pick-slot opacity-35" data-slot="5">·</div>
             </div>
           </div>
         </div>
 
-        <!-- Вертикальная шахта: трава → dirt → stone → сундуки -->
+        <!-- Classic MC cave shaft -->
         <div id="mc-field-wrap">
           <div id="mc-field"></div>
         </div>
-        <div class="mc-chest-row-label">⬇ сундуки с множителями ⬇</div>
+        <div class="mc-chest-row-label" style="color:#fbbf24;text-shadow:1px 1px 0 #000;font-family:Orbitron,sans-serif">▼ СУНДУКИ С МНОЖИТЕЛЯМИ ▼</div>
 
-        <div class="text-center text-[11px] font-extrabold text-lime-300/90" id="mc-status">Дойди до сундуков — иначе выигрыш 0</div>
-        <div class="text-center text-sm font-extrabold text-amber-300" id="mc-win-label"></div>
+        <div class="text-center text-[11px] font-extrabold text-[#1a1a1a] bg-[#8b8b8b] border-2 border-[#373737] py-1" id="mc-status" style="box-shadow:inset 1px 1px 0 #c6c6c6">Дойди до сундуков — иначе выигрыш 0</div>
+        <div class="text-center text-sm font-extrabold text-[#78350f]" id="mc-win-label"></div>
 
         <div class="flex items-center justify-between">
           <span class="text-[10px] text-slate-400 font-bold">СТАВКА</span>
@@ -3653,6 +4133,8 @@
         <button onclick="ownerTab('security')" class="owner-tab px-3 py-1.5 rounded-xl text-[10px] font-extrabold bg-white/5 border border-white/10 text-slate-300 whitespace-nowrap" data-tab="security">Антиабуз</button>
         <button onclick="ownerTab('logs')" class="owner-tab px-3 py-1.5 rounded-xl text-[10px] font-extrabold bg-white/5 border border-white/10 text-slate-300 whitespace-nowrap" data-tab="logs">Логи</button>
         <button onclick="ownerTab('labs')" class="owner-tab px-3 py-1.5 rounded-xl text-[10px] font-extrabold bg-white/5 border border-white/10 text-slate-300 whitespace-nowrap" data-tab="labs">Labs</button>
+        <button onclick="ownerTab('quests')" class="owner-tab px-3 py-1.5 rounded-xl text-[10px] font-extrabold bg-white/5 border border-white/10 text-slate-300 whitespace-nowrap" data-tab="quests">Квесты</button>
+        <button onclick="ownerTab('extras')" class="owner-tab px-3 py-1.5 rounded-xl text-[10px] font-extrabold bg-white/5 border border-white/10 text-slate-300 whitespace-nowrap" data-tab="extras">Extras</button>
       </div>
 
       <div id="owner-panel-eco" class="owner-panel space-y-2">
@@ -3711,38 +4193,167 @@
           <div class="grid grid-cols-2 gap-1.5" id="owner-labs-grid"></div>
         </div>
       </div>
+
+      <div id="owner-panel-quests" class="owner-panel space-y-2 hidden">
+        <div class="glass-card p-3 space-y-2 border border-lime-500/20">
+          <div class="text-[11px] font-bold text-lime-300">🎯 Квесты · 35+ слотов · ты выбираешь</div>
+          <div class="text-[10px] text-slate-400">Вкл/выкл задания. Рестарт сбрасывает прогресс и claimed.</div>
+          <div class="flex flex-wrap gap-1.5 mb-2">
+            <button type="button" onclick="ownerRestartAllQuests()" class="px-2.5 py-1.5 rounded-xl text-[10px] font-extrabold border border-lime-400/40 bg-lime-500/15 text-lime-200">↻ Рестарт всех</button>
+            <button type="button" onclick="ownerRefreshQuestPool()" class="px-2.5 py-1.5 rounded-xl text-[10px] font-extrabold border border-orange-400/40 bg-orange-500/15 text-orange-200">🎲 Новый пул</button>
+            <button type="button" onclick="ownerEnableAllQuests()" class="px-2.5 py-1.5 rounded-xl text-[10px] font-extrabold border border-white/15 bg-white/5 text-slate-200">Все ВКЛ</button>
+            <button type="button" onclick="ownerDisableAllQuests()" class="px-2.5 py-1.5 rounded-xl text-[10px] font-extrabold border border-white/15 bg-white/5 text-slate-200">Все ВЫКЛ</button>
+          </div>
+          <div id="owner-quests-list" class="space-y-1.5 max-h-72 overflow-y-auto no-scrollbar"></div>
+        </div>
+      </div>
+
+      <div id="owner-panel-extras" class="owner-panel space-y-2 hidden">
+        <div class="glass-card p-3 space-y-2 border border-orange-500/20">
+          <div class="text-[11px] font-bold text-orange-300">✦ Extras · VOID tools</div>
+          <div class="grid grid-cols-2 gap-1.5" id="owner-extras-grid"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- PULSE LIVE FEED -->
+    <div id="screen-pulse" class="screen space-y-3">
+      <div class="rounded-3xl p-4 space-y-3" style="background:linear-gradient(160deg,#0c101c,#06080f);border:1px solid rgba(212,175,55,0.2)">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-[9px] font-extrabold tracking-[0.3em] uppercase" style="color:#d4af37;font-family:Orbitron,sans-serif">LIVE PULSE</div>
+            <div class="text-lg font-extrabold text-white" style="font-family:Orbitron,sans-serif">Пульс арены</div>
+          </div>
+          <div class="online-chip">
+            <span class="dot"></span>
+            <span id="pulse-online-count" class="text-xs font-extrabold text-emerald-300">1</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2 text-center">
+          <div class="rounded-2xl p-2" style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.06)">
+            <div class="text-[9px] text-slate-500">Сейчас</div>
+            <div id="pulse-now" class="text-sm font-extrabold text-emerald-300">1</div>
+          </div>
+          <div class="rounded-2xl p-2" style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.06)">
+            <div class="text-[9px] text-slate-500">Пик дня</div>
+            <div id="pulse-peak" class="text-sm font-extrabold" style="color:#d4af37">1</div>
+          </div>
+          <div class="rounded-2xl p-2" style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.06)">
+            <div class="text-[9px] text-slate-500">События</div>
+            <div id="pulse-events" class="text-sm font-extrabold text-white">0</div>
+          </div>
+        </div>
+        <div class="text-[10px] text-slate-500 font-bold">Реальный онлайн по presence (вкладки / устройства с общим storage). Без сервера минимум = вы.</div>
+        <div id="pulse-feed" class="space-y-1 max-h-[50vh] overflow-y-auto no-scrollbar"></div>
+      </div>
+    </div>
+
+
+    <!-- PvP ARENA -->
+    <div id="screen-arena" class="screen space-y-3">
+      <div class="flex items-center justify-between mb-1">
+        <button type="button" onclick="openScreen('games')" class="back-btn text-xs font-extrabold">← Арена</button>
+        <span class="game-screen-title" style="color:#d4af37;font-family:Orbitron,sans-serif">PvP ARENA</span>
+        <span class="text-[10px] font-bold text-emerald-400" id="arena-round-id">#—</span>
+      </div>
+
+      <div id="arena-card-box" class="relative overflow-hidden rounded-3xl p-3 space-y-3" style="background:linear-gradient(180deg,#0c1a12,#06100c);border:1px solid rgba(212,175,55,0.25);box-shadow:0 20px 50px rgba(0,0,0,0.55)">
+        <div class="grid grid-cols-2 gap-2">
+          <div class="rounded-2xl p-2.5" style="background:rgba(16,185,129,0.1);border:1px solid rgba(52,211,153,0.25)">
+            <div class="text-[9px] font-bold text-emerald-400/80 uppercase tracking-wide">Последний выигрыш</div>
+            <div id="arena-last-win" class="text-xl font-extrabold text-emerald-300" style="font-family:Orbitron,sans-serif">—</div>
+            <div id="arena-last-winner" class="text-[10px] text-emerald-200/70 font-bold truncate">—</div>
+          </div>
+          <div class="rounded-2xl p-2.5 text-right" style="background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.25)">
+            <div class="text-[9px] font-bold text-amber-400/80 uppercase tracking-wide">Банк раунда</div>
+            <div id="arena-pot" class="text-xl font-extrabold" style="color:#f5e6a8;font-family:Orbitron,sans-serif">0</div>
+            <div class="text-[10px] text-amber-200/60 font-bold">общий банк</div>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <div id="arena-status" class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-extrabold" style="background:rgba(0,0,0,0.4);border:1px solid rgba(212,175,55,0.3);color:#f5e6a8">
+            Ждём игроков
+          </div>
+        </div>
+
+        <!-- Wheel -->
+        <div class="relative mx-auto" style="width:240px;height:240px">
+          <div class="absolute left-1/2 -translate-x-1/2 -top-1 z-20 w-0 h-0" style="border-left:10px solid transparent;border-right:10px solid transparent;border-top:16px solid #d4af37;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.8))"></div>
+          <canvas id="arena-wheel" width="240" height="240" class="rounded-full" style="box-shadow:0 0 40px rgba(16,185,129,0.15),inset 0 0 20px rgba(0,0,0,0.5)"></canvas>
+          <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div class="rounded-full flex flex-col items-center justify-center text-center" style="width:88px;height:88px;background:radial-gradient(circle at 35% 30%,#1a2e22,#0a140e);border:2px solid rgba(212,175,55,0.45);box-shadow:0 0 20px rgba(0,0,0,0.6)">
+              <div class="text-[8px] font-bold text-amber-400/70 tracking-widest">БАНК</div>
+              <div id="arena-hub-pot" class="text-sm font-extrabold text-amber-200" style="font-family:Orbitron,sans-serif">0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Players list -->
+        <div class="rounded-2xl p-2 space-y-1.5 max-h-36 overflow-y-auto no-scrollbar" style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.06)" id="arena-players">
+          <div class="text-center text-[11px] text-slate-500 py-3">Ставок пока нет — будь первым</div>
+        </div>
+
+        <!-- Bet controls -->
+        <div class="space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-extrabold text-slate-400 tracking-widest">СТАВКА</span>
+            <input id="arena-bet" type="number" value="100" class="flex-1 rounded-xl p-2.5 text-center font-extrabold text-sm outline-none" style="background:rgba(0,0,0,0.45);border:1px solid rgba(212,175,55,0.25);color:#f5e6a8;font-family:Orbitron,sans-serif">
+            <button type="button" onclick="arenaBetHalf()" class="px-2.5 py-2 rounded-xl text-[10px] font-bold border border-white/10 bg-white/5">1/2</button>
+            <button type="button" onclick="arenaBetDouble()" class="px-2.5 py-2 rounded-xl text-[10px] font-bold border border-white/10 bg-white/5">2x</button>
+            <button type="button" onclick="arenaBetMax()" class="px-2.5 py-2 rounded-xl text-[10px] font-bold border border-amber-500/30 text-amber-300">MAX</button>
+          </div>
+          <div class="grid grid-cols-4 gap-2">
+            <button type="button" onclick="document.getElementById('arena-bet').value=50" class="chip-btn py-2 text-[11px] font-bold">50</button>
+            <button type="button" onclick="document.getElementById('arena-bet').value=100" class="chip-btn py-2 text-[11px] font-bold">100</button>
+            <button type="button" onclick="document.getElementById('arena-bet').value=500" class="chip-btn py-2 text-[11px] font-bold">500</button>
+            <button type="button" onclick="document.getElementById('arena-bet').value=1000" class="chip-btn py-2 text-[11px] font-bold">1K</button>
+          </div>
+          <button id="arena-join-btn" type="button" onclick="arenaJoin()" class="btn-primary w-full py-3.5 text-sm font-extrabold" style="font-family:Orbitron,sans-serif">Вступить</button>
+          <div class="text-[10px] text-center text-slate-500 font-bold">Только реальные игроки. Шанс = ставка / банк. Другие аккаунты видят твои ставки online.</div>
+        </div>
+
+        <div class="pt-1">
+          <div class="text-[10px] font-extrabold tracking-widest uppercase text-slate-500 mb-1.5">История</div>
+          <div id="arena-history" class="flex gap-1.5 overflow-x-auto no-scrollbar text-[10px] font-bold"></div>
+        </div>
+      </div>
     </div>
 
   </main>
 
   <!-- Нижняя навигация -->
-  <nav class="premium-nav fixed bottom-0 left-0 right-0 glass-card border-t border-white/5 py-3.5 px-2 flex justify-around items-center z-40 max-w-md mx-auto shadow-2xl">
-    <button onclick="openScreen('games')" id="nav-games" class="nav-item active flex flex-col items-center space-y-1">
-      <span class="text-lg">🎮</span><span class="font-bold">Игры</span>
+  <nav class="premium-nav fixed bottom-0 left-0 right-0 glass-card border-t border-white/5 py-3 px-1.5 flex justify-around items-center z-40 max-w-md mx-auto shadow-2xl">
+    <button onclick="openScreen('games')" id="nav-games" class="nav-item active flex flex-col items-center space-y-0.5 min-w-[52px]">
+      <svg class="nav-ico" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="3" stroke="currentColor" stroke-width="1.8"/><circle cx="8.5" cy="12" r="1.4" fill="currentColor"/><circle cx="15.5" cy="12" r="1.4" fill="currentColor"/><path d="M10 12h4" stroke="currentColor" stroke-width="1.5"/></svg>
+      <span class="font-bold">Арена</span>
     </button>
-    <button onclick="openScreen('shop')" id="nav-shop" class="nav-item flex flex-col items-center space-y-1">
-      <span class="text-lg">🛒</span><span class="font-bold">Магазин</span>
+    <button onclick="openScreen('shop')" id="nav-shop" class="nav-item flex flex-col items-center space-y-0.5 min-w-[52px]">
+      <svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M5 9h14l-1.2 9.2A2 2 0 0 1 15.8 20H8.2a2 2 0 0 1-2-1.8L5 9z" stroke="currentColor" stroke-width="1.8"/><path d="M9 9V7a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.8"/></svg>
+      <span class="font-bold">Шоп</span>
     </button>
-    <button onclick="openScreen('quests')" id="nav-quests" class="nav-item flex flex-col items-center space-y-1">
-      <span class="text-lg">🎯</span><span class="font-bold">Задания</span>
+    <button onclick="openScreen('pulse')" id="nav-pulse" class="nav-item flex flex-col items-center space-y-0.5 min-w-[52px] relative">
+      <span class="nav-pulse-badge"></span>
+      <svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M3 12h3l2-5 3 10 2-5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="font-bold">Пульс</span>
     </button>
-    <button onclick="openScreen('tops')" id="nav-tops" class="nav-item flex flex-col items-center space-y-1">
-      <span class="text-lg">🏆</span><span class="font-bold">Топы</span>
+    <button id="nav-admin-btn" onclick="openScreen('admin')" class="nav-item flex flex-col items-center space-y-0.5 min-w-[52px] hidden">
+      <svg class="nav-ico text-red-400" viewBox="0 0 24 24" fill="none"><path d="M5 16l2-8 5 3 5-3 2 8H5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 5l1.5 2.5L16 8l-2 1.2L14.5 12 12 10.5 9.5 12l.5-2.8L8 8l2.5-.5L12 5z" fill="currentColor"/></svg>
+      <span class="font-bold text-red-400">ADMIN</span>
     </button>
-    <button onclick="openScreen('support')" id="nav-support" class="nav-item flex flex-col items-center space-y-1">
-      <span class="text-lg">🎧</span><span class="font-bold">Саппорт</span>
+    <button id="nav-owner" onclick="openScreen('owner')" class="nav-item flex flex-col items-center space-y-0.5 min-w-[52px] hidden">
+      <svg class="nav-ico text-fuchsia-300" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z" stroke="currentColor" stroke-width="1.8"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span class="font-bold text-fuchsia-300">OWNER</span>
     </button>
-    <button id="nav-admin-btn" onclick="openScreen('admin')" class="nav-item flex flex-col items-center space-y-1 hidden">
-      <span class="text-lg">👑</span><span class="font-bold text-red-400">ADMIN</span>
-    </button>
-    <button id="nav-owner" onclick="openScreen('owner')" class="nav-item flex flex-col items-center space-y-1 hidden">
-      <span class="text-lg">🛡</span><span class="font-bold text-fuchsia-300">OWNER</span>
-    </button>
-    <button onclick="openScreen('profile')" id="nav-profile" class="nav-item flex flex-col items-center space-y-1">
-      <span class="text-lg">👤</span><span class="font-bold">Профиль</span>
+    <button onclick="openScreen('profile')" id="nav-profile" class="nav-item flex flex-col items-center space-y-0.5 min-w-[52px]">
+      <svg class="nav-ico" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="3.5" stroke="currentColor" stroke-width="1.8"/><path d="M6 19c1.5-3 4-4.5 6-4.5S16.5 16 18 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span class="font-bold">Профиль</span>
     </button>
   </nav>
 
+  <!-- MQTT for cross-device real multiplayer -->
+  <script src="https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js"></script>
   <!-- Скрипт логики приложения -->
   <script>
     let tg = null;
@@ -3756,7 +4367,7 @@
         tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
-        tg.setHeaderColor('#080b11');
+        tg.setHeaderColor('#03040a');
         tg.setBackgroundColor('#080b11');
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
           const u = tg.initDataUnsafe.user;
@@ -3970,8 +4581,8 @@
         if (userLevel >= 3) titleName = 'Игрок';
         if (userLevel >= 5) titleName = 'Профи';
         if (userLevel >= 10) titleName = 'Элита';
-        if (userLevel >= 20) titleName = 'Легенда Арены';
-        titleEl.textContent = `Уровень ${userLevel} • ${titleName}`;
+        if (userLevel >= 20) titleName = 'Легенда VOID';
+        titleEl.textContent = `LVL ${userLevel} · ${titleName}`;
       }
 
       const xpNeeded = getXpNeededForLevel(userLevel);
@@ -3980,8 +4591,18 @@
       if (xpBar && xpText) {
         let percent = Math.min(100, Math.floor((userXp / xpNeeded) * 100));
         xpBar.style.width = percent + '%';
-        xpText.textContent = `${userXp} / ${xpNeeded} XP (${percent}%)`;
+        xpText.textContent = `${userXp} / ${xpNeeded} XP`;
       }
+      // VOID passport fields
+      const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+      set('profile-balance', (typeof balance !== 'undefined' ? balance : 0).toLocaleString('ru') + ' 🪙');
+      set('profile-games', typeof gamesPlayed !== 'undefined' ? gamesPlayed : 0);
+      set('profile-wins', typeof totalWon !== 'undefined' ? Math.min(99999, Math.floor((totalWon||0)/100)) : 0);
+      set('profile-streak', typeof winStreak !== 'undefined' ? winStreak : 0);
+      set('profile-spent', typeof totalSpent !== 'undefined' ? (totalSpent||0).toLocaleString('ru') : '0');
+      set('profile-won', typeof totalWon !== 'undefined' ? (totalWon||0).toLocaleString('ru') : '0');
+      set('profile-cases', typeof casesOpened !== 'undefined' ? casesOpened : 0);
+      set('profile-luck', 'x' + (typeof globalLuck !== 'undefined' ? globalLuck : 1));
     }
 
     setInterval(() => {
@@ -4017,7 +4638,36 @@
     }, 1000);
 
     let audioCtx = null;
-    let sfxSettings = { win: true, lose: true, click: true, all: true };
+    let sfxSettings = { win: true, lose: true, click: true, deal: true, bet: true, all: true, volume: 0.7 };
+    function saveSfxSettings() {
+      try { localStorage.setItem('case_lounge_sfx', JSON.stringify(sfxSettings)); } catch(e) {}
+    }
+    function loadSfxSettings() {
+      try {
+        const s = JSON.parse(localStorage.getItem('case_lounge_sfx') || 'null');
+        if (s) Object.assign(sfxSettings, s);
+        ['win','lose','click','deal','bet','all'].forEach(k => {
+          const el = document.getElementById('sfx-' + (k==='all'?'all':k));
+          if (el && typeof sfxSettings[k] === 'boolean') el.checked = sfxSettings[k];
+        });
+        const vol = document.getElementById('sfx-volume');
+        if (vol) vol.value = Math.round((sfxSettings.volume||0.7)*100);
+        const lab = document.getElementById('sfx-vol-label');
+        if (lab) lab.textContent = Math.round((sfxSettings.volume||0.7)*100) + '%';
+      } catch(e) {}
+    }
+    function setSfxVolume(v) {
+      sfxSettings.volume = Math.max(0, Math.min(1, (parseInt(v,10)||70)/100));
+      const lab = document.getElementById('sfx-vol-label');
+      if (lab) lab.textContent = Math.round(sfxSettings.volume*100) + '%';
+      saveSfxSettings();
+    }
+    function previewSfx(type) {
+      const prev = { ...sfxSettings };
+      sfxSettings.all = true; sfxSettings[type] = true;
+      playSound(type);
+      Object.assign(sfxSettings, prev);
+    }
     function initAudio() {
       try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -4029,11 +4679,13 @@
       if (m) m.classList.toggle('hidden');
     }
     function toggleAllSfx(on) {
-      sfxSettings.all = on; sfxSettings.win = on; sfxSettings.lose = on; sfxSettings.click = on;
-      ['sfx-win','sfx-lose','sfx-click'].forEach(id => { const el=document.getElementById(id); if(el) el.checked=on; });
+      sfxSettings.all = on; sfxSettings.win = on; sfxSettings.lose = on; sfxSettings.click = on; sfxSettings.deal = on; sfxSettings.bet = on;
+      ['sfx-win','sfx-lose','sfx-click','sfx-deal','sfx-bet','sfx-all'].forEach(id => { const el=document.getElementById(id); if(el) el.checked=on; });
+      saveSfxSettings();
     }
     
     function vibrate(type) {
+      if (typeof hapticsEnabled !== "undefined" && !hapticsEnabled) return;
       try {
         const haptic = tg && tg.HapticFeedback;
         if (!haptic) return;
@@ -4063,38 +4715,86 @@
         if (!sfxSettings.all || !sfxSettings[type]) return;
         initAudio();
         if (!audioCtx) return;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
         const now = audioCtx.currentTime;
+        const master = audioCtx.createGain();
+        master.gain.value = 0.22 * (sfxSettings.volume != null ? sfxSettings.volume : 0.7);
+        master.connect(audioCtx.destination);
+
+        // Brand-new VOID FORGE SFX bank (noise + FM-ish tones)
+        function tone(freq, dur, type, vol, detune) {
+          const o = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          o.type = type || 'sine';
+          o.frequency.setValueAtTime(freq, now);
+          if (detune) o.detune.setValueAtTime(detune, now);
+          g.gain.setValueAtTime(0.0001, now);
+          g.gain.exponentialRampToValueAtTime(vol || 0.2, now + 0.01);
+          g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+          o.connect(g); g.connect(master);
+          o.start(now); o.stop(now + dur + 0.02);
+        }
+        function noiseBurst(dur, vol) {
+          const len = Math.floor(audioCtx.sampleRate * dur);
+          const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+          const data = buf.getChannelData(0);
+          for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 1.5);
+          const src = audioCtx.createBufferSource();
+          src.buffer = buf;
+          const g = audioCtx.createGain();
+          const f = audioCtx.createBiquadFilter();
+          f.type = 'bandpass'; f.frequency.value = 1800; f.Q.value = 0.8;
+          g.gain.setValueAtTime(vol || 0.15, now);
+          g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+          src.connect(f); f.connect(g); g.connect(master);
+          src.start(now); src.stop(now + dur);
+        }
 
         if (type === 'click') {
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(580, now);
-          osc.frequency.exponentialRampToValueAtTime(300, now + 0.05);
-          gain.gain.setValueAtTime(0.1, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-          osc.start(now); osc.stop(now + 0.05);
+          // short digital tick
+          noiseBurst(0.04, 0.12);
+          tone(920, 0.06, 'square', 0.08);
+          tone(1840, 0.04, 'square', 0.04);
         } else if (type === 'win') {
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(440, now);
-          osc.frequency.setValueAtTime(554.37, now + 0.08);
-          osc.frequency.setValueAtTime(659.25, now + 0.16);
-          osc.frequency.setValueAtTime(880, now + 0.24);
-          gain.gain.setValueAtTime(0.2, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-          osc.start(now); osc.stop(now + 0.5);
+          // ascending glass arpeggio + shimmer
+          const notes = [523.25, 659.25, 783.99, 1046.5, 1318.5];
+          notes.forEach((f, idx) => {
+            const t = now + idx * 0.07;
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.type = 'sine';
+            o.frequency.setValueAtTime(f, t);
+            g.gain.setValueAtTime(0.0001, t);
+            g.gain.exponentialRampToValueAtTime(0.18, t + 0.02);
+            g.gain.exponentialRampToValueAtTime(0.0001, t + 0.35);
+            o.connect(g); g.connect(master);
+            o.start(t); o.stop(t + 0.4);
+          });
+          // soft pad
+          tone(261.63, 0.55, 'triangle', 0.08);
+          setTimeout(() => { try { noiseBurst(0.12, 0.06); } catch(e){} }, 200);
         } else if (type === 'lose') {
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(180, now);
-          osc.frequency.exponentialRampToValueAtTime(60, now + 0.35);
-          gain.gain.setValueAtTime(0.18, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
-          osc.start(now); osc.stop(now + 0.35);
+          // descending muted brass + thud
+          tone(220, 0.18, 'sawtooth', 0.12);
+          setTimeout(() => {
+            try {
+              const o = audioCtx.createOscillator();
+              const g = audioCtx.createGain();
+              o.type = 'triangle';
+              o.frequency.setValueAtTime(180, audioCtx.currentTime);
+              o.frequency.exponentialRampToValueAtTime(70, audioCtx.currentTime + 0.35);
+              g.gain.setValueAtTime(0.14, audioCtx.currentTime);
+              g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.4);
+              o.connect(g); g.connect(master);
+              o.start(); o.stop(audioCtx.currentTime + 0.42);
+              noiseBurst(0.15, 0.1);
+            } catch(e){}
+          }, 40);
+        } else {
+          tone(600, 0.05, 'sine', 0.08);
         }
       } catch (e) {}
     }
+
 
     function showFloatingPopup(text, isWin = true) {
       const popup = document.getElementById('floating-notification');
@@ -4138,10 +4838,18 @@
 
     
     // ===== REAL PRESENCE ONLINE (localStorage heartbeats; no fake base curves) =====
-    const PRESENCE_KEY = 'case_lounge_presence_v1';
-    const PRESENCE_TTL_MS = 90000; // 90s considered online
+    const PRESENCE_KEY = 'case_lounge_presence_v2';
+    const ARENA_STATE_KEY = 'case_lounge_arena_v2';
+    const PRESENCE_TTL_MS = 45000;
+    let netPresence = {}; // from MQTT peers
+    let mqttClient = null;
+    const NET_TOPIC_PRESENCE = 'obsidian/caselounge/v2/presence';
+    const NET_TOPIC_ARENA = 'obsidian/caselounge/v2/arena';
+    const NET_TOPIC_TOPS = 'obsidian/caselounge/v2/tops';
 
     function presenceId() {
+      // Real Telegram user id when available → different accounts = different online slots
+      if (currentUserId) return 'tg_' + String(currentUserId);
       let id = localStorage.getItem('case_lounge_presence_id');
       if (!id) {
         id = 'p_' + Math.random().toString(36).slice(2) + '_' + Date.now().toString(36);
@@ -4150,16 +4858,30 @@
       return id;
     }
 
+    function playerDisplayName() {
+      return (document.getElementById('user-name')?.textContent || currentUsername || 'Игрок').replace(' (вы)', '').slice(0, 24);
+    }
+
     function beatPresence() {
       try {
         const map = JSON.parse(localStorage.getItem(PRESENCE_KEY) || '{}');
         const id = presenceId();
-        const name = (document.getElementById('user-name')?.textContent || 'Игрок').slice(0, 24);
-        map[id] = { t: Date.now(), name: name, bal: typeof balance === 'number' ? balance : 0 };
-        // purge stale
+        const name = playerDisplayName();
+        map[id] = {
+          t: Date.now(),
+          name: name,
+          bal: typeof balance === 'number' ? balance : 0,
+          spins: typeof gamesPlayed === 'number' ? gamesPlayed : 0
+        };
         const now = Date.now();
         Object.keys(map).forEach(k => { if (!map[k] || now - map[k].t > PRESENCE_TTL_MS) delete map[k]; });
+        // merge network presence
+        Object.keys(netPresence).forEach(k => {
+          if (netPresence[k] && now - netPresence[k].t <= PRESENCE_TTL_MS) map[k] = netPresence[k];
+        });
         localStorage.setItem(PRESENCE_KEY, JSON.stringify(map));
+        // publish self to network
+        netPublish(NET_TOPIC_PRESENCE, { id, name, bal: map[id].bal, spins: map[id].spins, t: map[id].t });
         return map;
       } catch (e) { return {}; }
     }
@@ -4169,6 +4891,86 @@
       return Math.max(1, Object.keys(map).length);
     }
 
+    function netPublish(topic, payload, retain) {
+      try {
+        if (mqttClient && mqttClient.connected) {
+          mqttClient.publish(topic, JSON.stringify(payload), { qos: 0, retain: !!retain });
+        }
+      } catch (e) {}
+      try {
+        localStorage.setItem('case_lounge_bus_' + topic.split('/').pop(), JSON.stringify({ ...payload, _t: Date.now() }));
+      } catch (e) {}
+    }
+
+    function startNetSync() {
+      // BroadcastChannel local multi-tab
+      try {
+        if (!window._arenaBC) {
+          window._arenaBC = new BroadcastChannel('case_lounge_sync');
+          window._arenaBC.onmessage = (ev) => {
+            if (ev.data && ev.data.type === 'arena') applyArenaRemote(ev.data.state);
+            if (ev.data && ev.data.type === 'presence') {
+              const p = ev.data.payload;
+              if (p && p.id) netPresence[p.id] = p;
+            }
+          };
+        }
+      } catch (e) {}
+      window.addEventListener('storage', (e) => {
+        if (!e.key) return;
+        if (e.key === ARENA_STATE_KEY && e.newValue) {
+          try { applyArenaRemote(JSON.parse(e.newValue)); } catch (err) {}
+        }
+        if (e.key === PRESENCE_KEY) updateOnlinePlayersUI();
+      });
+      // MQTT public broker — works across phones/accounts
+      try {
+        if (typeof mqtt !== 'undefined' && !mqttClient) {
+          mqttClient = mqtt.connect('wss://broker.emqx.io:8084/mqtt', {
+            clientId: 'cl_' + presenceId() + '_' + Math.random().toString(16).slice(2, 8),
+            clean: true,
+            connectTimeout: 10000,
+            reconnectPeriod: 3000
+          });
+          mqttClient.on('connect', () => {
+            try {
+              mqttClient.subscribe(NET_TOPIC_PRESENCE, { qos: 0 });
+              mqttClient.subscribe(NET_TOPIC_ARENA, { qos: 0 });
+              mqttClient.subscribe(NET_TOPIC_TOPS, { qos: 0 });
+              beatPresence();
+              publishTopsSelf();
+              // re-announce current arena (retained for late joiners)
+              if (typeof arenaPublish === 'function') arenaPublish();
+              if (!window._netHb) {
+                window._netHb = setInterval(() => {
+                  try {
+                    beatPresence();
+                    if (typeof arenaPlayers !== 'undefined' && arenaPlayers && arenaPlayers.length) {
+                      arenaPublish();
+                    }
+                  } catch (e) {}
+                }, 4000);
+              }
+            } catch (e) {}
+          });
+          mqttClient.on('reconnect', () => { try { beatPresence(); } catch(e) {} });
+          mqttClient.on('message', (topic, buf) => {
+            try {
+              const msg = JSON.parse(buf.toString());
+              if (topic === NET_TOPIC_PRESENCE && msg.id) {
+                netPresence[msg.id] = msg;
+                updateOnlinePlayersUI();
+              } else if (topic === NET_TOPIC_ARENA) {
+                applyArenaRemote(msg);
+              } else if (topic === NET_TOPIC_TOPS && msg.list) {
+                mergeRemoteTops(msg.list);
+              }
+            } catch (e) {}
+          });
+        }
+      } catch (e) {}
+    }
+
     function computeOnlineEstimate() {
       // Honest: only presence heartbeats (same browser / shared storage).
       // Across devices without backend the minimum is 1 (you).
@@ -4176,7 +4978,7 @@
     }
 
     function updateOnlinePlayersUI() {
-      onlinePlayersNow = computeOnlineEstimate();
+      onlinePlayersNow = Math.max(1, computeOnlineEstimate() | 0);
       try {
         const dayKey = 'case_lounge_online_peak_' + new Date().toISOString().slice(0, 10);
         const stored = parseInt(localStorage.getItem(dayKey) || '0', 10) || 0;
@@ -4191,6 +4993,40 @@
       if (headerOnline) headerOnline.textContent = String(onlinePlayersNow);
       const hint = document.getElementById('online-players-hint');
       if (hint) hint.textContent = 'реальный онлайн';
+      // pulse screen
+      const p1 = document.getElementById('pulse-online-count');
+      if (p1) p1.textContent = String(onlinePlayersNow);
+      const p2 = document.getElementById('pulse-now');
+      if (p2) p2.textContent = String(onlinePlayersNow);
+      const p3 = document.getElementById('pulse-peak');
+      if (p3) p3.textContent = String(onlinePlayersPeak);
+      const p4 = document.getElementById('pulse-events');
+      if (p4 && window._pulseFeed) p4.textContent = String(window._pulseFeed.length);
+    }
+
+    window._pulseFeed = window._pulseFeed || [];
+    function pushPulseEvent(text, kind) {
+      try {
+        window._pulseFeed.unshift({ t: Date.now(), text: text, kind: kind || 'info' });
+        if (window._pulseFeed.length > 40) window._pulseFeed.length = 40;
+        renderPulseFeed();
+        const p4 = document.getElementById('pulse-events');
+        if (p4) p4.textContent = String(window._pulseFeed.length);
+      } catch (e) {}
+    }
+    function renderPulseFeed() {
+      const box = document.getElementById('pulse-feed');
+      if (!box) return;
+      if (!window._pulseFeed || !window._pulseFeed.length) {
+        box.innerHTML = '<div class="text-center text-[11px] text-slate-500 py-6">Пока тихо… сыграй — событие появится здесь</div>';
+        return;
+      }
+      box.innerHTML = window._pulseFeed.map(e => {
+        const ago = Math.max(0, Math.floor((Date.now() - e.t) / 1000));
+        const label = ago < 60 ? ago + 'с' : Math.floor(ago/60) + 'м';
+        const col = e.kind === 'win' ? '#6ee7b7' : (e.kind === 'lose' ? '#f87171' : '#d4af37');
+        return '<div class="pulse-feed-item"><span class="text-[11px] font-bold text-slate-200">' + e.text + '</span><span class="text-[10px] font-extrabold" style="color:' + col + '">' + label + '</span></div>';
+      }).join('');
     }
 
     async function fetchOnlinePlayers() {
@@ -4205,7 +5041,7 @@
       onlineTickTimer = setInterval(async () => {
         const fromApi = await fetchOnlinePlayers();
         if (!fromApi) updateOnlinePlayersUI();
-      }, 15000);
+      }, 5000);
     }
 
 function init() {
@@ -4305,6 +5141,8 @@ function init() {
       balance = Math.max(0, (balance || 0) + n);
       saveGameData();
       updateUI();
+      try { if (typeof publishTopsSelf === 'function') publishTopsSelf(); } catch (e) {}
+      try { if (typeof beatPresence === 'function') beatPresence(); } catch (e) {}
     }
 
     function updateUI() {
@@ -4351,6 +5189,7 @@ function init() {
       const isMain = MAIN_NAV.has(name);
       if (isMain) {
         document.getElementById('nav-' + name)?.classList.add('active');
+      if (name === 'pulse' && typeof renderPulseFeed === 'function') { renderPulseFeed(); updateOnlinePlayersUI(); }
         document.body.classList.remove('in-game');
       } else {
         document.getElementById('nav-games')?.classList.add('active');
@@ -4369,8 +5208,10 @@ function init() {
       if (name === 'owner') refreshOwnerPanel();
     }
     function openGameScreen(id) {
-      if (disabledGames && disabledGames[id]) {
-        showFloatingPopup('Игра временно отключена', false);
+      // permanently removed modes
+      const removed = { cups:1, eclipse:1, coinrace:1, astral:1, shadow:1, coinflip:1 };
+      if (removed[id] || (disabledGames && disabledGames[id])) {
+        showFloatingPopup('Игра удалена', false);
         return;
       }
       // force-hide profile before opening any game
@@ -4382,6 +5223,7 @@ function init() {
       if (id === 'plinko') initPlinkoBoard();
       if (id === 'towers') renderTowersBoard(true);
       if (id === 'keno') initKenoGrid();
+      if (id === 'arena' && typeof initArenaScreen === 'function') initArenaScreen();
       if (id === 'cases') initCasesCatalog();
       if (id === 'minecraft') initMcField();
       if (id === 'blackjack') { bjPlayer=[]; bjDealer=[]; bjActive=false; bjSetMode(false); document.getElementById('bj-status').textContent='Сделайте ставку и нажмите Раздать'; document.getElementById('bj-dealer-cards').innerHTML=''; document.getElementById('bj-player-cards').innerHTML=''; document.getElementById('bj-dealer-score').textContent='—'; document.getElementById('bj-player-score').textContent='—'; }
@@ -4455,6 +5297,27 @@ function init() {
       renderTops();
     }
 
+
+    
+    function publishTopsSelf() {
+      try {
+        upsertSelfInTops();
+        const list = JSON.parse(localStorage.getItem(REAL_TOPS_KEY) || '[]');
+        if (typeof netPublish === 'function') netPublish(NET_TOPIC_TOPS, { list, t: Date.now() });
+      } catch (e) {}
+    }
+    function mergeRemoteTops(list) {
+      try {
+        if (!Array.isArray(list)) return;
+        list.forEach(p => {
+          if (p && p.id && p.name) upsertRealTopPlayer(p);
+        });
+        if (typeof renderTops === 'function') {
+          const topsScreen = document.getElementById('screen-tops');
+          if (topsScreen && topsScreen.classList.contains('active')) renderTops();
+        }
+      } catch (e) {}
+    }
 
     function upsertSelfInTops() {
       try {
@@ -5228,6 +6091,8 @@ function init() {
     }
 
     function recordWin(isWin, meta) {
+      try { if (typeof pushPulseEvent==="function") pushPulseEvent(isWin ? "Победа на арене" : "Проигрыш", isWin ? "win" : "lose"); } catch(e){}
+
       if (isWin && meta && meta.amount >= 500 && typeof pushLiveWin === 'function') {
         pushLiveWin(meta.game || 'Game', meta.mult || '?', meta.amount);
       }
@@ -5498,11 +6363,15 @@ function init() {
     }
 
     function fillSbRandom(bombChance) {
-      // Very rare bombs. Hard cap: max 3 per spin (3 is very rare).
+      // Most spins: ZERO bombs. Rarely 1, extremely rarely 2.
       let bombsPlaced = 0;
-      const maxBombsThisSpin = Math.random() < 0.06 ? 3 : (Math.random() < 0.22 ? 2 : 1);
+      const roll = Math.random();
+      // 82% spins: max 0 bombs allowed; 15% max 1; 3% max 2
+      const maxBombsThisSpin = roll < 0.82 ? 0 : (roll < 0.97 ? 1 : 2);
+      // per-cell chance extremely low; overall ~1 bomb in many spins
+      const cellChance = Math.min(bombChance, 0.0025);
       for (let i = 0; i < SB_COLS * SB_ROWS; i++) {
-        if (bombsPlaced < maxBombsThisSpin && Math.random() < bombChance) {
+        if (maxBombsThisSpin > 0 && bombsPlaced < maxBombsThisSpin && Math.random() < cellChance) {
           sbGrid[i] = { bomb: true, v: pickSbBomb() };
           bombsPlaced++;
         } else {
@@ -5559,7 +6428,7 @@ function init() {
       const maxSpins = fastModes.slots ? 5 : 10;
       // Very low: ~1 bomb every few spins; bonus a bit higher
       // Реже бомбы и кластеры — часть спинов вообще не окупается
-      const bombChance = sbBonusActive ? 0.012 : 0.004;
+      const bombChance = sbBonusActive ? 0.004 : 0.0015;
 
       const interval = setInterval(() => {
         fillSbRandom(bombChance);
@@ -6007,8 +6876,8 @@ function init() {
     function renderUpgraderHistory() {
       const box = document.getElementById('upgrader-history');
       if (!box) return;
-      box.innerHTML = upgraderHistory.slice(-8).map(win =>
-        `<div class="upg-history-dot" style="background:${win ? '#fbbf24' : '#111827'}; border:1px solid ${win ? 'rgba(251,191,36,0.6)' : 'rgba(255,255,255,0.2)'};"></div>`
+      box.innerHTML = upgraderHistory.slice(-10).map(win =>
+        `<div class="upg-history-dot" style="background:${win ? '#a3e635' : '#1e293b'}; border:1px solid ${win ? 'rgba(163,230,53,0.7)' : 'rgba(255,255,255,0.15)'}; box-shadow:${win ? '0 0 8px rgba(163,230,53,0.5)' : 'none'};"></div>`
       ).join('');
     }
 
@@ -6024,34 +6893,36 @@ function init() {
       const chance = upgraderChances[mult] != null ? upgraderChances[mult] : Math.max(1, Math.round(100 / mult));
       const target = Math.floor(bet * mult);
 
-      const fromEl = document.getElementById('upg-from-val');
-      const toEl = document.getElementById('upg-to-val');
       const chEl = document.getElementById('upgrader-chance');
       const multEl = document.getElementById('upgrader-mult');
       const chanceLabel = document.getElementById('upgrader-chance-label');
       const wheel = document.getElementById('upgrader-wheel');
 
-      if (fromEl) fromEl.textContent = bet + ' 🪙';
-      if (toEl) toEl.textContent = target + ' 🪙';
       if (chEl) chEl.textContent = chance + '%';
-      if (multEl) multEl.textContent = 'x' + mult;
+      if (multEl) multEl.textContent = '→ x' + mult;
       if (chanceLabel) {
-        chanceLabel.textContent = 'x' + mult + ' · ' + chance + '%';
-        chanceLabel.className = 'text-[9px] text-cyan-300 font-bold uppercase mt-0.5';
+        chanceLabel.textContent = 'x' + mult;
       }
       if (wheel) {
-        wheel.style.background = 'conic-gradient(#22d3ee 0% ' + chance + '%, #0f172a ' + chance + '% 100%)';
+        wheel.style.background = 'conic-gradient(#ff8c32 0% ' + chance + '%, #111018 ' + chance + '% 100%)';
       }
-      // update button sublabels
-      [2,10,25,50].forEach(m => {
-        const btn = document.getElementById('upg-btn-' + m);
-        if (!btn) return;
+      // highlight mult pills
+      document.querySelectorAll('.upg-mult-btn').forEach(btn => {
+        const m = Number(btn.dataset.upgMult);
         const pct = upgraderChances[m] != null ? upgraderChances[m] : Math.max(1, Math.round(100/m));
         const active = m === mult;
-        btn.innerHTML = 'x' + m + '<br><span class="text-[10px] opacity-80">' + pct + '%</span>';
-        btn.className = active
-          ? 'py-3 rounded-2xl bg-cyan-500/20 border-2 border-cyan-400 text-sm font-extrabold text-cyan-200 shadow-lg'
-          : 'py-3 rounded-2xl bg-white/5 border border-white/10 text-sm font-extrabold text-gray-300';
+        btn.innerHTML = 'x' + m + '<br><span class="text-[9px] opacity-70">' + pct + '%</span>';
+        if (active) {
+          btn.style.background = 'linear-gradient(180deg,rgba(255,140,50,0.35),rgba(255,140,50,0.12))';
+          btn.style.borderColor = 'rgba(255,140,50,0.65)';
+          btn.style.color = '#ffd4a8';
+          btn.style.boxShadow = '0 0 20px rgba(255,140,50,0.3)';
+        } else {
+          btn.style.background = 'rgba(255,255,255,0.04)';
+          btn.style.borderColor = 'rgba(255,255,255,0.1)';
+          btn.style.color = '#e2e8f0';
+          btn.style.boxShadow = 'none';
+        }
       });
       
       const rangeEl = document.getElementById('upgrader-range');
@@ -6059,7 +6930,7 @@ function init() {
         rangeEl.value = Math.min(parseFloat(rangeEl.max), bet);
       }
       const sliderValEl = document.getElementById('upgrader-slider-val');
-      if (sliderValEl) sliderValEl.textContent = bet + ' 🪙';
+      if (sliderValEl) sliderValEl.textContent = target.toLocaleString('ru');
     }
 
     function onUpgraderRangeInput() {
@@ -6139,12 +7010,12 @@ function init() {
           updateLocalBalance(target);
           playSound('win');
           triggerCardEffect('upgrader-card-box', true);
-          showFloatingPopup(`⚡️ +${target} 🪙 x${mult}!`, true);
+          showFloatingPopup(`UPG x${mult} +${target.toLocaleString('ru')} 🪙`, true);
           recordWin(true, { game: 'Upg', mult: mult, amount: target });
         } else {
           playSound('lose');
           triggerCardEffect('upgrader-card-box', false);
-          showFloatingPopup(`⚡️ НЕ УДАЛОСЬ`, false);
+          showFloatingPopup('Апгрейд не удался', false);
           recordWin(false);
         }
       }, spinMs);
@@ -6776,19 +7647,18 @@ function init() {
     }
 
     // ============= MINECRAFT MINE =============
-    const MC_COLS = 4, MC_ROWS = 12; // grass, dirt, stone shaft, 4 chests
-    const MC_CHEST_MULTS = [0, 1.2, 1.5, 2, 2, 3, 5]; // more misses / lower mults
+    const MC_COLS = 6, MC_ROWS = 6; // 6x6: grass, dirt, stone, ores, chests
+    const MC_CHEST_MULTS = [0, 0, 1.5, 2, 3, 5, 8, 12]; // 6 chests, many empty
     const MC_CHEST_ROW = MC_ROWS - 1;
     // block types per depth
     // layers: 0 dirt, 1-2 stone/coal, 3-4 gold chance, 5-6 diamond, 7 netherite
     const MC_PICKS = [
-      // dig* = max blocks of that type this pick can fully break this throw
-      // wood/stone CANNOT open chests. Only iron+ can.
-      { id: 'wood', emoji: 'W', name: 'Дерево', w: 42, digDirt: 4, digStone: 0, digCoal: 0, digGold: 0, digDiamond: 0, digNether: 0, digChest: 0 },
-      { id: 'stone', emoji: 'S', name: 'Камень', w: 28, digDirt: 5, digStone: 3, digCoal: 1, digGold: 0, digDiamond: 0, digNether: 0, digChest: 0 },
-      { id: 'iron', emoji: 'I', name: 'Железо', w: 16, digDirt: 6, digStone: 5, digCoal: 2, digGold: 1, digDiamond: 0, digNether: 0, digChest: 1 },
-      { id: 'diamond', emoji: 'D', name: 'Алмаз', w: 10, digDirt: 99, digStone: 8, digCoal: 3, digGold: 2, digDiamond: 1, digNether: 0, digChest: 2 },
-      { id: 'netherite', emoji: 'N', name: 'Незерит', w: 4, digDirt: 99, digStone: 99, digCoal: 5, digGold: 3, digDiamond: 2, digNether: 1, digChest: 3 }
+      // dig* budgets for ONE vertical tunnel (6 rows). Only iron+ open chests.
+      { id: 'wood', emoji: '🪓', name: 'Дерево', w: 38, digDirt: 2, digStone: 0, digCoal: 0, digGold: 0, digDiamond: 0, digNether: 0, digChest: 0 },
+      { id: 'stone', emoji: '⛏', name: 'Камень', w: 30, digDirt: 2, digStone: 2, digCoal: 1, digGold: 0, digDiamond: 0, digNether: 0, digChest: 0 },
+      { id: 'iron', emoji: '⚒', name: 'Железо', w: 18, digDirt: 2, digStone: 3, digCoal: 2, digGold: 1, digDiamond: 0, digNether: 0, digChest: 1 },
+      { id: 'diamond', emoji: '💎', name: 'Алмаз', w: 10, digDirt: 2, digStone: 4, digCoal: 2, digGold: 2, digDiamond: 1, digNether: 0, digChest: 1 },
+      { id: 'netherite', emoji: '🔥', name: 'Незерит', w: 4, digDirt: 2, digStone: 5, digCoal: 3, digGold: 2, digDiamond: 2, digNether: 1, digChest: 1 }
     ];
     let mcField = []; // [row][col] = { type, broken, hits }
     let mcBusy = false, mcTurbo = false, mcAuto = false;
@@ -6893,11 +7763,11 @@ function init() {
       }
       document.querySelectorAll('.mc-pick-slot').forEach(s => {
         const n = +s.dataset.slot;
-        s.textContent = (n >= 5 ? '·' : '?');
+        s.textContent = (n >= 3 ? '·' : '?');
         s.classList.remove('reveal');
       });
       const st = document.getElementById('mc-status');
-      if (st) st.textContent = 'Дойди до сундуков — иначе выигрыш 0';
+      if (st) st.textContent = 'Одна жила · один сундук · кирки 1–3';
       const wl = document.getElementById('mc-win-label');
       if (wl) wl.textContent = '';
     }
@@ -6957,80 +7827,73 @@ function init() {
 
       initMcField();
 
-      // roll 1-5 picks (more wood often)
-      const count = 1 + Math.floor(Math.random() * 5);
+      // 1–3 picks only, 6 slots wide (rest empty)
+      const count = 1 + Math.floor(Math.random() * 3); // 1..3
       const picks = [];
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 6; i++) {
         if (i < count) picks.push(rollMcPick());
         else picks.push(null);
       }
-      // prefer showing wood if many empties - already random
+      // shuffle so filled slots are not always left-aligned
+      for (let i = picks.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [picks[i], picks[j]] = [picks[j], picks[i]];
+      }
 
-      const slots = document.querySelectorAll('.mc-pick-slot[data-slot]');
-      const slots5 = Array.from(slots).filter(s => +s.dataset.slot < 5);
+      const slots = Array.from(document.querySelectorAll('.mc-pick-slot[data-slot]'));
       let si = 0;
       function revealPick() {
-        if (si >= 5) {
+        if (si >= 6) {
           setTimeout(() => digWithPicks(picks.filter(Boolean), bet), mcTurbo ? 100 : 350);
           return;
         }
-        const slot = slots5[si];
+        const slot = slots.find(s => +s.dataset.slot === si);
         const p = picks[si];
         if (slot) {
-          slot.textContent = p ? p.emoji : '—';
-          slot.classList.add('reveal');
+          slot.textContent = p ? p.emoji : '·';
+          slot.classList.toggle('reveal', !!p);
+          slot.style.opacity = p ? '1' : '0.35';
           if (p && p.id === 'netherite') vibrate('heavy');
           else if (p) vibrate('soft');
         }
         si++;
-        setTimeout(revealPick, mcTurbo ? 50 : 180);
+        setTimeout(revealPick, mcTurbo ? 50 : 160);
       }
       revealPick();
     }
 
     function digWithPicks(picks, bet) {
       let totalMult = 0;
-      const delay = mcTurbo ? 45 : 110;
+      const delay = mcTurbo ? 50 : 130;
 
-      // Budget = how many BLOCKS of each type the pick can fully break
-      const budgets = picks.map(p => ({
-        pick: p,
-        left: {
-          grass: p.digDirt || 0,
-          dirt: p.digDirt || 0,
-          stone: p.digStone || 0,
-          coal: p.digCoal || 0,
-          gold: p.digGold || 0,
-          diamond: p.digDiamond || 0,
-          netherite: p.digNether || 0,
-          chest: p.digChest || 0
-        }
-      }));
+      // Best pick for this throw
+      const bestPick = picks.slice().sort((a, b) => {
+        const score = p => (p.digChest||0)*10 + (p.digDiamond||0)*5 + (p.digGold||0)*3 + (p.digStone||0);
+        return score(b) - score(a);
+      })[0] || picks[0];
 
-      // Layer lock: need >= 2 broken blocks in previous row before digging next (except row 0)
-      const actions = [];
-      const brokenPerRow = Array(MC_ROWS).fill(0);
+      // ONE column only (one vertical line down to ONE chest)
+      const col = Math.floor(Math.random() * MC_COLS);
+
+      // Highlight path column
       for (let r = 0; r < MC_ROWS; r++) {
-        if (r > 0 && brokenPerRow[r - 1] < 2) break; // cannot go deeper
-        const cols = Array.from({length: MC_COLS}, (_, i) => i).sort(() => Math.random() - 0.5);
-        for (const c of cols) {
-          const block = mcField[r][c];
-          if (block.broken) continue;
-          let assigned = null;
-          for (const bgt of budgets) {
-            if ((bgt.left[block.type] || 0) <= 0) continue;
-            if (!canDig(bgt.pick, block)) continue;
-            assigned = bgt;
-            break;
-          }
-          if (!assigned) continue;
-          assigned.left[block.type]--;
-          const need = hitsNeeded(block);
-          for (let h = 0; h < need; h++) {
-            actions.push({ r, c, pick: assigned.pick, type: block.type });
-          }
-          // pre-count for layer lock planning
-          brokenPerRow[r]++;
+        const cell = document.getElementById('mc-b-' + r + '-' + col);
+        if (cell) cell.style.outline = '1px solid rgba(255,200,80,0.35)';
+      }
+
+      const actions = [];
+      let canContinue = true;
+      for (let r = 0; r < MC_ROWS && canContinue; r++) {
+        const block = mcField[r][col];
+        if (!block || block.broken) continue;
+        if (!canDig(bestPick, block)) {
+          // stop at this layer — cannot dig further
+          canContinue = false;
+          break;
+        }
+        const need = hitsNeeded(block);
+        for (let h = 0; h < need; h++) {
+          actions.push({ r, c: col, pick: bestPick, type: block.type });
         }
       }
 
@@ -7038,7 +7901,7 @@ function init() {
       const hitMap = {};
       function nextDig() {
         if (ai >= actions.length) {
-          finishMcRound(bet, totalMult);
+          finishMcRound(bet, totalMult, col);
           return;
         }
         const a = actions[ai++];
@@ -7066,12 +7929,12 @@ function init() {
             if (wrap) {
               const rect = cell.getBoundingClientRect();
               const wrect = wrap.getBoundingClientRect();
-              const colors = { gold:'#fbbf24', diamond:'#67e8f9', netherite:'#a78bfa', coal:'#6b7280', emerald:'#34d399', redstone:'#f87171' };
-              const col = colors[b.type] || '#a8a29e';
-              for (let pi = 0; pi < 8; pi++) {
+              const colors = { gold:'#fbbf24', diamond:'#67e8f9', netherite:'#a78bfa', coal:'#6b7280', emerald:'#34d399', redstone:'#f87171', chest:'#fbbf24' };
+              const colr = colors[b.type] || '#a8a29e';
+              for (let pi = 0; pi < 6; pi++) {
                 const p = document.createElement('div');
                 p.className = 'mc-particle';
-                p.style.background = col;
+                p.style.background = colr;
                 p.style.left = (rect.left - wrect.left + rect.width/2) + 'px';
                 p.style.top = (rect.top - wrect.top + rect.height/2) + 'px';
                 p.style.setProperty('--px', ((Math.random()-0.5)*50) + 'px');
@@ -7080,16 +7943,15 @@ function init() {
                 setTimeout(() => p.remove(), 600);
               }
             }
-            if (b.mult > 0) {
-              cell.classList.add('ore-hit');
-              totalMult += b.mult;
+            if (b.type === 'chest' && b.mult > 0) {
+              totalMult = b.mult;
+              cell.classList.add('ore-hit', 'opened');
               vibrate('medium');
               playSound('win');
-              if (b.type === 'netherite') {
-                const box = document.getElementById('mc-card-box');
-                if (box) { box.classList.add('mc-screen-shake'); setTimeout(() => box.classList.remove('mc-screen-shake'), 450); }
-                vibrate('heavy');
-              }
+            } else if (b.mult > 0) {
+              totalMult += b.mult;
+              cell.classList.add('ore-hit');
+              vibrate('soft');
             }
           }
         }
@@ -7098,60 +7960,60 @@ function init() {
       nextDig();
     }
 
-    function finishMcRound(bet, totalMult) {
+    function finishMcRound(bet, totalMult, pathCol) {
       mcBusy = false;
       const btn = document.getElementById('mc-throw-btn');
       if (btn) { btn.disabled = false; btn.classList.remove('opacity-50'); }
       const st = document.getElementById('mc-status');
       const wl = document.getElementById('mc-win-label');
 
-      // Collect opened chests (broken on chest row)
-      const opened = [];
-      if (mcField && mcField[MC_CHEST_ROW]) {
-        mcField[MC_CHEST_ROW].forEach((b, c) => {
-          if (b && b.broken && b.isChest) opened.push({ c, mult: b.mult || 0 });
-        });
+      // Only ONE chest on the dug column can open
+      let opened = null;
+      if (mcField && mcField[MC_CHEST_ROW] && pathCol != null) {
+        const b = mcField[MC_CHEST_ROW][pathCol];
+        if (b && b.broken && b.isChest) opened = { c: pathCol, mult: b.mult || 0 };
+      }
+      // fallback: any broken chest (max one)
+      if (!opened && mcField && mcField[MC_CHEST_ROW]) {
+        for (let c = 0; c < MC_COLS; c++) {
+          const b = mcField[MC_CHEST_ROW][c];
+          if (b && b.broken && b.isChest) { opened = { c, mult: b.mult || 0 }; break; }
+        }
       }
 
-      if (opened.length === 0) {
+      if (!opened) {
         playSound('lose');
         triggerCardEffect('mc-card-box', false);
-        showFloatingPopup('Сундуки не достигнуты — 0', false);
-        if (st) st.textContent = 'Не дошли до сундуков. Выигрыш 0';
+        showFloatingPopup('Сундук не достигнут — 0', false);
+        if (st) st.textContent = 'Туннель не дошёл до сундука';
         if (wl) wl.textContent = '0';
         recordWin(false);
       } else {
-        opened.sort((a, b) => b.mult - a.mult);
-        const best = opened[0];
-        const mult = best.mult;
+        const mult = opened.mult;
         if (mult <= 0) {
           playSound('lose');
           triggerCardEffect('mc-card-box', false);
           showFloatingPopup('Пустой сундук', false);
-          if (st) st.textContent = 'Пустой сундук';
+          if (st) st.textContent = 'Пустой сундук в этой жиле';
           if (wl) wl.textContent = '0';
           recordWin(false);
-          if (mcAuto) setTimeout(() => { if (mcAuto && !mcBusy) throwMcPicks(); }, mcTurbo ? 400 : 900);
-          return;
-        }
-        const win = Math.floor(bet * mult);
-        // Visual open
-        opened.forEach(o => {
-          const cell = document.getElementById('mc-b-' + MC_CHEST_ROW + '-' + o.c);
+        } else {
+          const win = Math.floor(bet * mult);
+          const cell = document.getElementById('mc-b-' + MC_CHEST_ROW + '-' + opened.c);
           if (cell) cell.classList.add('opened');
-        });
-        if (mult >= 5) {
-          const box = document.getElementById('mc-card-box');
-          if (box) { box.classList.add('mc-screen-shake'); setTimeout(() => box.classList.remove('mc-screen-shake'), 450); }
-          vibrate('heavy');
+          if (mult >= 5) {
+            const box = document.getElementById('mc-card-box');
+            if (box) { box.classList.add('mc-screen-shake'); setTimeout(() => box.classList.remove('mc-screen-shake'), 450); }
+            vibrate('heavy');
+          }
+          updateLocalBalance(win);
+          playSound('win');
+          triggerCardEffect('mc-card-box', true);
+          showFloatingPopup('📦 x' + mult + ' → +' + win.toLocaleString('ru') + ' 🪙', true);
+          if (st) st.textContent = 'Сундук x' + mult + ' открыт!';
+          if (wl) wl.textContent = 'x' + mult + ' · +' + win.toLocaleString('ru');
+          recordWin(true, { game: 'Mine', mult: mult, amount: win });
         }
-        updateLocalBalance(win);
-        playSound('win');
-        triggerCardEffect('mc-card-box', true);
-        showFloatingPopup('📦 x' + mult + ' → +' + win.toLocaleString('ru') + ' 🪙', true);
-        if (st) st.textContent = 'Сундук x' + mult + ' открыт!';
-        if (wl) wl.textContent = 'x' + mult + ' · +' + win.toLocaleString('ru');
-        recordWin(true, { game: 'Mine', mult: mult, amount: win });
       }
       if (mcAuto) {
         setTimeout(() => { if (mcAuto && !mcBusy) throwMcPicks(); }, mcTurbo ? 400 : 900);
@@ -7203,17 +8065,22 @@ function init() {
     function bjSetMode(play) {
       const deal = document.getElementById('bj-actions-deal');
       const playEl = document.getElementById('bj-actions-play');
+      const idle = document.getElementById('bj-idle-hint');
       if (deal) deal.classList.toggle('hidden', play);
-      if (playEl) {
-        playEl.classList.toggle('hidden', !play);
-        if (play) playEl.classList.add('grid');
-      }
+      if (playEl) playEl.classList.toggle('hidden', !play);
+      if (idle) idle.style.display = play || (bjPlayer && bjPlayer.length) ? 'none' : '';
+      const dbl = document.getElementById('bj-double-btn');
+      if (dbl) dbl.textContent = 'Удвоить (ещё ' + Math.floor(bjBet || 0) + ')';
     }
     function bjDeal() {
       if (bjActive) return;
       playSound('click');
       bjBet = parseFloat(document.getElementById('bj-bet')?.value) || 0;
       if (bjBet <= 0 || bjBet > balance) return;
+      const idle = document.getElementById('bj-idle-hint');
+      if (idle) idle.style.display = 'none';
+      const pills = document.getElementById('bj-result-pills');
+      if (pills) pills.innerHTML = '';
       updateLocalBalance(-bjBet);
       if (typeof recordGamePlay === 'function') recordGamePlay();
       bjActive = true; bjDoubled = false;
@@ -7237,6 +8104,7 @@ function init() {
             const win = Math.floor(bjBet * 2.5);
             updateLocalBalance(win);
             if (st) st.textContent = 'Blackjack! x2.5';
+            const pills=document.getElementById('bj-result-pills'); if(pills) pills.innerHTML='<span class="bj-pill">Победа · BJ</span>';
             if (typeof playSound === 'function') playSound('win');
             if (typeof showFloatingPopup === 'function') showFloatingPopup('Blackjack +' + win, true);
             if (typeof recordWin === 'function') recordWin(true);
@@ -7282,6 +8150,7 @@ function init() {
         const win = bjBet * 2;
         updateLocalBalance(win);
         if (st) st.textContent = 'Победа ' + pv + ' vs ' + dv;
+        const pills=document.getElementById('bj-result-pills'); if(pills) pills.innerHTML='<span class="bj-pill">Победа</span>';
         if (typeof playSound === 'function') playSound('win');
         if (typeof showFloatingPopup === 'function') showFloatingPopup('+' + win, true);
         if (typeof recordWin === 'function') recordWin(true);
@@ -8428,6 +9297,126 @@ function init() {
       return b;
     }
 
+    
+    // ============= OWNER QUEST POOL (35+) =============
+    const OWNER_QUEST_POOL = [
+      { id: 'q_play_10', title: 'Сыграй 10 игр', reward: 500, xp: 50 },
+      { id: 'q_play_25', title: 'Сыграй 25 игр', reward: 1200, xp: 100 },
+      { id: 'q_play_50', title: 'Сыграй 50 игр', reward: 2500, xp: 200 },
+      { id: 'q_win_5', title: 'Выиграй 5 раз', reward: 800, xp: 80 },
+      { id: 'q_win_15', title: 'Выиграй 15 раз', reward: 2000, xp: 150 },
+      { id: 'q_streak_3', title: 'Серия побед x3', reward: 1000, xp: 90 },
+      { id: 'q_streak_7', title: 'Серия побед x7', reward: 3500, xp: 250 },
+      { id: 'q_spend_1k', title: 'Потрать 1 000 🪙', reward: 400, xp: 40 },
+      { id: 'q_spend_5k', title: 'Потрать 5 000 🪙', reward: 1500, xp: 120 },
+      { id: 'q_spend_20k', title: 'Потрать 20 000 🪙', reward: 5000, xp: 300 },
+      { id: 'q_won_2k', title: 'Выиграй суммарно 2 000', reward: 700, xp: 70 },
+      { id: 'q_won_10k', title: 'Выиграй суммарно 10 000', reward: 3000, xp: 200 },
+      { id: 'q_cases_3', title: 'Открой 3 кейса', reward: 900, xp: 80 },
+      { id: 'q_cases_10', title: 'Открой 10 кейсов', reward: 2800, xp: 180 },
+      { id: 'q_crash_2x', title: 'Краш cashout x2+', reward: 1100, xp: 100 },
+      { id: 'q_crash_5x', title: 'Краш cashout x5+', reward: 2500, xp: 180 },
+      { id: 'q_upg_win', title: 'Победи в Апгрейдере', reward: 1300, xp: 110 },
+      { id: 'q_upg_x10', title: 'Апгрейд x10 успех', reward: 4000, xp: 280 },
+      { id: 'q_roulette_red', title: 'Рулетка: красное', reward: 600, xp: 50 },
+      { id: 'q_roulette_green', title: 'Рулетка: zero', reward: 5000, xp: 350 },
+      { id: 'q_mines_3', title: 'Мины: 3 безопасных', reward: 1000, xp: 90 },
+      { id: 'q_plinko_5x', title: 'Plinko x5+', reward: 1800, xp: 140 },
+      { id: 'q_hilo_5', title: 'Hi-Lo серия 5', reward: 2200, xp: 160 },
+      { id: 'q_mc_chest', title: 'Minecraft: сундук', reward: 1500, xp: 120 },
+      { id: 'q_mc_x5', title: 'Minecraft x5+', reward: 3500, xp: 240 },
+      { id: 'q_sb_win', title: 'Sweet Bonanza выигрыш', reward: 900, xp: 80 },
+      { id: 'q_towers_3', title: 'Towers: 3 этажа', reward: 1600, xp: 130 },
+      { id: 'q_keno_hit', title: 'Keno: 3+ попадания', reward: 2000, xp: 150 },
+      { id: 'q_daily_login', title: 'Ежедневный вход', reward: 300, xp: 30 },
+      { id: 'q_wallet_open', title: 'Открой кошелёк', reward: 200, xp: 20 },
+      { id: 'q_profile_view', title: 'Загляни в профиль', reward: 150, xp: 15 },
+      { id: 'q_sound_toggle', title: 'Переключи звук', reward: 100, xp: 10 },
+      { id: 'q_bet_max', title: 'Ставка MAX один раз', reward: 800, xp: 70 },
+      { id: 'q_combo_games', title: '3 разные игры за сессию', reward: 1700, xp: 140 },
+      { id: 'q_lucky_hour', title: 'Играй при Global Luck', reward: 2500, xp: 200 },
+      { id: 'q_void_secret', title: 'Секрет VOID: 13 игр', reward: 7777, xp: 500 },
+      { id: 'q_no_lose_10', title: '10 игр без смены экрана', reward: 1200, xp: 100 },
+      { id: 'q_balance_10k', title: 'Достигни баланса 10K', reward: 2000, xp: 150 },
+      { id: 'q_level_5', title: 'Достигни LVL 5', reward: 3000, xp: 250 },
+      { id: 'q_level_10', title: 'Достигни LVL 10', reward: 8000, xp: 500 }
+    ];
+    let ownerQuestEnabled = {}; // id -> bool
+    let ownerQuestSeed = 1;
+
+    function ownerEnsureQuestState() {
+      OWNER_QUEST_POOL.forEach(q => {
+        if (ownerQuestEnabled[q.id] === undefined) ownerQuestEnabled[q.id] = true;
+      });
+    }
+
+    function ownerRestartAllQuests() {
+      playSound('click');
+      try {
+        if (typeof gamesPlayed !== 'undefined') gamesPlayed = 0;
+        if (typeof winStreak !== 'undefined') winStreak = 0;
+        if (typeof casesOpened !== 'undefined') casesOpened = 0;
+        if (typeof maxHiloStreak !== 'undefined') maxHiloStreak = 0;
+        if (typeof totalSpent !== 'undefined') totalSpent = 0;
+        if (typeof totalWon !== 'undefined') totalWon = 0;
+        if (typeof crashCashout5Done !== 'undefined') crashCashout5Done = false;
+        // clear claimed flags commonly used
+        ['streakQuestClaimed','spendQuestClaimed','lvlQuestClaimed','crashQuestClaimed','casesQuestClaimed','hiloQuestClaimed','wonQuestClaimed','comboQuestClaimed'].forEach(k => {
+          try { if (typeof window[k] !== 'undefined') window[k] = false; } catch(e){}
+        });
+        if (typeof saveGameData === 'function') saveGameData();
+        if (typeof updateQuestsUI === 'function') updateQuestsUI();
+      } catch (e) {}
+      ownerLog('Quests RESTART all progress');
+      showFloatingPopup('Квесты сброшены', true);
+      ownerRenderQuestsList();
+    }
+
+    function ownerRefreshQuestPool() {
+      playSound('click');
+      ownerQuestSeed = (ownerQuestSeed * 17 + 3) % 997;
+      // randomly enable ~12 of 40
+      OWNER_QUEST_POOL.forEach((q, i) => {
+        ownerQuestEnabled[q.id] = ((i * 13 + ownerQuestSeed) % 5) !== 0;
+      });
+      ownerLog('Quest pool refreshed seed=' + ownerQuestSeed);
+      showFloatingPopup('Новый пул заданий', true);
+      ownerRenderQuestsList();
+      if (typeof updateQuestsUI === 'function') updateQuestsUI();
+    }
+
+    function ownerEnableAllQuests() {
+      playSound('click');
+      OWNER_QUEST_POOL.forEach(q => ownerQuestEnabled[q.id] = true);
+      ownerRenderQuestsList();
+      ownerLog('All quests ON');
+    }
+    function ownerDisableAllQuests() {
+      playSound('click');
+      OWNER_QUEST_POOL.forEach(q => ownerQuestEnabled[q.id] = false);
+      ownerRenderQuestsList();
+      ownerLog('All quests OFF');
+    }
+    function ownerToggleQuest(id) {
+      playSound('click');
+      ownerQuestEnabled[id] = !ownerQuestEnabled[id];
+      ownerRenderQuestsList();
+      ownerLog('Quest ' + id + ' = ' + ownerQuestEnabled[id]);
+    }
+    function ownerRenderQuestsList() {
+      ownerEnsureQuestState();
+      const box = document.getElementById('owner-quests-list');
+      if (!box) return;
+      box.innerHTML = OWNER_QUEST_POOL.map(q => {
+        const on = !!ownerQuestEnabled[q.id];
+        return `<button type="button" onclick="ownerToggleQuest('${q.id}')" class="w-full text-left px-2.5 py-2 rounded-xl border text-[10px] font-bold flex items-center justify-between gap-2 ${on ? 'border-lime-400/40 bg-lime-500/10 text-lime-100' : 'border-white/10 bg-black/30 text-slate-500'}">
+          <span class="truncate">${on ? '✓' : '○'} ${q.title}</span>
+          <span class="shrink-0 tabular-nums">${q.reward}🪙 · ${q.xp}xp</span>
+        </button>`;
+      }).join('');
+    }
+
+
     function refreshOwnerPanel() {
       const bal = document.getElementById('owner-stat-bal');
       if (bal) bal.textContent = (balance||0).toLocaleString('ru');
@@ -8650,11 +9639,418 @@ function init() {
       add('labs', 'New UX experimental', () => { ownerFlags.uxExp=true; ownerLog('UX exp'); });
       add('labs', 'UX stable', () => { ownerFlags.uxExp=false; ownerLog('UX stable'); });
 
+      ownerRenderQuestsList();
+      // extras grid
+      const ex = document.getElementById('owner-extras-grid');
+      if (ex && !ex.dataset.built) {
+        ex.dataset.built = '1';
+        const acts = [
+          ['🔊 Test click', () => playSound('click')],
+          ['🔊 Test win', () => playSound('win')],
+          ['🔊 Test lose', () => playSound('lose')],
+          ['🎉 Confetti', () => { if (typeof spawnCasesConfetti==='function') spawnCasesConfetti(); }],
+          ['🔥 Luck x2 ·5м', () => { if (typeof setAdminLuck==='function') setAdminLuck(2,5); }],
+          ['💰 +7777', () => updateLocalBalance(7777)],
+          ['🧹 Soft UI resync', () => { if (typeof updateQuestsUI==='function') updateQuestsUI(); if (typeof updateProfileUI==='function') updateProfileUI(); }],
+          ['📦 Force case x5', () => { ownerForceDrop='x5'; ownerLog('force x5'); }],
+          ['🌙 Dim UI', () => { document.body.style.filter='brightness(0.8)'; }],
+          ['☀️ Clear filter', () => { document.body.style.filter=''; }],
+          ['⏱ Session tip', () => showFloatingPopup('Сессия активна', true)],
+          ['🧭 Go Games', () => openScreen('games')],
+        ];
+        acts.forEach(([l,f]) => {
+          const b = document.createElement('button');
+          b.className = 'py-2 px-2 rounded-xl bg-black/40 border border-white/10 text-[9px] font-bold text-left text-white';
+          b.textContent = l;
+          b.onclick = () => { playSound('click'); f(); };
+          ex.appendChild(b);
+        });
+      }
       ownerLog('Owner panel refreshed');
     }
 
     // Hook godMode checkWin for force next win
     const _checkWinConditionOwner = typeof checkWinCondition === 'function' ? checkWinCondition : null;
+
+    
+    // ============= PvP ARENA — REAL PLAYERS ONLY (no bots) =============
+    let arenaPlayers = []; // {id, name, bet, color, isYou}
+    let arenaBusy = false;
+    let arenaRound = 10000;
+    let arenaTimer = null;
+    let arenaCountdown = 0;
+    let arenaHistory = [];
+    let arenaWheelRot = 0;
+    let arenaPhase = 'wait'; // wait | countdown | spin | result
+    const ARENA_COLORS = ['#22c55e','#3b82f6','#eab308','#f43f5e','#a855f7','#14b8a6','#f97316','#ec4899','#06b6d4','#84cc16'];
+
+    function arenaPot() {
+      return arenaPlayers.reduce((s, p) => s + (p.bet || 0), 0);
+    }
+    function arenaChance(p) {
+      const pot = arenaPot();
+      return pot > 0 ? (p.bet / pot) * 100 : 0;
+    }
+    function arenaBetHalf() {
+      const el = document.getElementById('arena-bet');
+      if (el) el.value = Math.max(10, Math.floor((+el.value || 100) / 2));
+    }
+    function arenaBetDouble() {
+      const el = document.getElementById('arena-bet');
+      if (el) el.value = Math.min(balance, (+el.value || 100) * 2);
+    }
+    function arenaBetMax() {
+      const el = document.getElementById('arena-bet');
+      if (el) el.value = Math.max(10, balance);
+    }
+
+    function arenaSnapshot() {
+      return {
+        round: arenaRound,
+        phase: arenaPhase,
+        countdown: arenaCountdown,
+        players: arenaPlayers.map(p => ({ id: p.id, name: p.name, bet: p.bet, color: p.color })),
+        history: arenaHistory.slice(0, 8),
+        t: Date.now()
+      };
+    }
+
+    function arenaPublish() {
+      const snap = arenaSnapshot();
+      try { localStorage.setItem(ARENA_STATE_KEY, JSON.stringify(snap)); } catch (e) {}
+      try { if (window._arenaBC) window._arenaBC.postMessage({ type: 'arena', state: snap }); } catch (e) {}
+      if (typeof netPublish === 'function') netPublish(NET_TOPIC_ARENA, snap, true);
+    }
+
+    function applyArenaRemote(state) {
+      if (!state) return;
+      if (arenaBusy && state.phase !== 'result') return;
+      // ignore clearly older rounds
+      if (typeof state.round === 'number' && state.round < arenaRound - 1) return;
+      if (typeof state.round === 'number' && state.round > arenaRound) {
+        arenaRound = state.round;
+        if (!arenaBusy) {
+          arenaPlayers = [];
+          arenaPhase = state.phase || 'wait';
+        }
+      }
+      // merge players by id (keep higher bet)
+      const map = {};
+      arenaPlayers.forEach(p => { map[p.id] = { ...p }; });
+      (state.players || []).forEach(p => {
+        if (!p || !p.id) return;
+        if (!map[p.id] || (p.bet || 0) >= (map[p.id].bet || 0)) {
+          map[p.id] = {
+            id: p.id,
+            name: p.name || 'Игрок',
+            bet: p.bet || 0,
+            color: p.color || ARENA_COLORS[Object.keys(map).length % ARENA_COLORS.length],
+            isYou: p.id === presenceId()
+          };
+        }
+      });
+      // keep local self bet if remote lost it briefly
+      arenaPlayers.forEach(p => {
+        if (p.isYou && p.bet > 0 && (!map[p.id] || map[p.id].bet < p.bet)) map[p.id] = { ...p };
+      });
+      arenaPlayers = Object.values(map).filter(p => p.bet > 0);
+      arenaPlayers.forEach(p => { p.isYou = p.id === presenceId(); });
+      if (state.phase === 'countdown' && state.countdown > arenaCountdown && !arenaTimer) {
+        arenaCountdown = state.countdown;
+        arenaPhase = 'countdown';
+        arenaStartCountdownUI();
+      }
+      if (state.history && state.history.length) {
+        arenaHistory = state.history;
+        const hist = document.getElementById('arena-history');
+        if (hist) {
+          hist.innerHTML = arenaHistory.map(h =>
+            `<span class="px-2 py-1 rounded-lg whitespace-nowrap" style="background:${h.you ? 'rgba(52,211,153,0.15)' : 'rgba(255,255,255,0.05)'};border:1px solid rgba(255,255,255,0.08);color:${h.you ? '#6ee7b7' : '#94a3b8'}">${h.name} · ${h.pot}</span>`
+          ).join('');
+        }
+      }
+      renderArenaPlayers();
+      const st = document.getElementById('arena-status');
+      if (st && arenaPhase === 'wait') {
+        st.textContent = arenaPlayers.length ? ('Игроков: ' + arenaPlayers.length + ' · банк ' + arenaPot()) : 'Ждём игроков';
+      }
+      const btn = document.getElementById('arena-join-btn');
+      if (btn && arenaPlayers.some(p => p.isYou)) btn.textContent = 'Докинуть ставку';
+    }
+
+    function drawArenaWheel() {
+      const canvas = document.getElementById('arena-wheel');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const cx = 120, cy = 120, R = 112;
+      ctx.clearRect(0, 0, 240, 240);
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(arenaWheelRot);
+      const pot = arenaPot();
+      if (!arenaPlayers.length || pot <= 0) {
+        ctx.beginPath();
+        ctx.arc(0, 0, R, 0, Math.PI * 2);
+        ctx.fillStyle = '#0a1a12';
+        ctx.fill();
+        ctx.strokeStyle = '#d4af37';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+        for (let i = 0; i < 48; i++) {
+          const a = (i / 48) * Math.PI * 2;
+          ctx.beginPath();
+          ctx.moveTo(Math.cos(a) * (R - 6), Math.sin(a) * (R - 6));
+          ctx.lineTo(Math.cos(a) * R, Math.sin(a) * R);
+          ctx.strokeStyle = i % 4 === 0 ? '#d4af37' : '#1a3d2a';
+          ctx.lineWidth = i % 4 === 0 ? 2.5 : 1;
+          ctx.stroke();
+        }
+        ctx.restore();
+        return;
+      }
+      let angle = -Math.PI / 2;
+      arenaPlayers.forEach(p => {
+        const slice = (p.bet / pot) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, R, angle, angle + slice);
+        ctx.closePath();
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(0,0,0,0.4)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        if (slice > 0.22) {
+          ctx.save();
+          ctx.rotate(angle + slice / 2);
+          ctx.fillStyle = '#fff';
+          ctx.font = 'bold 10px Inter,sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(Math.round(arenaChance(p)) + '%', R * 0.62, 4);
+          ctx.restore();
+        }
+        angle += slice;
+      });
+      ctx.beginPath();
+      ctx.arc(0, 0, 34, 0, Math.PI * 2);
+      ctx.fillStyle = '#0a140e';
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function renderArenaPlayers() {
+      const box = document.getElementById('arena-players');
+      const pot = arenaPot();
+      const potEl = document.getElementById('arena-pot');
+      const hub = document.getElementById('arena-hub-pot');
+      if (potEl) potEl.textContent = pot.toLocaleString('ru');
+      if (hub) hub.textContent = pot.toLocaleString('ru');
+      const rid = document.getElementById('arena-round-id');
+      if (rid) rid.textContent = '#' + arenaRound;
+      if (!box) return;
+      if (!arenaPlayers.length) {
+        box.innerHTML = '<div class="text-center text-[11px] text-slate-500 py-3">Пусто · открой со 2-го аккаунта и поставь ставку — увидишь здесь</div>';
+        drawArenaWheel();
+        return;
+      }
+      const sorted = arenaPlayers.slice().sort((a, b) => b.bet - a.bet);
+      box.innerHTML = sorted.map(p => {
+        const ch = arenaChance(p).toFixed(1);
+        return `<div class="flex items-center gap-2 px-2 py-1.5 rounded-xl" style="background:${p.isYou ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)'};border:1px solid ${p.isYou ? 'rgba(212,175,55,0.35)' : 'rgba(255,255,255,0.06)'}">
+          <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${p.color}"></span>
+          <span class="flex-1 text-[11px] font-bold text-white truncate">${p.isYou ? 'Вы · ' : ''}${p.name}</span>
+          <span class="text-[11px] font-extrabold" style="color:#f5e6a8">${p.bet.toLocaleString('ru')}</span>
+          <span class="text-[10px] font-extrabold text-emerald-300 w-12 text-right">${ch}%</span>
+        </div>`;
+      }).join('');
+      drawArenaWheel();
+    }
+
+    function arenaStartCountdownUI() {
+      if (arenaTimer) return;
+      const st = document.getElementById('arena-status');
+      arenaTimer = setInterval(() => {
+        arenaCountdown--;
+        if (st) st.textContent = 'Розыгрыш через ' + Math.max(0, arenaCountdown) + 'с · игроков ' + arenaPlayers.length;
+        arenaPublish();
+        if (arenaCountdown <= 0) {
+          clearInterval(arenaTimer);
+          arenaTimer = null;
+          const ids = arenaPlayers.map(p => p.id).sort();
+          if (ids[0] === presenceId()) {
+            arenaSpin();
+          } else {
+            setTimeout(() => {
+              if (!arenaBusy && arenaPlayers.length && arenaPhase === 'countdown') arenaSpin();
+            }, 4500);
+          }
+        }
+      }, 1000);
+    }
+
+    function arenaJoin() {
+      if (arenaBusy) return;
+      playSound('click');
+      const bet = Math.floor(parseFloat(document.getElementById('arena-bet')?.value) || 0);
+      if (bet <= 0 || bet > balance) {
+        showFloatingPopup('Недостаточно средств', false);
+        return;
+      }
+      const myId = presenceId();
+      const me = arenaPlayers.find(p => p.id === myId);
+      updateLocalBalance(-bet);
+      if (typeof recordGamePlay === 'function') recordGamePlay();
+      if (me) {
+        me.bet += bet;
+        me.name = playerDisplayName();
+      } else {
+        arenaPlayers.push({
+          id: myId,
+          name: playerDisplayName(),
+          bet,
+          color: ARENA_COLORS[arenaPlayers.length % ARENA_COLORS.length],
+          isYou: true
+        });
+      }
+      renderArenaPlayers();
+      const btn = document.getElementById('arena-join-btn');
+      if (btn) btn.textContent = 'Докинуть ставку';
+      // start countdown when 2+ real players
+      if (arenaPlayers.length >= 2 && !arenaTimer && arenaPhase === 'wait') {
+        arenaPhase = 'countdown';
+        arenaCountdown = 12;
+        arenaStartCountdownUI();
+      }
+      arenaPublish();
+      showFloatingPopup('Ставка ' + bet + ' · шанс ' + arenaChance(arenaPlayers.find(p => p.isYou)).toFixed(1) + '%', true);
+      if (typeof pushPulseEvent === 'function') pushPulseEvent(playerDisplayName() + ' в арене · ' + bet, 'info');
+      if (typeof publishTopsSelf === 'function') publishTopsSelf();
+    }
+
+    function arenaSpin() {
+      if (arenaBusy || arenaPlayers.length < 1) return;
+      arenaBusy = true;
+      arenaPhase = 'spin';
+      const btn = document.getElementById('arena-join-btn');
+      if (btn) { btn.disabled = true; btn.classList.add('opacity-50'); }
+      const st = document.getElementById('arena-status');
+      if (st) st.textContent = 'Крутим колесо…';
+      const pot = arenaPot();
+      let r = Math.random() * pot;
+      let winner = arenaPlayers[arenaPlayers.length - 1];
+      for (const p of arenaPlayers) {
+        r -= p.bet;
+        if (r <= 0) { winner = p; break; }
+      }
+      let acc = 0, winMid = 0;
+      for (const p of arenaPlayers) {
+        const slice = (p.bet / pot) * Math.PI * 2;
+        if (p === winner) { winMid = acc + slice / 2; break; }
+        acc += slice;
+      }
+      const pointerAngle = -Math.PI / 2;
+      const current = ((arenaWheelRot % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+      let delta = (pointerAngle - winMid) - current;
+      while (delta < Math.PI * 2) delta += Math.PI * 2;
+      const finalRot = arenaWheelRot + delta + Math.PI * 2 * 5;
+      const startRot = arenaWheelRot;
+      const t0 = performance.now();
+      const dur = 4200;
+      function frame(now) {
+        const t = Math.min(1, (now - t0) / dur);
+        const ease = 1 - Math.pow(1 - t, 3);
+        arenaWheelRot = startRot + (finalRot - startRot) * ease;
+        drawArenaWheel();
+        if (t < 1) requestAnimationFrame(frame);
+        else {
+          arenaWheelRot = finalRot;
+          drawArenaWheel();
+          arenaFinish(winner, pot);
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function arenaFinish(winner, pot) {
+      arenaBusy = false;
+      arenaPhase = 'result';
+      const btn = document.getElementById('arena-join-btn');
+      if (btn) { btn.disabled = false; btn.classList.remove('opacity-50'); btn.textContent = 'Вступить'; }
+      const youWon = winner && winner.id === presenceId();
+      if (youWon) {
+        updateLocalBalance(pot);
+        playSound('win');
+        triggerCardEffect('arena-card-box', true);
+        showFloatingPopup('Арена +' + pot.toLocaleString('ru') + ' 🪙', true);
+        if (typeof recordWin === 'function') recordWin(true, { game: 'Arena', amount: pot });
+      } else {
+        playSound('lose');
+        triggerCardEffect('arena-card-box', false);
+        showFloatingPopup('Победил ' + (winner?.name || 'игрок'), false);
+        if (typeof recordWin === 'function') recordWin(false);
+      }
+      const lw = document.getElementById('arena-last-win');
+      if (lw) lw.textContent = pot.toLocaleString('ru');
+      const lwn = document.getElementById('arena-last-winner');
+      if (lwn) lwn.textContent = (youWon ? 'Вы' : winner?.name) + ' · ' + arenaChance(winner).toFixed(1) + '%';
+      arenaHistory.unshift({ name: youWon ? 'Вы' : winner?.name, pot, you: !!youWon });
+      if (arenaHistory.length > 12) arenaHistory.pop();
+      const hist = document.getElementById('arena-history');
+      if (hist) {
+        hist.innerHTML = arenaHistory.map(h =>
+          `<span class="px-2 py-1 rounded-lg whitespace-nowrap" style="background:${h.you ? 'rgba(52,211,153,0.15)' : 'rgba(255,255,255,0.05)'};border:1px solid rgba(255,255,255,0.08);color:${h.you ? '#6ee7b7' : '#94a3b8'}">${h.name} · ${h.pot}</span>`
+        ).join('');
+      }
+      if (typeof pushPulseEvent === 'function') pushPulseEvent('Арена: ' + (youWon ? 'Вы' : winner?.name) + ' · ' + pot, youWon ? 'win' : 'lose');
+      if (typeof publishTopsSelf === 'function') publishTopsSelf();
+      setTimeout(() => {
+        arenaPlayers = [];
+        arenaPhase = 'wait';
+        arenaRound++;
+        const st = document.getElementById('arena-status');
+        if (st) st.textContent = 'Ждём игроков';
+        renderArenaPlayers();
+        arenaPublish();
+      }, 2500);
+      arenaPublish();
+    }
+
+    function initArenaScreen() {
+      try {
+        const raw = localStorage.getItem(ARENA_STATE_KEY);
+        if (raw) applyArenaRemote(JSON.parse(raw));
+      } catch (e) {}
+      // ask network: re-publish self presence + current table so others see us / we get retained state
+      try { beatPresence(); } catch (e) {}
+      try { if (mqttClient && mqttClient.connected) arenaPublish(); } catch (e) {}
+      renderArenaPlayers();
+      drawArenaWheel();
+      const rid = document.getElementById('arena-round-id');
+      if (rid) rid.textContent = '#' + arenaRound;
+      const st = document.getElementById('arena-status');
+      if (st && !arenaPlayers.length) st.textContent = mqttClient && mqttClient.connected ? 'Сеть online · ждём игроков' : 'Подключение… ждём игроков';
+    }
+
+
+    
+    const GOTD_ROTATION = ['blackjack','arena','crash','mines','roulette','cases','upgrader','plinko'];
+    function getGameOfDay() {
+      const day = Math.floor(Date.now() / 86400000);
+      return GOTD_ROTATION[day % GOTD_ROTATION.length];
+    }
+    function openGameOfDay() {
+      const id = getGameOfDay();
+      openGameScreen(id);
+    }
+    function refreshGotdLabel() {
+      const map = { blackjack:'Блэкджек', arena:'PvP Арена', crash:'Краш', mines:'Мины', roulette:'Рулетка', cases:'Кейсы', upgrader:'Апгрейдер', plinko:'Plinko' };
+      const el = document.getElementById('gotd-name');
+      if (el) el.textContent = map[getGameOfDay()] || 'Арена';
+    }
+    // Haptics preference
+    let hapticsEnabled = true;
+    try { hapticsEnabled = localStorage.getItem('case_lounge_haptics') !== '0'; } catch(e) {}
+    const _vibrateOrig = typeof vibrate === 'function' ? vibrate : null;
 
     window.onload = init;
   </script>
