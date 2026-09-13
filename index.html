@@ -2391,6 +2391,35 @@
       display: flex; flex-wrap: wrap; gap: 4px; min-height: 22px;
     }
 
+
+    /* Mobile header: balance always visible */
+    .premium-header {
+      padding-left: 10px !important;
+      padding-right: 10px !important;
+      gap: 6px;
+    }
+    #header-profile-block {
+      min-width: 0;
+      flex: 1 1 auto;
+      overflow: hidden;
+    }
+    #header-profile-block #user-name {
+      max-width: 90px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    #balance {
+      display: inline-block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+    @media (max-width: 400px) {
+      #header-profile-block #user-name { max-width: 70px; }
+      #user-avatar { width: 32px !important; height: 32px !important; }
+      #balance { font-size: 12px !important; max-width: 78px !important; }
+    }
+
   </style>
 </head>
 <body class="pb-32">
@@ -2425,20 +2454,15 @@
       <span id="header-game-title" class="text-sm font-extrabold text-white">Игра</span>
     </div>
     
-    <div class="flex items-center space-x-2">
-      <div class="online-chip" title="Синхронизация аккаунта" id="sync-chip" onclick="forcePullCloud()">
-        <span class="dot" id="sync-dot" style="background:#60a5fa;box-shadow:0 0 8px #60a5fa"></span>
-        <span class="text-[9px] font-bold text-sky-300/80 uppercase tracking-wide">sync</span>
+    <div class="flex items-center gap-1.5 shrink-0">
+      <div class="online-chip !px-1.5 !py-1" title="Онлайн · нажми для синка" onclick="forcePullCloud()" style="cursor:pointer">
+        <span class="dot" id="sync-dot"></span>
+        <span id="header-online-count" class="text-[11px] font-extrabold text-emerald-300">1</span>
       </div>
-      <div class="online-chip" title="Реальный онлайн (presence)">
-        <span class="dot"></span>
-        <span class="text-[9px] font-bold text-emerald-300/80 uppercase tracking-wide">online</span>
-        <span id="header-online-count" class="text-[11px] font-extrabold">1</span>
-      </div>
-      <button onclick="toggleSoundMenu()" class="w-9 h-9 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-base" id="sound-menu-btn">🔊</button>
-      <div class="glass-card px-3 py-1.5 flex items-center space-x-2 shadow-lg" onclick="openScreen('wallet')" style="cursor: pointer;">
-        <span class="text-cyan-400 text-sm">🪙</span>
-        <span id="balance" class="font-extrabold text-sm tracking-wide text-white">5000</span>
+      <button onclick="toggleSoundMenu()" class="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-sm shrink-0" id="sound-menu-btn">🔊</button>
+      <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl shrink-0 shadow-lg" onclick="openScreen('wallet')" style="cursor:pointer;background:linear-gradient(135deg,rgba(212,175,55,0.18),rgba(0,0,0,0.35));border:1px solid rgba(212,175,55,0.4);min-width:72px">
+        <span class="text-amber-300 text-sm leading-none">🪙</span>
+        <span id="balance" class="font-extrabold text-[13px] tracking-wide text-amber-200 tabular-nums" style="font-family:Orbitron,sans-serif;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">5000</span>
       </div>
     </div>
   </header>
