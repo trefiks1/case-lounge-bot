@@ -2229,19 +2229,8 @@
 
       <!-- Лента живых выигрышей -->
       <div class="ticker-wrap">
-        <div class="ticker-track">
-          <span class="ticker-item">🎰 Игрок8213 <b>+4 500 🪙</b> в Слотах</span>
-          <span class="ticker-item">💣 Игрок5027 <b>+1 800 🪙</b> в Минах</span>
-          <span class="ticker-item">🃏 Игрок9142 <b>+2 100 🪙</b> в Покере</span>
-          <span class="ticker-item">🎁 Игрок3390 <b>+6 250 🪙</b> в Кейсах</span>
-          <span class="ticker-item">⚡ Игрок7715 <b>+900 🪙</b> в Апгрейдере</span>
-          <span class="ticker-item">🎯 Игрок1284 <b>+3 600 🪙</b> в Рулетке</span>
-          <span class="ticker-item">🎰 Игрок8213 <b>+4 500 🪙</b> в Слотах</span>
-          <span class="ticker-item">💣 Игрок5027 <b>+1 800 🪙</b> в Минах</span>
-          <span class="ticker-item">🃏 Игрок9142 <b>+2 100 🪙</b> в Покере</span>
-          <span class="ticker-item">🎁 Игрок3390 <b>+6 250 🪙</b> в Кейсах</span>
-          <span class="ticker-item">⚡ Игрок7715 <b>+900 🪙</b> в Апгрейдере</span>
-          <span class="ticker-item">🎯 Игрок1284 <b>+3 600 🪙</b> в Рулетке</span>
+        <div class="ticker-track" id="live-wins-track">
+          <span class="ticker-item text-slate-500">Ждём реальные выигрыши игроков…</span>
         </div>
       </div>
 
@@ -4846,6 +4835,7 @@
     const NET_TOPIC_PRESENCE = 'obsidian/caselounge/v2/presence';
     const NET_TOPIC_ARENA = 'obsidian/caselounge/v2/arena';
     const NET_TOPIC_TOPS = 'obsidian/caselounge/v2/tops';
+    const NET_TOPIC_WINS = 'obsidian/caselounge/v2/wins';
 
     function presenceId() {
       // Real Telegram user id when available → different accounts = different online slots
@@ -4937,6 +4927,7 @@
               mqttClient.subscribe(NET_TOPIC_PRESENCE, { qos: 0 });
               mqttClient.subscribe(NET_TOPIC_ARENA, { qos: 0 });
               mqttClient.subscribe(NET_TOPIC_TOPS, { qos: 0 });
+              mqttClient.subscribe(NET_TOPIC_WINS, { qos: 0 });
               beatPresence();
               publishTopsSelf();
               // re-announce current arena (retained for late joiners)
@@ -4964,6 +4955,8 @@
                 applyArenaRemote(msg);
               } else if (topic === NET_TOPIC_TOPS && msg.list) {
                 mergeRemoteTops(msg.list);
+              } else if (topic === NET_TOPIC_WINS && msg.name) {
+                appendLiveWinItem(msg.name, msg.game, msg.amount, msg.icon);
               }
             } catch (e) {}
           });
@@ -5190,6 +5183,7 @@ function init() {
       if (isMain) {
         document.getElementById('nav-' + name)?.classList.add('active');
       if (name === 'pulse' && typeof renderPulseFeed === 'function') { renderPulseFeed(); updateOnlinePlayersUI(); }
+      if (name !== 'arena' && window._arenaLiveTimer) { clearInterval(window._arenaLiveTimer); window._arenaLiveTimer = null; }
         document.body.classList.remove('in-game');
       } else {
         document.getElementById('nav-games')?.classList.add('active');
@@ -6077,23 +6071,42 @@ function init() {
     }
 
 
-    function pushLiveWin(game, mult, amount) {
+    const GAME_WIN_ICONS = {
+      Arena:'🎯', Arena:'🎯', 'PvP Арена':'🎯', Mines:'💣', Мины:'💣',
+      Slots:'🎰', Слоты:'🎰', Cases:'🎁', Кейсы:'🎁', Roulette:'🎯', Рулетка:'🎯',
+      Crash:'📈', Upgrader:'⚡', Апгрейдер:'⚡', Blackjack:'🃏', Блэкджек:'🃏',
+      Plinko:'🟣', Poker:'🃏', Покер:'🃏', Sweet:'🍬'
+    };
+    function appendLiveWinItem(name, game, amount, icon) {
       try {
-        const name = (document.getElementById('user-name')?.textContent || 'Игрок').slice(0, 16);
-        const track = document.querySelector('.ticker-track') || document.getElementById('live-wins-track');
+        const track = document.getElementById('live-wins-track') || document.querySelector('.ticker-track');
         if (!track) return;
+        // remove placeholder
+        if (track.children.length === 1 && track.textContent.includes('Ждём')) track.innerHTML = '';
         const el = document.createElement('span');
         el.className = 'ticker-item';
-        el.innerHTML = '<b class="text-cyan-300">' + name + '</b> · ' + game + ' <span class="text-amber-300">x' + mult + '</span> +' + Number(amount).toLocaleString('ru') + ' 🪙';
-        track.insertBefore(el, track.firstChild);
-        while (track.children.length > 24) track.removeChild(track.lastChild);
+        const ic = icon || GAME_WIN_ICONS[game] || '✦';
+        el.innerHTML = ic + ' ' + (name || 'Игрок') + ' <b>+' + Number(amount).toLocaleString('ru') + '</b> в ' + (game || 'игре');
+        track.appendChild(el);
+        // keep scroll seamless: duplicate first few if few items
+        while (track.children.length > 30) track.removeChild(track.firstChild);
+      } catch(e) {}
+    }
+    function pushLiveWin(game, mult, amount) {
+      try {
+        const name = (typeof playerDisplayName === 'function' ? playerDisplayName() : (document.getElementById('user-name')?.textContent || 'Игрок')).slice(0, 18);
+        const icon = GAME_WIN_ICONS[game] || '✦';
+        appendLiveWinItem(name, game, amount, icon);
+        if (typeof netPublish === 'function') {
+          netPublish(NET_TOPIC_WINS, { name, game, amount: Number(amount)||0, icon, id: presenceId(), t: Date.now() }, false);
+        }
       } catch(e) {}
     }
 
     function recordWin(isWin, meta) {
       try { if (typeof pushPulseEvent==="function") pushPulseEvent(isWin ? "Победа на арене" : "Проигрыш", isWin ? "win" : "lose"); } catch(e){}
 
-      if (isWin && meta && meta.amount >= 500 && typeof pushLiveWin === 'function') {
+      if (isWin && meta && meta.amount >= 50 && typeof pushLiveWin === 'function') {
         pushLiveWin(meta.game || 'Game', meta.mult || '?', meta.amount);
       }
       if (isWin) {
@@ -9982,7 +9995,8 @@ function init() {
         playSound('win');
         triggerCardEffect('arena-card-box', true);
         showFloatingPopup('Арена +' + pot.toLocaleString('ru') + ' 🪙', true);
-        if (typeof recordWin === 'function') recordWin(true, { game: 'Arena', amount: pot });
+        if (typeof recordWin === 'function') recordWin(true, { game: 'Арена', amount: pot });
+        if (typeof pushLiveWin === 'function') pushLiveWin('Арена', 'win', pot);
       } else {
         playSound('lose');
         triggerCardEffect('arena-card-box', false);
@@ -10020,7 +10034,6 @@ function init() {
         const raw = localStorage.getItem(ARENA_STATE_KEY);
         if (raw) applyArenaRemote(JSON.parse(raw));
       } catch (e) {}
-      // ask network: re-publish self presence + current table so others see us / we get retained state
       try { beatPresence(); } catch (e) {}
       try { if (mqttClient && mqttClient.connected) arenaPublish(); } catch (e) {}
       renderArenaPlayers();
@@ -10029,6 +10042,18 @@ function init() {
       if (rid) rid.textContent = '#' + arenaRound;
       const st = document.getElementById('arena-status');
       if (st && !arenaPlayers.length) st.textContent = mqttClient && mqttClient.connected ? 'Сеть online · ждём игроков' : 'Подключение… ждём игроков';
+      // live auto-refresh while staying on arena (no re-enter needed)
+      if (window._arenaLiveTimer) clearInterval(window._arenaLiveTimer);
+      window._arenaLiveTimer = setInterval(() => {
+        const scr = document.getElementById('screen-arena');
+        if (!scr || !scr.classList.contains('active')) return;
+        try {
+          const raw = localStorage.getItem(ARENA_STATE_KEY);
+          if (raw) applyArenaRemote(JSON.parse(raw));
+        } catch (e) {}
+        if (!arenaBusy) renderArenaPlayers();
+        try { beatPresence(); } catch (e) {}
+      }, 1500);
     }
 
 
