@@ -5397,7 +5397,13 @@
         }
       } catch (e) {}
       try {
-        localStorage.setItem('case_lounge_bus_' + topic.split('/').pop(), JSON.stringify({ ...payload, _t: Date.now() }));
+        const busKey = 'case_lounge_bus_' + String(topic).split('/').pop();
+        localStorage.setItem(busKey, JSON.stringify({ ...payload, _topic: topic, _t: Date.now() }));
+      } catch (e) {}
+      try {
+        if (window._arenaBC) {
+          window._arenaBC.postMessage({ type: 'net', topic: topic, payload: payload });
+        }
       } catch (e) {}
     }
 
@@ -5407,10 +5413,20 @@
         if (!window._arenaBC) {
           window._arenaBC = new BroadcastChannel('case_lounge_sync');
           window._arenaBC.onmessage = (ev) => {
-            if (ev.data && ev.data.type === 'arena') applyArenaRemote(ev.data.state);
-            if (ev.data && ev.data.type === 'presence') {
+            if (!ev.data) return;
+            if (ev.data.type === 'arena') applyArenaRemote(ev.data.state);
+            if (ev.data.type === 'presence') {
               const p = ev.data.payload;
               if (p && p.id) netPresence[p.id] = p;
+            }
+            if (ev.data.type === 'net' && ev.data.topic && ev.data.payload) {
+              try {
+                const topic = ev.data.topic;
+                const msg = ev.data.payload;
+                if (topic === NET_TOPIC_ARENA) applyArenaRemote(msg);
+                else if (topic === netUserSaveTopic() || (String(topic).indexOf('/user/') !== -1 && String(topic).endsWith('/save'))) applyCloudSave(msg);
+                else if (topic === NET_TOPIC_PRESENCE && msg.id) { netPresence[msg.id] = msg; updateOnlinePlayersUI(); }
+              } catch (err) {}
             }
           };
         }
@@ -5421,7 +5437,31 @@
           try { applyArenaRemote(JSON.parse(e.newValue)); } catch (err) {}
         }
         if (e.key === PRESENCE_KEY) updateOnlinePlayersUI();
+        // Cross-tab / same-origin bus (also helps some embedded browsers)
+        if (e.key && e.key.indexOf('case_lounge_bus_') === 0 && e.newValue) {
+          try {
+            const msg = JSON.parse(e.newValue);
+            const topic = msg._topic || '';
+            if (e.key.endsWith('_arena') || topic === NET_TOPIC_ARENA) applyArenaRemote(msg);
+            else if (e.key.endsWith('_save') || (topic && topic.indexOf('/user/') !== -1 && topic.endsWith('/save'))) {
+              if (!msg.uid || String(msg.uid) === String(currentUserId)) applyCloudSave(msg);
+            }
+          } catch (err) {}
+        }
       });
+      // Resume / focus → re-pull cloud balance + arena
+      try {
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') {
+            try { if (typeof forcePullCloud === 'function') forcePullCloud(); } catch (e) {}
+            try {
+              const raw = localStorage.getItem(ARENA_STATE_KEY);
+              if (raw) applyArenaRemote(JSON.parse(raw));
+            } catch (e) {}
+            try { beatPresence(); } catch (e) {}
+          }
+        });
+      } catch (e) {}
       // MQTT public broker — works across phones/accounts
       try {
         if (typeof mqtt !== 'undefined' && !mqttClient) {
@@ -5459,12 +5499,15 @@
                 window._netHb = setInterval(() => {
                   try {
                     beatPresence();
-                    if (typeof arenaPlayers !== 'undefined' && arenaPlayers && arenaPlayers.length) {
-                      arenaPublish();
+                    // Always publish arena snapshot so phone/PC both see current bets
+                    if (typeof arenaPublish === 'function') {
+                      if (typeof arenaPlayers !== 'undefined' && arenaPlayers && arenaPlayers.length) {
+                        arenaPublish();
+                      }
                     }
                     if (!window._cloudPullPending) pushCloudSave();
                   } catch (e) {}
-                }, 4000);
+                }, 2500);
               }
             } catch (e) {}
           });
@@ -5590,6 +5633,9 @@ function init() {
         buildRouletteStrip();
         initSbGrid();
         startOnlinePlayersTicker();
+        // Cross-device sync (phone <-> PC): balance + arena via MQTT
+        try { if (typeof startNetSync === 'function') startNetSync(); } catch (e) {}
+        try { if (typeof forcePullCloud === 'function') setTimeout(forcePullCloud, 600); } catch (e) {}
       } catch (e) {}
     }
 
@@ -5659,6 +5705,14 @@ function init() {
       else if (n > 0) { totalWon += n; try { sessionWon += n; } catch(e) {} }
       balance = Math.max(0, (balance || 0) + n);
       saveGameData();
+      // Immediate cloud push so phone/PC share one balance (do not wait for debounce only)
+      try {
+        if (!cloudApplyLock && typeof pushCloudSave === 'function') {
+          if (cloudSaveTimer) clearTimeout(cloudSaveTimer);
+          cloudSaveTimer = null;
+          pushCloudSave();
+        }
+      } catch (e) {}
       updateUI();
       try { flashBalance(); } catch (e) {}
       try { if (typeof publishTopsSelf === 'function') publishTopsSelf(); } catch (e) {}
@@ -10714,17 +10768,25 @@ function init() {
 
     function applyArenaRemote(state) {
       if (!state) return;
-      if (arenaBusy && state.phase !== 'result') return;
+      // While we are spinning locally, still accept player list updates but not mid-spin resets
+      if (arenaBusy && state.phase === 'spin' && arenaPhase === 'spin') {
+        // ignore competing spin frames
+      } else if (arenaBusy && state.phase !== 'result' && state.phase !== 'countdown' && state.phase !== 'wait') {
+        return;
+      }
       // ignore clearly older rounds
       if (typeof state.round === 'number' && state.round < arenaRound - 1) return;
       if (typeof state.round === 'number' && state.round > arenaRound) {
         arenaRound = state.round;
         if (!arenaBusy) {
-          arenaPlayers = [];
+          // Prefer remote player list when round advances (do not wipe if remote already has players)
+          if (!(state.players && state.players.length)) {
+            arenaPlayers = [];
+          }
           arenaPhase = state.phase || 'wait';
         }
       }
-      // merge players by id (keep higher bet)
+      // merge players by id (keep higher bet) — remote + local so phone sees PC bets and vice versa
       const map = {};
       arenaPlayers.forEach(p => { map[p.id] = { ...p }; });
       (state.players || []).forEach(p => {
@@ -10745,10 +10807,17 @@ function init() {
       });
       arenaPlayers = Object.values(map).filter(p => p.bet > 0);
       arenaPlayers.forEach(p => { p.isYou = p.id === presenceId(); });
-      if (state.phase === 'countdown' && state.countdown > arenaCountdown && !arenaTimer) {
-        arenaCountdown = state.countdown;
-        arenaPhase = 'countdown';
-        arenaStartCountdownUI();
+      if (state.phase === 'countdown') {
+        const cd = typeof state.countdown === 'number' ? state.countdown : arenaCountdown;
+        if (cd >= arenaCountdown || !arenaTimer) {
+          arenaCountdown = cd;
+          arenaPhase = 'countdown';
+          if (!arenaTimer) arenaStartCountdownUI();
+        }
+      } else if (state.phase === 'wait' && !arenaBusy) {
+        arenaPhase = 'wait';
+      } else if (state.phase === 'result' && !arenaBusy) {
+        arenaPhase = 'result';
       }
       if (state.history && state.history.length) {
         arenaHistory = state.history;
@@ -10761,8 +10830,10 @@ function init() {
       }
       renderArenaPlayers();
       const st = document.getElementById('arena-status');
-      if (st && arenaPhase === 'wait') {
-        st.textContent = arenaPlayers.length ? ('Игроков: ' + arenaPlayers.length + ' · банк ' + arenaPot()) : 'Ждём игроков';
+      if (st && (arenaPhase === 'wait' || arenaPhase === 'countdown')) {
+        st.textContent = arenaPlayers.length
+          ? ('Игроков: ' + arenaPlayers.length + ' · банк ' + arenaPot() + (arenaPhase === 'countdown' ? (' · ' + Math.max(0, arenaCountdown) + 'с') : ''))
+          : 'Ждём игроков';
       }
       const btn = document.getElementById('arena-join-btn');
       if (btn && arenaPlayers.some(p => p.isYou)) btn.textContent = 'Докинуть ставку';
