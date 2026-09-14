@@ -3150,6 +3150,7 @@
       <div class="grid grid-cols-2 gap-2">
         <button onclick="switchTopsTab('balance')" id="tops-tab-balance" class="py-2.5 rounded-xl bg-amber-500/20 border-2 border-amber-500 text-xs font-extrabold text-amber-300">💰 По балансу</button>
         <button onclick="switchTopsTab('spins')" id="tops-tab-spins" class="py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-extrabold text-gray-300">🎰 По прокрутам</button>
+        <button onclick="refreshTopsNow()" class="py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-extrabold text-cyan-300">↻</button>
       </div>
 
       <div class="glass-card p-3 space-y-1" id="tops-list">
@@ -3441,12 +3442,51 @@
             <div class="flex justify-between"><span class="text-slate-500">Удача</span><span id="profile-luck" class="font-bold" style="color:#a3e635">x1</span></div>
           </div>
         </div>
+        <div class="relative rounded-2xl p-3 space-y-2" style="background:rgba(0,0,0,0.35);border:1px solid rgba(212,175,55,0.25)">
+          <div class="text-[10px] font-extrabold tracking-widest uppercase" style="color:#d4af37;font-family:Orbitron,sans-serif">Промокод</div>
+          <div class="flex gap-2">
+            <input id="promo-input" type="text" placeholder="Введите код" maxlength="24" class="flex-1 rounded-xl px-3 py-2.5 text-sm font-extrabold uppercase outline-none" style="background:rgba(0,0,0,0.45);border:1px solid rgba(212,175,55,0.3);color:#f5e6a8;font-family:Orbitron,sans-serif" onkeydown="if(event.key==='Enter')activatePromo()">
+            <button type="button" onclick="activatePromo()" class="px-4 py-2.5 rounded-xl text-xs font-extrabold shrink-0" style="background:linear-gradient(135deg,#e8c547,#d4af37);color:#1a1405;border:1px solid rgba(255,240,180,0.35)">OK</button>
+          </div>
+          <div class="text-[10px] text-slate-500 font-bold">Например: START · VIP2026</div>
+        </div>
         <div class="relative flex gap-2">
           <button type="button" onclick="openScreen('quests')" class="flex-1 py-2.5 rounded-xl text-[11px] font-extrabold border" style="background:rgba(163,230,53,0.1);border-color:rgba(163,230,53,0.3);color:#bef264">Задания</button>
           <button type="button" onclick="openScreen('tops')" class="flex-1 py-2.5 rounded-xl text-[11px] font-extrabold border" style="background:rgba(255,140,50,0.1);border-color:rgba(255,140,50,0.3);color:#ffd4a8">Топы</button>
           <button type="button" onclick="openScreen('support')" class="flex-1 py-2.5 rounded-xl text-[11px] font-extrabold border" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.1);color:#cbd5e1">Поддержка</button>
         </div>
-        <div class="relative text-center text-[9px] text-slate-600 font-bold tracking-wide">VOID FORGE · DEMO · LOCAL SAVE</div>
+        <div class="relative rounded-2xl p-3 space-y-2" style="background:rgba(0,0,0,0.35);border:1px solid rgba(52,211,153,0.2)">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-[10px] font-extrabold tracking-widest uppercase text-emerald-400/80">Ежедневный бонус</div>
+              <div id="daily-bonus-status" class="text-[10px] text-slate-500 font-bold mt-0.5">500+ 🪙 раз в сутки</div>
+            </div>
+            <button type="button" id="daily-bonus-btn" onclick="claimDailyBonus()" class="px-3 py-2 rounded-xl text-[11px] font-extrabold" style="background:linear-gradient(135deg,#34d399,#059669);color:#042f1a">Забрать</button>
+          </div>
+        </div>
+
+        <div class="relative rounded-2xl p-3 space-y-2" style="background:rgba(0,0,0,0.35);border:1px solid rgba(96,165,250,0.2)">
+          <div class="text-[10px] font-extrabold tracking-widest uppercase text-sky-400/80">Быстрые функции</div>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="featureFreeSpin()" class="py-2 rounded-xl text-[10px] font-extrabold border border-white/10 bg-white/5">🎰 Free spin</button>
+            <button type="button" onclick="featureCopyId()" class="py-2 rounded-xl text-[10px] font-extrabold border border-white/10 bg-white/5">📋 Мой ID</button>
+            <button type="button" onclick="featureToggleTheme()" class="py-2 rounded-xl text-[10px] font-extrabold border border-white/10 bg-white/5">🌙 Тема</button>
+            <button type="button" onclick="forcePullCloud()" class="py-2 rounded-xl text-[10px] font-extrabold border border-white/10 bg-white/5">☁ Синк</button>
+            <button type="button" onclick="featureShowAchievements()" class="py-2 rounded-xl text-[10px] font-extrabold border border-white/10 bg-white/5">🏅 Ачивки</button>
+            <button type="button" onclick="featureShowPromos()" class="py-2 rounded-xl text-[10px] font-extrabold border border-white/10 bg-white/5">🎟 Мои промо</button>
+            <button type="button" onclick="featureLastGames()" class="py-2 rounded-xl text-[10px] font-extrabold border border-white/10 bg-white/5">⏱ Недавние</button>
+            <button type="button" onclick="featureSessionStats()" class="py-2 rounded-xl text-[10px] font-extrabold border border-white/10 bg-white/5">📊 Сессия</button>
+          </div>
+          <div id="feature-panel-out" class="text-[10px] text-slate-400 font-bold min-h-[16px]"></div>
+        </div>
+
+        <div class="relative rounded-2xl p-3 space-y-1.5" style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06)">
+          <div class="text-[10px] font-extrabold tracking-widest uppercase text-slate-500">Избранные игры</div>
+          <div id="fav-games-row" class="flex flex-wrap gap-1.5"></div>
+          <div class="text-[9px] text-slate-600">Открой игру и нажми ★ в шапке игры (или сюда добавятся недавние)</div>
+        </div>
+
+        <div class="relative text-center text-[9px] text-slate-600 font-bold tracking-wide">OBSIDIAN · SYNC · v50+</div>
       </div>
     </div>
 
@@ -5045,12 +5085,12 @@
       }
       // VOID passport fields
       const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-      set('profile-balance', (typeof balance !== 'undefined' ? balance : 0).toLocaleString('ru') + ' 🪙');
+      set('profile-balance', formatCompact(typeof balance !== 'undefined' ? balance : 0) + ' 🪙');
       set('profile-games', typeof gamesPlayed !== 'undefined' ? gamesPlayed : 0);
       set('profile-wins', typeof totalWon !== 'undefined' ? Math.min(99999, Math.floor((totalWon||0)/100)) : 0);
       set('profile-streak', typeof winStreak !== 'undefined' ? winStreak : 0);
-      set('profile-spent', typeof totalSpent !== 'undefined' ? (totalSpent||0).toLocaleString('ru') : '0');
-      set('profile-won', typeof totalWon !== 'undefined' ? (totalWon||0).toLocaleString('ru') : '0');
+      set('profile-spent', formatCompact(typeof totalSpent !== 'undefined' ? (totalSpent||0) : 0));
+      set('profile-won', formatCompact(typeof totalWon !== 'undefined' ? (totalWon||0) : 0));
       set('profile-cases', typeof casesOpened !== 'undefined' ? casesOpened : 0);
       set('profile-luck', 'x' + (typeof globalLuck !== 'undefined' ? globalLuck : 1));
     }
@@ -5615,8 +5655,8 @@ function init() {
 
     function updateLocalBalance(amountChange) {
       const n = Number(amountChange) || 0;
-      if (n < 0) totalSpent += Math.abs(n);
-      else if (n > 0) totalWon += n;
+      if (n < 0) { totalSpent += Math.abs(n); try { sessionWagered += Math.abs(n); } catch(e) {} }
+      else if (n > 0) { totalWon += n; try { sessionWon += n; } catch(e) {} }
       balance = Math.max(0, (balance || 0) + n);
       saveGameData();
       updateUI();
@@ -5625,6 +5665,38 @@ function init() {
       try { if (typeof beatPresence === 'function') beatPresence(); } catch (e) {}
       try { refreshPromoStrip(); } catch (e) {}
     }
+
+    
+    /** Compact money: 1500→1.5к, 2e6→2м, 3e9→3б, 4e12→4т, 5e15→5qa … */
+    function formatCompact(n, digits) {
+      n = Number(n);
+      if (!isFinite(n)) return '0';
+      const neg = n < 0;
+      n = Math.abs(n);
+      if (n < 1000) return (neg ? '-' : '') + String(Math.floor(n));
+      const units = [
+        { v: 1e3, s: 'к' },
+        { v: 1e6, s: 'м' },
+        { v: 1e9, s: 'б' },
+        { v: 1e12, s: 'т' },
+        { v: 1e15, s: 'qa' },
+        { v: 1e18, s: 'qi' },
+        { v: 1e21, s: 'sx' },
+        { v: 1e24, s: 'sp' },
+        { v: 1e27, s: 'oc' },
+        { v: 1e30, s: 'no' },
+        { v: 1e33, s: 'dc' }
+      ];
+      let u = units[0];
+      for (let i = 0; i < units.length; i++) {
+        if (n >= units[i].v) u = units[i];
+      }
+      const val = n / u.v;
+      const d = digits != null ? digits : (val >= 100 ? 0 : val >= 10 ? 1 : 2);
+      let s = val.toFixed(d).replace(/\.0+$/, '').replace(/(\.\d*?)0+$/, '$1');
+      return (neg ? '-' : '') + s + u.s;
+    }
+    function formatMoney(n) { return formatCompact(n); }
 
     function updateUI() {
       const elBal = document.getElementById('balance');
@@ -5635,16 +5707,17 @@ function init() {
       const elWon = document.getElementById('stat-won');
 
       if (elBal) {
-        elBal.textContent = balance.toLocaleString('ru');
+        elBal.textContent = formatCompact(balance);
+        elBal.title = Number(balance||0).toLocaleString('ru');
         elBal.classList.remove('balance-pulse');
         void elBal.offsetWidth;
         elBal.classList.add('balance-pulse');
       }
-      if (elWalletBal) elWalletBal.textContent = balance.toLocaleString('ru') + ' 🪙';
-      if (elProfBal) elProfBal.textContent = balance.toLocaleString('ru') + ' 🪙';
+      if (elWalletBal) elWalletBal.textContent = formatCompact(balance) + ' 🪙';
+      if (elProfBal) elProfBal.textContent = formatCompact(balance) + ' 🪙';
       if (elGames) elGames.textContent = gamesPlayed;
-      if (elSpent) elSpent.textContent = totalSpent.toLocaleString('ru') + ' 🪙';
-      if (elWon) elWon.textContent = totalWon.toLocaleString('ru') + ' 🪙';
+      if (elSpent) elSpent.textContent = formatCompact(totalSpent) + ' 🪙';
+      if (elWon) elWon.textContent = formatCompact(totalWon) + ' 🪙';
 
       const maxLimitEl = document.getElementById('upg-max-limit');
       if (maxLimitEl) maxLimitEl.textContent = balance;
@@ -5687,6 +5760,7 @@ function init() {
     function openScreen(name) {
       showScreen(name);
       if (name === 'tops') renderTops();
+      if (name === 'profile') { try { updateDailyBonusUI(); renderFavGames(); } catch(e) {} }
       if (name === 'owner') refreshOwnerPanel();
     }
     function openGameScreen(id) {
@@ -5706,6 +5780,7 @@ function init() {
       if (id === 'towers') renderTowersBoard(true);
       if (id === 'keno') initKenoGrid();
       if (id === 'arena' && typeof initArenaScreen === 'function') initArenaScreen();
+      try { trackLastGame(id); } catch(e) {}
       if (id === 'cases') initCasesCatalog();
       if (id === 'minecraft') initMcField();
       if (id === 'blackjack') { bjPlayer=[]; bjDealer=[]; bjActive=false; bjSetMode(false); document.getElementById('bj-status').textContent='Сделайте ставку и нажмите Раздать'; document.getElementById('bj-dealer-cards').innerHTML=''; document.getElementById('bj-player-cards').innerHTML=''; document.getElementById('bj-dealer-score').textContent='—'; document.getElementById('bj-player-score').textContent='—'; }
@@ -5736,32 +5811,100 @@ function init() {
       } catch (e) {}
     }
 
-    /** Добавить / обновить реального игрока в топе (для будущего API / админки) */
+    /** Normalize ids so tg_123 and 123 are the same person */
+    function normalizePlayerId(id) {
+      let s = String(id || '').trim();
+      if (s.indexOf('tg_') === 0) s = s.slice(3);
+      return s || String(id || '');
+    }
+    function normalizePlayerName(name) {
+      return String(name || '').replace(/\s*\(вы\)\s*/gi, '').trim().toLowerCase();
+    }
+
+    /** One player = one row (by id, then by name) */
+    function dedupeTopsPlayers(list) {
+      const byId = new Map();
+      (list || []).forEach(p => {
+        if (!p) return;
+        const id = normalizePlayerId(p.id);
+        if (!id) return;
+        const prev = byId.get(id);
+        const bal = Math.max(0, Math.floor(Number(p.balance) || 0));
+        const spins = Math.max(0, Math.floor(Number(p.spins) || 0));
+        const name = (p.name || ('Игрок ' + id)).replace(/\s*\(вы\)\s*/gi, '').trim();
+        if (!prev) {
+          byId.set(id, { id, name, balance: bal, spins });
+        } else {
+          byId.set(id, {
+            id,
+            name: name || prev.name,
+            balance: Math.max(prev.balance, bal),
+            spins: Math.max(prev.spins, spins)
+          });
+        }
+      });
+      // second pass: same display name → keep richest
+      const byName = new Map();
+      Array.from(byId.values()).forEach(p => {
+        const nk = normalizePlayerName(p.name);
+        if (!nk) { byName.set(p.id, p); return; }
+        const prev = byName.get(nk);
+        if (!prev || p.balance > prev.balance || (p.balance === prev.balance && p.spins > prev.spins)) {
+          byName.set(nk, p);
+        }
+      });
+      return Array.from(byName.values());
+    }
+
     function upsertRealTopPlayer(player) {
       if (!player || !player.id) return;
-      const list = loadRealTopsPlayers();
-      const idx = list.findIndex(p => String(p.id) === String(player.id));
+      let list = loadRealTopsPlayers();
+      const id = normalizePlayerId(player.id);
       const entry = {
-        id: String(player.id),
-        name: player.name || ('Игрок ' + player.id),
+        id,
+        name: (player.name || ('Игрок ' + id)).replace(/\s*\(вы\)\s*/gi, '').trim(),
         balance: Math.max(0, Math.floor(Number(player.balance) || 0)),
         spins: Math.max(0, Math.floor(Number(player.spins) || 0))
       };
-      if (idx >= 0) list[idx] = { ...list[idx], ...entry };
-      else list.push(entry);
+      const idx = list.findIndex(p => normalizePlayerId(p.id) === id);
+      if (idx >= 0) {
+        list[idx] = {
+          id,
+          name: entry.name || list[idx].name,
+          balance: Math.max(list[idx].balance || 0, entry.balance),
+          spins: Math.max(list[idx].spins || 0, entry.spins)
+        };
+      } else {
+        list.push(entry);
+      }
+      list = dedupeTopsPlayers(list);
       saveRealTopsPlayers(list);
     }
 
     function getRealTopsList(mode) {
-      const players = loadRealTopsPlayers();
+      const players = dedupeTopsPlayers(loadRealTopsPlayers());
       return players.map(p => ({
         name: p.name || ('Игрок ' + p.id),
         value: mode === 'balance' ? (Number(p.balance) || 0) : (Number(p.spins) || 0),
-        id: String(p.id),
+        id: normalizePlayerId(p.id),
         isReal: true
       }));
     }
 
+    function cleanupTopsDuplicates() {
+      const cleaned = dedupeTopsPlayers(loadRealTopsPlayers());
+      saveRealTopsPlayers(cleaned);
+      return cleaned.length;
+    }
+
+    function refreshTopsNow() {
+      playSound('click');
+      const n = cleanupTopsDuplicates();
+      upsertSelfInTops();
+      if (typeof publishTopsSelf === 'function') publishTopsSelf();
+      renderTops();
+      showToast && showToast('Топ: ' + n + ' уникальных', true);
+    }
     function switchTopsTab(tab) {
       playSound('click');
       topsTab = tab;
@@ -5803,15 +5946,21 @@ function init() {
 
     function upsertSelfInTops() {
       try {
-        const id = String(currentUserId || presenceId());
+        const id = normalizePlayerId(currentUserId || presenceId());
         const name = (document.getElementById('user-name')?.textContent || 'Игрок').replace(' (вы)', '');
         upsertRealTopPlayer({ id, name, balance: balance, spins: typeof gamesPlayed === 'number' ? gamesPlayed : 0 });
-        // also merge other presence peers into tops (real sessions only)
+        const meId = id;
+        const meName = normalizePlayerName(name);
         const map = JSON.parse(localStorage.getItem(PRESENCE_KEY) || '{}');
         Object.keys(map).forEach(pid => {
           const p = map[pid];
-          if (p && p.name) upsertRealTopPlayer({ id: pid, name: p.name, balance: p.bal || 0, spins: 0 });
+          if (!p || !p.name) return;
+          const nid = normalizePlayerId(pid);
+          if (nid === meId) return;
+          if (normalizePlayerName(p.name) === meName) return;
+          upsertRealTopPlayer({ id: nid, name: p.name, balance: p.bal || 0, spins: 0 });
         });
+        cleanupTopsDuplicates();
       } catch (e) {}
     }
 
@@ -5823,14 +5972,29 @@ function init() {
       const realPlayers = getRealTopsList(mode);
       const myName = (document.getElementById('user-name')?.textContent || 'Вы').trim() || 'Вы';
       const myValue = mode === 'balance' ? balance : gamesPlayed;
-      const meId = String(currentUserId || 'me');
+      const meId = normalizePlayerId(currentUserId || presenceId() || 'me');
       const me = { name: myName + ' (вы)', value: myValue, id: meId, isMe: true, isReal: true };
 
-      // Не дублируем себя, если уже есть в списке реальных
-      const others = realPlayers.filter(p => String(p.id) !== meId);
-      const all = others.concat([me]).sort((a, b) => b.value - a.value);
+      // One person once: drop self by id AND by name
+      const myNameKey = normalizePlayerName(myName);
+      const others = realPlayers.filter(p => {
+        const pid = normalizePlayerId(p.id);
+        if (pid === meId) return false;
+        if (normalizePlayerName(p.name) === myNameKey) return false;
+        return true;
+      });
+      // also unique among others by name
+      const seenName = new Set();
+      const uniqueOthers = [];
+      others.sort((a,b) => b.value - a.value).forEach(p => {
+        const nk = normalizePlayerName(p.name) || p.id;
+        if (seenName.has(nk)) return;
+        seenName.add(nk);
+        uniqueOthers.push(p);
+      });
+      const all = uniqueOthers.concat([me]).sort((a, b) => b.value - a.value);
       const top = all.slice(0, 20);
-      const myRank = all.findIndex(x => x.isMe || String(x.id) === meId) + 1;
+      const myRank = all.findIndex(x => x.isMe || normalizePlayerId(x.id) === meId) + 1;
 
       if (top.length <= 1 && others.length === 0) {
         listEl.innerHTML = `
@@ -5844,7 +6008,7 @@ function init() {
               <span class="w-7 text-center text-sm font-extrabold">🥇</span>
               <span class="text-sm font-bold text-white truncate">${me.name}</span>
             </div>
-            <span class="text-xs font-extrabold text-amber-300 whitespace-nowrap">${mode === 'balance' ? (myValue.toLocaleString('ru') + ' 🪙') : (myValue.toLocaleString('ru') + ' игр')}</span>
+            <span class="text-xs font-extrabold text-amber-300 whitespace-nowrap">${mode === 'balance' ? (formatCompact(myValue) + ' 🪙') : (formatCompact(myValue) + ' игр')}</span>
           </div>`;
       } else {
         const medals = ['🥇', '🥈', '🥉'];
@@ -5852,8 +6016,8 @@ function init() {
           const rank = i + 1;
           const medal = medals[i] || (`${rank}.`);
           const valStr = mode === 'balance'
-            ? (row.value.toLocaleString('ru') + ' 🪙')
-            : (row.value.toLocaleString('ru') + ' игр');
+            ? (formatCompact(row.value) + ' 🪙')
+            : (formatCompact(row.value) + ' игр');
           const hl = row.isMe
             ? 'bg-amber-500/15 border border-amber-500/30'
             : 'border border-transparent';
@@ -5874,8 +6038,8 @@ function init() {
       if (youLabel) youLabel.textContent = mode === 'balance' ? 'Баланс' : 'Прокруты';
       if (youValue) {
         youValue.textContent = mode === 'balance'
-          ? balance.toLocaleString('ru') + ' 🪙'
-          : gamesPlayed.toLocaleString('ru') + ' игр';
+          ? formatCompact(balance) + ' 🪙'
+          : formatCompact(gamesPlayed) + ' игр';
       }
     }
 
@@ -6321,16 +6485,116 @@ function init() {
       addXp(100);
       saveGameData();
       playSound('win');
-      showFloatingPopup('+' + rew + ' 🪙 Активировано!', true);
+      showFloatingPopup('+' + (typeof formatCompact==='function'?formatCompact(rew):rew) + ' 🪙 Активировано!', true);
       promoInput.value = '';
       renderAdminPromoList();
     }
 
 
+    
+    // ---- Extra features pack ----
+    let sessionStartedAt = Date.now();
+    let sessionWagered = 0;
+    let sessionWon = 0;
+    let lastPlayedGames = [];
+    try { lastPlayedGames = JSON.parse(localStorage.getItem('case_lounge_last_games') || '[]'); } catch(e) {}
+    let favGames = [];
+    try { favGames = JSON.parse(localStorage.getItem('case_lounge_fav_games') || '[]'); } catch(e) {}
+    let freeSpinDay = '';
+    try { freeSpinDay = localStorage.getItem('case_lounge_free_spin_day') || ''; } catch(e) {}
+
+    function featureOut(t) {
+      const el = document.getElementById('feature-panel-out');
+      if (el) el.textContent = t;
+    }
+    function featureCopyId() {
+      const id = String(currentUserId || presenceId());
+      try { navigator.clipboard.writeText(id); } catch(e) {}
+      featureOut('ID: ' + id);
+      showToast && showToast('ID скопирован', true);
+    }
+    function featureToggleTheme() {
+      document.body.classList.toggle('theme-night-pro');
+      document.body.classList.toggle('theme-emerald');
+      featureOut('Тема переключена');
+    }
+    function featureShowPromos() {
+      const list = (claimedPromoCodes || []).slice(-8).join(', ') || 'пусто';
+      featureOut('Промо: ' + list);
+      showFloatingPopup('Активировано: ' + list, true);
+    }
+    function featureLastGames() {
+      featureOut('Недавние: ' + (lastPlayedGames.slice(0,5).join(', ') || '—'));
+    }
+    function featureSessionStats() {
+      const min = Math.floor((Date.now() - sessionStartedAt) / 60000);
+      featureOut('Сессия ' + min + 'м · ставка ' + formatCompact(sessionWagered) + ' · выигрыш ' + formatCompact(sessionWon));
+    }
+    function featureShowAchievements() {
+      const a = [];
+      if ((gamesPlayed||0) >= 10) a.push('Игрок 10');
+      if ((gamesPlayed||0) >= 50) a.push('Ветеран 50');
+      if ((totalWon||0) >= 10000) a.push('Выигрыш 10к');
+      if ((winStreak||0) >= 5) a.push('Стрик 5');
+      if ((userLevel||1) >= 5) a.push('LVL5');
+      if ((claimedPromoCodes||[]).length >= 1) a.push('Промо');
+      if ((casesOpened||0) >= 5) a.push('Кейсер');
+      if ((dailyStreak||0) >= 3) a.push('Стрик входа 3');
+      featureOut('🏅 ' + (a.join(' · ') || 'Пока нет — играй!'));
+      showFloatingPopup(a.length ? a.join(', ') : 'Ачивок пока нет', true);
+    }
+    function featureFreeSpin() {
+      const day = new Date().toISOString().slice(0,10);
+      if (freeSpinDay === day) {
+        showFloatingPopup('Free spin уже сегодня', false);
+        return;
+      }
+      freeSpinDay = day;
+      try { localStorage.setItem('case_lounge_free_spin_day', day); } catch(e) {}
+      const pool = [50, 100, 150, 200, 300, 500, 777];
+      const win = pool[Math.floor(Math.random()*pool.length)];
+      updateLocalBalance(win);
+      playSound('win');
+      showFloatingPopup('Free spin +' + formatCompact(win) + ' 🪙', true);
+      featureOut('Выпало +' + formatCompact(win));
+    }
+    function trackLastGame(id) {
+      try {
+        lastPlayedGames = [id].concat(lastPlayedGames.filter(x => x !== id)).slice(0, 8);
+        localStorage.setItem('case_lounge_last_games', JSON.stringify(lastPlayedGames));
+        renderFavGames();
+      } catch(e) {}
+    }
+    function toggleFavGame(id) {
+      if (favGames.includes(id)) favGames = favGames.filter(x => x !== id);
+      else favGames = [id].concat(favGames).slice(0, 6);
+      try { localStorage.setItem('case_lounge_fav_games', JSON.stringify(favGames)); } catch(e) {}
+      renderFavGames();
+      showToast && showToast(favGames.includes(id) ? 'В избранном' : 'Убрано', true);
+    }
+    function renderFavGames() {
+      const row = document.getElementById('fav-games-row');
+      if (!row) return;
+      const names = { arena:'Арена', blackjack:'BJ', mines:'Мины', crash:'Краш', roulette:'Рулетка', cases:'Кейсы', upgrader:'UPG', minecraft:'MC', plinko:'Plinko', slots:'Слоты' };
+      const ids = (favGames.length ? favGames : lastPlayedGames).slice(0, 6);
+      if (!ids.length) {
+        row.innerHTML = '<span class="text-[10px] text-slate-600">Пока пусто</span>';
+        return;
+      }
+      row.innerHTML = ids.map(id =>
+        '<button type="button" onclick="openGameScreen(\'' + id + '\')" class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold border border-amber-500/25" style="background:rgba(212,175,55,0.1);color:#f5e6a8">' + (names[id]||id) + '</button>'
+      ).join('');
+    }
+
     function canClaimDailyBonus() {
-      const now = Date.now();
-      const dayMs = 24 * 60 * 60 * 1000;
-      return (now - lastDailyClaim) >= dayMs;
+      const today = new Date().toISOString().slice(0, 10);
+      // lastDailyClaim may be timestamp or YYYY-MM-DD
+      if (!lastDailyClaim) return true;
+      if (typeof lastDailyClaim === 'string' && lastDailyClaim.length >= 10) return lastDailyClaim.slice(0,10) !== today;
+      if (typeof lastDailyClaim === 'number') {
+        return new Date(lastDailyClaim).toISOString().slice(0,10) !== today;
+      }
+      return true;
     }
 
     function updateDailyBonusUI() {
@@ -6355,11 +6619,12 @@ function init() {
 
     function claimDailyBonus() {
       playSound('click');
-      const today = new Date().toISOString().slice(0, 10);
-      if (lastDailyClaim === today) {
+      if (!canClaimDailyBonus()) {
         showFloatingPopup('Уже забрано сегодня', false);
+        updateDailyBonusUI();
         return;
       }
+      const today = new Date().toISOString().slice(0, 10);
       // streak
       const y = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
       if (lastStreakDay === y) dailyStreak = (dailyStreak || 0) + 1;
@@ -6574,7 +6839,7 @@ function init() {
         const el = document.createElement('span');
         el.className = 'ticker-item';
         const ic = icon || GAME_WIN_ICONS[game] || '✦';
-        el.innerHTML = ic + ' ' + (name || 'Игрок') + ' <b>+' + Number(amount).toLocaleString('ru') + '</b> в ' + (game || 'игре');
+        el.innerHTML = ic + ' ' + (name || 'Игрок') + ' <b>+' + formatCompact(amount) + '</b> в ' + (game || 'игре');
         track.appendChild(el);
         // keep scroll seamless: duplicate first few if few items
         while (track.children.length > 30) track.removeChild(track.firstChild);
@@ -10568,8 +10833,8 @@ function init() {
       const pot = arenaPot();
       const potEl = document.getElementById('arena-pot');
       const hub = document.getElementById('arena-hub-pot');
-      if (potEl) potEl.textContent = pot.toLocaleString('ru');
-      if (hub) hub.textContent = pot.toLocaleString('ru');
+      if (potEl) potEl.textContent = formatCompact(pot);
+      if (hub) hub.textContent = formatCompact(pot);
       const rid = document.getElementById('arena-round-id');
       if (rid) rid.textContent = '#' + arenaRound;
       if (!box) return;
