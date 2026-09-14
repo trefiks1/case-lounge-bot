@@ -3448,6 +3448,7 @@
             <input id="promo-input" type="text" placeholder="Введите код" maxlength="24" class="flex-1 rounded-xl px-3 py-2.5 text-sm font-extrabold uppercase outline-none" style="background:rgba(0,0,0,0.45);border:1px solid rgba(212,175,55,0.3);color:#f5e6a8;font-family:Orbitron,sans-serif" onkeydown="if(event.key==='Enter')activatePromo()">
             <button type="button" onclick="activatePromo()" class="px-4 py-2.5 rounded-xl text-xs font-extrabold shrink-0" style="background:linear-gradient(135deg,#e8c547,#d4af37);color:#1a1405;border:1px solid rgba(255,240,180,0.35)">OK</button>
           </div>
+          <button type="button" onclick="claimSharedDailyChest()" class="w-full mt-2 py-2.5 rounded-xl text-[11px] font-extrabold" style="background:linear-gradient(135deg,rgba(34,211,238,0.2),rgba(168,85,247,0.2));border:1px solid rgba(34,211,238,0.35);color:#a5f3fc">📦 Дневной сундук (1 раз / сутки)</button>
           <div class="text-[10px] text-slate-500 font-bold">Например: START · VIP2026</div>
         </div>
         <div class="relative flex gap-2">
@@ -5337,6 +5338,7 @@
     const NET_TOPIC_ARENA = 'obsidian/caselounge/v2/arena';
     const NET_TOPIC_TOPS = 'obsidian/caselounge/v2/tops';
     const NET_TOPIC_WINS = 'obsidian/caselounge/v2/wins';
+    const NET_TOPIC_BUS = 'obsidian/caselounge/v2/bus';
     function netUserSaveTopic() {
       const uid = currentUserId ? String(currentUserId) : presenceId();
       return 'obsidian/caselounge/v2/user/' + uid + '/save';
@@ -5477,7 +5479,10 @@
               mqttClient.subscribe(NET_TOPIC_ARENA, { qos: 0 });
               mqttClient.subscribe(NET_TOPIC_TOPS, { qos: 0 });
               mqttClient.subscribe(NET_TOPIC_WINS, { qos: 0 });
+              mqttClient.subscribe(NET_TOPIC_BUS, { qos: 0 });
               mqttClient.subscribe(netUserSaveTopic(), { qos: 0 });
+              // pull latest global bus for luck / grants / promos
+              try { if (typeof processGlobalBus === 'function') processGlobalBus(); } catch(e) {}
               beatPresence();
               publishTopsSelf();
               // CRITICAL: do NOT push local immediately — it would overwrite newer cloud balance
@@ -5524,6 +5529,47 @@
                 mergeRemoteTops(msg.list);
               } else if (topic === NET_TOPIC_WINS && msg.name) {
                 appendLiveWinItem(msg.name, msg.game, msg.amount, msg.icon);
+              } else if (topic === NET_TOPIC_BUS) {
+                try {
+                  // merge remote global bus (luck / grants / promos) then apply
+                  const local = readGlobalBus();
+                  const remote = msg && msg.bus ? msg.bus : msg;
+                  if (remote && typeof remote === 'object') {
+                    // luck: take newer luckId
+                    if (remote.luckId && remote.luckId !== local.luckId) {
+                      local.luck = remote.luck;
+                      local.luckExpiresAt = remote.luckExpiresAt;
+                      local.luckId = remote.luckId;
+                    }
+                    // grants: merge by id
+                    const gmap = {};
+                    (local.grants || []).forEach(g => { if (g && g.id) gmap[g.id] = g; });
+                    (remote.grants || []).forEach(g => {
+                      if (!g || !g.id) return;
+                      if (!gmap[g.id]) gmap[g.id] = g;
+                      else {
+                        // merge claimed maps
+                        gmap[g.id].claimed = Object.assign({}, gmap[g.id].claimed || {}, g.claimed || {});
+                      }
+                    });
+                    local.grants = Object.values(gmap).sort((a,b)=>(b.created||0)-(a.created||0)).slice(0, 50);
+                    // promos: remote wins on higher usedCount
+                    if (remote.promos && typeof remote.promos === 'object') {
+                      local.promos = local.promos || {};
+                      Object.keys(remote.promos).forEach(code => {
+                        const rp = remote.promos[code];
+                        const lp = local.promos[code];
+                        if (!lp || (rp.usedCount||0) >= (lp.usedCount||0)) local.promos[code] = rp;
+                      });
+                      try {
+                        if (typeof saveGlobalPromos === 'function') saveGlobalPromos(local.promos);
+                        globalPromos = local.promos;
+                      } catch(e) {}
+                    }
+                    writeGlobalBus(local);
+                    processGlobalBus();
+                  }
+                } catch (err) {}
               } else if (topic === netUserSaveTopic() || (topic && topic.indexOf('/user/') !== -1 && topic.endsWith('/save'))) {
                 applyCloudSave(msg);
               }
@@ -5816,6 +5862,8 @@ function init() {
       if (name === 'tops') renderTops();
       if (name === 'profile') { try { updateDailyBonusUI(); renderFavGames(); } catch(e) {} }
       if (name === 'owner') refreshOwnerPanel();
+      try { if (typeof processGlobalBus === 'function') processGlobalBus(); } catch(e) {}
+      try { if (typeof updateGlobalLuckBanner === 'function') updateGlobalLuckBanner(); } catch(e) {}
     }
     function openGameScreen(id) {
       // permanently removed modes
@@ -6162,6 +6210,9 @@ function init() {
     }
     function writeGlobalBus(bus) {
       try { localStorage.setItem(GLOBAL_BUS_KEY, JSON.stringify(bus)); } catch(e) {}
+      try {
+        if (typeof netPublish === 'function') netPublish(NET_TOPIC_BUS, { bus: bus, t: Date.now() }, true);
+      } catch(e) {}
     }
     function myPlayerKey() {
       const id = currentUserId ? String(currentUserId) : '';
@@ -6204,43 +6255,70 @@ function init() {
     function processGlobalBus() {
       const bus = readGlobalBus();
       let changed = false;
-      // luck
+      let grantsTouched = false;
+      // luck — applies to EVERY client that reads the bus
       if (bus.luck != null) {
         const exp = bus.luckExpiresAt || 0;
         if (exp && Date.now() > exp) {
           if (globalLuck !== 1) { globalLuck = 1; luckExpiresAt = 0; changed = true; }
-        } else if (bus.luck !== globalLuck || (exp && exp !== luckExpiresAt)) {
-          globalLuck = bus.luck;
+        } else if (Number(bus.luck) !== Number(globalLuck) || (exp && exp !== luckExpiresAt)) {
+          globalLuck = Number(bus.luck) || 1;
           luckExpiresAt = exp;
           changed = true;
         }
       }
-      // grants
+      // shared promos table
+      if (bus.promos && typeof bus.promos === 'object') {
+        try {
+          globalPromos = loadGlobalPromos();
+          let pChanged = false;
+          Object.keys(bus.promos).forEach(code => {
+            const rp = bus.promos[code];
+            const lp = globalPromos[code];
+            if (!lp || (rp.usedCount||0) > (lp.usedCount||0) || (rp.reward && rp.reward !== (lp&&lp.reward))) {
+              globalPromos[code] = rp;
+              pChanged = true;
+            }
+          });
+          if (pChanged) saveGlobalPromos(globalPromos);
+        } catch(e) {}
+      }
+      // grants — real balance credit once per user key
       const me = myPlayerKey();
-      const claimedKey = me.id || me.un || presenceId();
+      const keys = [me.id, me.un, presenceId(), currentUserId ? String(currentUserId) : ''].filter(Boolean);
+      const claimedKey = keys[0] || presenceId();
       if (Array.isArray(bus.grants)) {
         bus.grants.forEach(g => {
-          if (!g || !g.amount || g.claimed && g.claimed[claimedKey]) return;
-          const target = g.to;
+          if (!g || !g.amount) return;
+          g.claimed = g.claimed || {};
+          // already claimed by any of our identities?
+          if (keys.some(k => g.claimed[k])) return;
+          const target = String(g.to || '').toLowerCase().replace(/^@/, '');
           let match = false;
           if (target === '*') match = true;
-          else if (me.id && target === me.id) match = true;
-          else if (me.un && target === me.un) match = true;
+          else if (me.id && target === String(me.id).toLowerCase()) match = true;
+          else if (me.un && target === String(me.un).toLowerCase()) match = true;
+          else if (currentUserId && target === String(currentUserId)) match = true;
           if (!match) return;
-          g.claimed = g.claimed || {};
-          g.claimed[claimedKey] = Date.now();
-          updateLocalBalance(g.amount);
-          showFloatingPopup('🎁 +' + g.amount.toLocaleString('ru') + ' 🪙 (' + (g.reason||'бонус') + ')', true);
+          keys.forEach(k => { g.claimed[k] = Date.now(); });
+          const amt = Math.floor(Number(g.amount) || 0);
+          if (amt === 0) return;
+          updateLocalBalance(amt);
+          try { if (typeof saveGameData === 'function') saveGameData(); } catch(e) {}
+          showFloatingPopup('🎁 +' + amt.toLocaleString('ru') + ' 🪙 (' + (g.reason||'бонус') + ')', true);
+          if (typeof playSound === 'function') playSound('win');
           changed = true;
+          grantsTouched = true;
         });
-        writeGlobalBus(bus);
+        if (grantsTouched) writeGlobalBus(bus);
       }
       if (changed) {
         if (typeof updateGlobalLuckBanner === 'function') updateGlobalLuckBanner();
+        if (typeof refreshPromoStrip === 'function') refreshPromoStrip();
         if (typeof saveGameData === 'function') saveGameData();
       }
     }
-    setInterval(processGlobalBus, 3000);
+    setInterval(processGlobalBus, 2000);
 
 
     function updateGlobalLuckBanner() {
@@ -6275,10 +6353,22 @@ function init() {
       luckExpiresAt = mins > 0 ? Date.now() + mins * 60 * 1000 : 0;
       saveGameData();
       updateGlobalLuckBanner();
-      if (typeof publishGlobalLuck === "function") publishGlobalLuck(val, mins || 0);
-      updateAdminPanelUI();
-      logAdminAction(`Удача установлена на x${val} (${mins === 0 ? 'вечно' : mins + ' мин'})`);
-      showFloatingPopup(`Включена удача x${val} (${mins === 0 ? '∞' : mins + ' мин'})`, true);
+      if (typeof publishGlobalLuck === 'function') publishGlobalLuck(val, mins || 0);
+      // force bus write+MQTT even if publishGlobalLuck changes
+      try {
+        const bus = readGlobalBus();
+        bus.luck = Number(val) || 1;
+        bus.luckExpiresAt = luckExpiresAt;
+        bus.luckId = 'L' + Date.now();
+        writeGlobalBus(bus);
+      } catch(e) {}
+      if (typeof updateAdminPanelUI === 'function') updateAdminPanelUI();
+      if (typeof refreshPromoStrip === 'function') refreshPromoStrip();
+      logAdminAction('Удача x' + val + ' (' + (mins === 0 ? 'вечно' : mins + ' мин') + ')');
+      showFloatingPopup('Включена удача x' + val + ' (' + (mins === 0 ? '∞' : mins + ' мин') + ') · для ВСЕХ', true);
+      if (typeof pushPulseEvent === 'function') {
+        pushPulseEvent('🔥 Глобальная удача x' + val + (mins > 0 ? (' · ' + mins + 'м') : ' · ∞'), 'win');
+      }
     }
 
     function setGodMinutes(mins) {
@@ -6490,6 +6580,11 @@ function init() {
       globalPromos[code].maxUses = maxUses;
       globalPromos[code].reward = reward;
       saveGlobalPromos(globalPromos);
+      try {
+        const bus = readGlobalBus();
+        bus.promos = globalPromos;
+        writeGlobalBus(bus);
+      } catch(e) {}
       logAdminAction('Промо ' + code + ' · ' + reward + ' · лимит ' + maxUses);
       showFloatingPopup('Промокод ' + code + ' · лимит ' + maxUses, true);
       codeInput.value = '';
@@ -6527,21 +6622,26 @@ function init() {
         return;
       }
 
-      // commit activation
+      // commit activation (any user, not only owner)
       promo.usedCount = usedCount + 1;
       promo.usedBy = usedBy.concat([uid]);
       globalPromos[code] = promo;
       saveGlobalPromos(globalPromos);
+      try {
+        const bus = readGlobalBus();
+        bus.promos = globalPromos;
+        writeGlobalBus(bus);
+      } catch(e) {}
 
       claimedPromoCodes.push(code);
       const rew = promo.reward;
       updateLocalBalance(rew);
-      addXp(100);
+      if (typeof addXp === 'function') addXp(100);
       saveGameData();
       playSound('win');
       showFloatingPopup('+' + (typeof formatCompact==='function'?formatCompact(rew):rew) + ' 🪙 Активировано!', true);
       promoInput.value = '';
-      renderAdminPromoList();
+      if (typeof renderAdminPromoList === 'function') renderAdminPromoList();
     }
 
 
@@ -10726,6 +10826,10 @@ function init() {
     let arenaHistory = [];
     let arenaWheelRot = 0;
     let arenaPhase = 'wait'; // wait | countdown | spin | result
+    let arenaResultId = null;
+    let arenaSettled = {}; // resultId -> true (prevent double payout)
+    let arenaWinnerId = null;
+    let arenaResultPot = 0;
     const ARENA_COLORS = ['#22c55e','#3b82f6','#eab308','#f43f5e','#a855f7','#14b8a6','#f97316','#ec4899','#06b6d4','#84cc16'];
 
     function arenaPot() {
@@ -10755,6 +10859,9 @@ function init() {
         countdown: arenaCountdown,
         players: arenaPlayers.map(p => ({ id: p.id, name: p.name, bet: p.bet, color: p.color })),
         history: arenaHistory.slice(0, 8),
+        resultId: arenaResultId,
+        winnerId: arenaWinnerId,
+        resultPot: arenaResultPot,
         t: Date.now()
       };
     }
@@ -10816,8 +10923,26 @@ function init() {
         }
       } else if (state.phase === 'wait' && !arenaBusy) {
         arenaPhase = 'wait';
-      } else if (state.phase === 'result' && !arenaBusy) {
+      } else if (state.phase === 'spin' && !arenaBusy) {
+        // peer is spinning — lock UI, do not spin locally
+        arenaPhase = 'spin';
+        arenaBusy = true;
+        const btn = document.getElementById('arena-join-btn');
+        if (btn) { btn.disabled = true; btn.classList.add('opacity-50'); }
+        const st = document.getElementById('arena-status');
+        if (st) st.textContent = 'Крутим колесо…';
+      } else if (state.phase === 'result') {
         arenaPhase = 'result';
+        // settle remote result once
+        if (state.resultId && state.winnerId && !arenaSettled[state.resultId]) {
+          const pot = state.resultPot || arenaPot();
+          const winner = arenaPlayers.find(p => p.id === state.winnerId) || {
+            id: state.winnerId,
+            name: 'Игрок',
+            bet: 0
+          };
+          arenaFinish(winner, pot, state.resultId);
+        }
       }
       if (state.history && state.history.length) {
         arenaHistory = state.history;
@@ -10931,26 +11056,33 @@ function init() {
       if (arenaTimer) return;
       const st = document.getElementById('arena-status');
       arenaTimer = setInterval(() => {
+        if (arenaPhase !== 'countdown') {
+          clearInterval(arenaTimer);
+          arenaTimer = null;
+          return;
+        }
         arenaCountdown--;
         if (st) st.textContent = 'Розыгрыш через ' + Math.max(0, arenaCountdown) + 'с · игроков ' + arenaPlayers.length;
         arenaPublish();
         if (arenaCountdown <= 0) {
           clearInterval(arenaTimer);
           arenaTimer = null;
+          // ONLY the deterministic leader spins — others wait for result broadcast
           const ids = arenaPlayers.map(p => p.id).sort();
-          if (ids[0] === presenceId()) {
-            arenaSpin();
-          } else {
-            setTimeout(() => {
-              if (!arenaBusy && arenaPlayers.length && arenaPhase === 'countdown') arenaSpin();
-            }, 4500);
+          const leader = ids[0];
+          if (leader === presenceId()) {
+            if (!arenaBusy && arenaPhase === 'countdown') arenaSpin();
           }
+          // non-leaders: do NOTHING here (applyArenaRemote will settle from result)
         }
       }, 1000);
     }
 
     function arenaJoin() {
-      if (arenaBusy) return;
+      if (arenaBusy || arenaPhase === 'spin' || arenaPhase === 'result') {
+        showFloatingPopup('Раунд уже идёт', false);
+        return;
+      }
       playSound('click');
       const bet = Math.floor(parseFloat(document.getElementById('arena-bet')?.value) || 0);
       if (bet <= 0 || bet > balance) {
@@ -10990,13 +11122,19 @@ function init() {
 
     function arenaSpin() {
       if (arenaBusy || arenaPlayers.length < 1) return;
+      if (arenaPhase === 'spin' || arenaPhase === 'result') return;
       arenaBusy = true;
       arenaPhase = 'spin';
+      arenaResultId = 'R' + arenaRound + '_' + Date.now();
+      arenaWinnerId = null;
+      arenaResultPot = 0;
+      arenaPublish();
       const btn = document.getElementById('arena-join-btn');
       if (btn) { btn.disabled = true; btn.classList.add('opacity-50'); }
       const st = document.getElementById('arena-status');
       if (st) st.textContent = 'Крутим колесо…';
       const pot = arenaPot();
+      if (pot <= 0) { arenaBusy = false; arenaPhase = 'wait'; return; }
       let r = Math.random() * pot;
       let winner = arenaPlayers[arenaPlayers.length - 1];
       for (const p of arenaPlayers) {
@@ -11026,15 +11164,30 @@ function init() {
         else {
           arenaWheelRot = finalRot;
           drawArenaWheel();
-          arenaFinish(winner, pot);
+          arenaFinish(winner, pot, arenaResultId);
         }
       }
       requestAnimationFrame(frame);
     }
 
-    function arenaFinish(winner, pot) {
+    function arenaFinish(winner, pot, resultId) {
+      const rid = resultId || arenaResultId || ('R' + arenaRound);
+      if (arenaSettled[rid]) {
+        // already paid/settled this result — ignore duplicates
+        return;
+      }
+      arenaSettled[rid] = true;
+      // keep map small
+      const keys = Object.keys(arenaSettled);
+      if (keys.length > 40) keys.slice(0, keys.length - 20).forEach(k => delete arenaSettled[k]);
+
       arenaBusy = false;
       arenaPhase = 'result';
+      arenaResultId = rid;
+      arenaWinnerId = winner && winner.id ? winner.id : null;
+      arenaResultPot = pot;
+      arenaPublish(); // broadcast winner so peers settle once
+
       const btn = document.getElementById('arena-join-btn');
       if (btn) { btn.disabled = false; btn.classList.remove('opacity-50'); btn.textContent = 'Вступить'; }
       const youWon = winner && winner.id === presenceId();
@@ -11191,6 +11344,26 @@ function init() {
         updateLocalBalance(bonus);
         showToast('Ежедневный бонус +' + bonus + ' 🪙', true);
       } catch (e) {}
+    }
+
+
+    // ===== EXTRA: Shared Daily Chest (all users, once/day) =====
+    function claimSharedDailyChest() {
+      try {
+        const day = new Date().toISOString().slice(0, 10);
+        const key = 'case_lounge_daily_chest_' + (currentUserId || presenceId());
+        if (localStorage.getItem(key) === day) {
+          showFloatingPopup('Сундук уже открыт сегодня', false);
+          return;
+        }
+        localStorage.setItem(key, day);
+        const reward = 150 + Math.floor(Math.random() * 350);
+        updateLocalBalance(reward);
+        saveGameData();
+        playSound('win');
+        showFloatingPopup('📦 Дневной сундук +' + reward + ' 🪙', true);
+        if (typeof pushPulseEvent === 'function') pushPulseEvent(playerDisplayName() + ' открыл дневной сундук', 'win');
+      } catch(e) {}
     }
 
     window.onload = init;
